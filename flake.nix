@@ -3,10 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+
+    # Home Manager input
+    home-manager.url = "github:nix-community/home-manager";
+    # make Home Manager follow the same nixpkgs revision
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs }: {
-    nixosConfigurations.pj-desktop = nixpkgs.lib.nixosSystem {
+  outputs = { self, nixpkgs, home-manager }: {
+    nixosConfigurations.pj-laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         ./configuration.nix
@@ -34,6 +39,10 @@
         ./files.nix
         ./office.nix
         ./notifications.nix
+
+        # Enable Home Manager as a NixOS module:
+        # this exposes `home-manager` options such as `home-manager.users.<username> = { ... };`
+        home-manager.nixosModules.home-manager
       ];
     };
   };
