@@ -39,6 +39,8 @@
         ./files.nix
         ./office.nix
         ./notifications.nix
+        ./monitoring.nix
+        ./intel-graphics.nix
 
         # Enable Home Manager as a NixOS module:
         # this exposes `home-manager` options such as `home-manager.users.<username> = { ... };`

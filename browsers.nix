@@ -23,5 +23,6 @@ let
     braveWayland
     ungoogled-chromium
     ungoogledChromiumWayland
+    qutebrowser
   ];
 }
