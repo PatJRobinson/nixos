@@ -76,5 +76,6 @@ in
 
   home.file.".config/waybar".source = waybarRepo;
   home.file.".config/hypr".source = hyprRepo;
+  home.file."wallpapers".source = ./wallpapers;
 }
 
