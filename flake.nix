@@ -16,6 +16,7 @@
       modules = [
         ./configuration.nix
         ./hardware-configuration.nix
+        ./caches.nix
         ./bootloader.nix
         ./time-zone.nix
         ./auto-upgrade.nix
@@ -41,6 +42,7 @@
         ./notifications.nix
         ./monitoring.nix
         ./intel-graphics.nix
+        ./monitoring.nix
 
         # Enable Home Manager as a NixOS module:
         # this exposes `home-manager` options such as `home-manager.users.<username> = { ... };`
