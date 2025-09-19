@@ -1,10 +1,11 @@
 { config, pkgs, ...}:
 
 {
+  system.stateVersion = "25.11";
   imports = [
     ./hardware-configuration.nix
     ../../modules/audio.nix
-    ../../modules/maches.nix
+    ../../modules/caches.nix
     ../../modules/bootloader.nix
     ../../modules/time-zone.nix
     ../../modules/auto-upgrade.nix
@@ -18,7 +19,6 @@
     ../../modules/hyprland.nix
     ../../modules/users.nix
     ../../modules/browsers.nix
-    ../../modules/audio.nix
     ../../modules/fonts.nix
     ../../modules/docker.nix
     ../../modules/text-editing.nix
@@ -28,8 +28,8 @@
     ../../modules/files.nix
     ../../modules/office.nix
     ../../modules/notifications.nix
-    ../../modules/monitoring.nix
     ../../modules/intel-graphics.nix
     ../../modules/monitoring.nix
   ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }
