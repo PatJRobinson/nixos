@@ -11,43 +11,13 @@
   };
 
   outputs = { self, nixpkgs, home-manager }: {
-    nixosConfigurations.pj-laptop = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./configuration.nix
-        ./hardware-configuration.nix
-        ./caches.nix
-        ./bootloader.nix
-        ./time-zone.nix
-        ./auto-upgrade.nix
-        ./display-manager.nix
-        ./networking.nix
-        ./firewall.nix
-        ./sunshine.nix
-        ./open-ssh.nix
-        ./terminal.nix
-        ./steam.nix
-        ./hyprland.nix
-        ./users.nix
-        ./browsers.nix
-        ./audio.nix
-        ./fonts.nix
-        ./docker.nix
-        ./text-editing.nix
-        ./rust.nix
-        ./cpp.nix
-        ./moonlight.nix
-        ./files.nix
-        ./office.nix
-        ./notifications.nix
-        ./monitoring.nix
-        ./intel-graphics.nix
-        ./monitoring.nix
-
-        # Enable Home Manager as a NixOS module:
-        # this exposes `home-manager` options such as `home-manager.users.<username> = { ... };`
-        home-manager.nixosModules.home-manager
-      ];
-    };
+    nixosConfigurations = {
+      pj-laptop = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/pj-laptop/configuration.nix
+        ];
+      };
+    }
   };
 }

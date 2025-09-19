@@ -1,7 +1,7 @@
 { pkgs, ...}:
 
 {
-  networking.hostName = "pj-desktop"; # Define your hostname.
+  networking.hostName = "pj-laptop"; # Define your hostname.
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
