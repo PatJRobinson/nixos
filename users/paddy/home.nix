@@ -1,13 +1,22 @@
-{ config, pkgs, ... }:
+{ config, pkgs, display_type, ... }:
 
 let 
 
-    hyprRepo = pkgs.fetchFromGitHub {
-      owner = "PatJRobinson";
-      repo = "hyprland-dotfiles";
-      rev = "/refs/tags/v1.0.0-laptop";
-      sha256 = "1fx2l2h4bd6754d3lp5nhh5crhgbkhfvk5ffc3lg44cv75wpis3g";
-    };
+    hyprRepo = if display_type == "laptop" then
+      pkgs.fetchFromGitHub {
+        owner = "PatJRobinson";
+        repo = "hyprland-dotfiles";
+        rev = "/refs/tags/v1.0.1-laptop";
+        sha256 = "1924ksi4fmw0x3pa0q6cb1pj2gvvmlrai9sffi45ysypc8ij66yx";
+      }
+      else if display_type == "ultrawide" then
+      pkgs.fetchFromGitHub {
+        owner = "PatJRobinson";
+        repo = "hyprland-dotfiles";
+        rev = "/refs/tags/v1.0.1-ultrawide";
+        sha256 = "1dzpyznyyai9aa1ddzy96nxxd7vx51b7m7hzwgl1631gr9llkb0c";
+      }
+      else {};
 
     waybarRepo = pkgs.fetchFromGitHub {
       owner = "PatJRobinson";
@@ -21,7 +30,7 @@ in
   # Basic info
   home.username = "paddy";
   home.homeDirectory = "/home/paddy";
-  home.stateVersion = "25.11";
+  home.stateVersion = "25.05";
 
   programs.home-manager.enable = true;
 

@@ -1,4 +1,4 @@
-{ ... }:
+{ flakePath, ... }:
 
 {
   # Scheduled auto upgrade system (this is only for system upgrades, 
@@ -8,7 +8,7 @@
   system.autoUpgrade = {
     enable = true;
     operation = "switch"; # If you don't want to apply updates immediately, only after rebooting, use `boot` option in this case
-    flake = "/etc/nixos";
+    flake = flakePath;
     flags = [ "--update-input" "nixpkgs" "--commit-lock-file" ];
     dates = "weekly";
     # channel = "https://nixos.org/channels/nixos-unstable";
