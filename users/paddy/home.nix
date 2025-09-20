@@ -62,6 +62,15 @@ in
 
     initContent = ''
       [[ ! -f ${./p10k-config/.p10k.zsh} ]] || source ${./p10k-config/.p10k.zsh}
+
+      pw() {
+        if [[ $# -lt 1 ]]; then
+          echo "Usage: bwcopy <item-name-or-id>"
+          return 1
+        fi
+
+        bw get password "$@" | wl-copy
+     }
     '';
  };
 
@@ -88,10 +97,14 @@ in
     wget
     curl
     waybar
+    qutebrowser
+    bitwarden-desktop
+    bitwarden-cli
   ];
 
   home.file.".config/waybar".source = waybarRepo;
-  home.file.".config/hypr".source = hyprRepo;
+  #home.file.".config/hypr".source = hyprRepo;
+  home.file.".config/hypr".source = ./hypr;
   home.file.".config/nvim".source = neovimRepo;
   home.file."wallpapers".source = ./wallpapers;
 }

@@ -10,7 +10,7 @@
     ../../modules/time-zone.nix
     ../../modules/auto-upgrade.nix
     ../../modules/display-manager.nix
-    ../../modules/networking.nix
+    ./modules/networking.nix
     ../../modules/firewall.nix
     ../../modules/sunshine.nix
     ../../modules/open-ssh.nix
@@ -31,6 +31,7 @@
     ../../modules/intel-graphics.nix
     ../../modules/monitoring.nix
     ../../modules/gc.nix
+    ../../modules/firejail.nix
   ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }
