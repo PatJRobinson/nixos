@@ -25,6 +25,13 @@ let
       sha256 = "1xy3zbvxk3qqa2h1l2qwfhwhmvm4ri2d3b7bhr0qi4wxim299mz7";
     };
 
+    neovimRepo = pkgs.fetchFromGitHub {
+      owner = "PatJRobinson";
+      repo = "kickstart.nvim";
+      rev = "/refs/tags/v1.0.0";
+      sha256 = "1hw6ls68vyq5vnz36gcqq61ipzwwnwa00aic8jx7vaxb2jp0qg2w";
+    };
+
 in
 {
   # Basic info
@@ -53,7 +60,7 @@ in
       enable = true;
     };
 
-    initExtra = ''
+    initContent = ''
       [[ ! -f ${./p10k-config/.p10k.zsh} ]] || source ${./p10k-config/.p10k.zsh}
     '';
  };
@@ -85,6 +92,7 @@ in
 
   home.file.".config/waybar".source = waybarRepo;
   home.file.".config/hypr".source = hyprRepo;
+  home.file.".config/nvim".source = neovimRepo;
   home.file."wallpapers".source = ./wallpapers;
 }
 
