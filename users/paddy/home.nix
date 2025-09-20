@@ -6,15 +6,15 @@ let
       pkgs.fetchFromGitHub {
         owner = "PatJRobinson";
         repo = "hyprland-dotfiles";
-        rev = "/refs/tags/v1.0.1-laptop";
-        sha256 = "1924ksi4fmw0x3pa0q6cb1pj2gvvmlrai9sffi45ysypc8ij66yx";
+        rev = "/refs/tags/v1.0.2-laptop";
+        sha256 = "11c1nd7nj1k4n26nmxgbjjaxdrz2ga2c26di6hxcchc10fgz5421";
       }
       else if display_type == "ultrawide" then
       pkgs.fetchFromGitHub {
         owner = "PatJRobinson";
         repo = "hyprland-dotfiles";
-        rev = "/refs/tags/v1.0.1-ultrawide";
-        sha256 = "1dzpyznyyai9aa1ddzy96nxxd7vx51b7m7hzwgl1631gr9llkb0c";
+        rev = "/refs/tags/v1.0.2-ultrawide";
+        sha256 = "00y71z9abr2yz9qkq3g7hmvc639khcgvb30cj9sm7d9wzdh1gx1y";
       }
       else {};
 
