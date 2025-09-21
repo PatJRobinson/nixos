@@ -100,11 +100,12 @@ in
     qutebrowser
     bitwarden-desktop
     bitwarden-cli
+    ranger
   ];
 
   home.file.".config/waybar".source = waybarRepo;
-  #home.file.".config/hypr".source = hyprRepo;
-  home.file.".config/hypr".source = ./hypr;
+  home.file.".config/hypr".source = hyprRepo;
+  #home.file.".config/hypr".source = ./hypr;
   home.file.".config/nvim".source = neovimRepo;
   home.file."wallpapers".source = ./wallpapers;
 }
