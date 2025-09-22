@@ -29,14 +29,15 @@ in {
           "hyprland/workspaces"
         ];
 
-        "modules-right" = [
-          "wlr/taskbar"
+        "modules-right" = [ 
+          "wlr/
+          taskbar"
           "idle_inhibitor"
           "pulseaudio"
           "network"
-          "battery"
-          "hyprland/language"
-        ];
+        ]
+        ++ (if params ? battery then [ "battery" ] else [])
+        ++ [ "hyprland/language" ];
 
         # module configs
         "custom/archicon" = {

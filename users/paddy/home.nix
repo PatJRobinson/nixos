@@ -1,22 +1,6 @@
-{ config, pkgs, display_type, waybarParams, ... }:
+{ config, pkgs, hyprParams, waybarParams, ... }:
 
 let 
-
-    hyprRepo = if display_type == "laptop" then
-      pkgs.fetchFromGitHub {
-        owner = "PatJRobinson";
-        repo = "hyprland-dotfiles";
-        rev = "/refs/tags/v1.0.2-laptop";
-        sha256 = "11c1nd7nj1k4n26nmxgbjjaxdrz2ga2c26di6hxcchc10fgz5421";
-      }
-      else if display_type == "ultrawide" then
-      pkgs.fetchFromGitHub {
-        owner = "PatJRobinson";
-        repo = "hyprland-dotfiles";
-        rev = "/refs/tags/v1.0.2-ultrawide";
-        sha256 = "00y71z9abr2yz9qkq3g7hmvc639khcgvb30cj9sm7d9wzdh1gx1y";
-      }
-      else {};
 
     neovimRepo = pkgs.fetchFromGitHub {
       owner = "PatJRobinson";
@@ -89,7 +73,6 @@ in
     htop
     wget
     curl
-    #waybar
     qutebrowser
     bitwarden-desktop
     bitwarden-cli
@@ -97,14 +80,10 @@ in
   ];
 
   imports = [
-    (import ./modules/waybar.nix { 
-      inherit waybarParams;
-    })
+    (import ./modules/waybar.nix { inherit waybarParams; } )
+    (import ./modules/hyprland.nix { inherit hyprParams; } )
   ];
 
-  #home.file.".config/waybar".source = waybarRepo;
-  home.file.".config/hypr".source = hyprRepo;
-  #home.file.".config/hypr".source = ./hypr;
   home.file.".config/nvim".source = neovimRepo;
   home.file."wallpapers".source = ./wallpapers;
 }
