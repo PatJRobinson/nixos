@@ -79,6 +79,8 @@ in
     ranger
   ];
 
+  services.hyprpaper.enable = true;
+
   imports = [
     (import ./modules/waybar.nix { inherit waybarParams; } )
     (import ./modules/hyprland.nix { inherit hyprParams; } )

@@ -1,0 +1,7 @@
+{ homeManagerPkg, ...}:
+
+{
+  environment.systemPackages = [
+    homeManagerPkg
+  ];
+}

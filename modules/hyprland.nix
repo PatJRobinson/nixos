@@ -10,7 +10,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    hyprpaper
     wlsunset
     dunst
     hyprlock

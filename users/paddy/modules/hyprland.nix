@@ -344,4 +344,8 @@ windowrule = suppressevent maximize, class:.*
 windowrule = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
 
   '';
+
+  home.file.".config/hypr/hyprpaper.conf".text = ''
+    # empty config so hyprpaper doesn’t crash
+  '';
 }

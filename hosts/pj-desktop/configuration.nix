@@ -4,11 +4,12 @@
   system.stateVersion = "25.05";
   imports = [
     ./hardware-configuration.nix
+    ../../modules/home-manager.nix
     ../../modules/audio.nix
     ../../modules/caches.nix
     ../../modules/bootloader.nix
     ../../modules/time-zone.nix
-    ../../modules/auto-upgrade.nix
+    #../../modules/auto-upgrade.nix
     ./modules/display-manager.nix
     ./modules/networking.nix
     ../../modules/firewall.nix
