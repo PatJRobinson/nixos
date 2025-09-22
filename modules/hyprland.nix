@@ -11,7 +11,6 @@
 
   environment.systemPackages = with pkgs; [
     hyprpaper
-    waybar
     wlsunset
     dunst
     hyprlock

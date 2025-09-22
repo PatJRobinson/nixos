@@ -1,4 +1,4 @@
-{ config, pkgs, display_type, ... }:
+{ config, pkgs, display_type, waybarParams, ... }:
 
 let 
 
@@ -17,13 +17,6 @@ let
         sha256 = "00y71z9abr2yz9qkq3g7hmvc639khcgvb30cj9sm7d9wzdh1gx1y";
       }
       else {};
-
-    waybarRepo = pkgs.fetchFromGitHub {
-      owner = "PatJRobinson";
-      repo = "WaybarTheme";
-      rev = "/refs/tags/v1.0.0";
-      sha256 = "1xy3zbvxk3qqa2h1l2qwfhwhmvm4ri2d3b7bhr0qi4wxim299mz7";
-    };
 
     neovimRepo = pkgs.fetchFromGitHub {
       owner = "PatJRobinson";
@@ -72,7 +65,7 @@ in
         bw get password "$@" | wl-copy
      }
     '';
- };
+  };
 
   programs.git.enable = true;
 
@@ -96,14 +89,20 @@ in
     htop
     wget
     curl
-    waybar
+    #waybar
     qutebrowser
     bitwarden-desktop
     bitwarden-cli
     ranger
   ];
 
-  home.file.".config/waybar".source = waybarRepo;
+  imports = [
+    (import ./modules/waybar.nix { 
+      inherit waybarParams;
+    })
+  ];
+
+  #home.file.".config/waybar".source = waybarRepo;
   home.file.".config/hypr".source = hyprRepo;
   #home.file.".config/hypr".source = ./hypr;
   home.file.".config/nvim".source = neovimRepo;

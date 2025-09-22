@@ -15,12 +15,14 @@
     let
       system = "x86_64-linux";
 
-      mkHome = { hm, display_type } : hm.lib.homeManagerConfiguration {
+      mkHome = { hm, display_type, waybarParams } : hm.lib.homeManagerConfiguration {
         pkgs = hm.inputs.nixpkgs.legacyPackages.${system};
+
         modules = [
-          ({ ...}: { _module.args.display_type = display_type; })
             ./users/paddy/home.nix
           ];
+
+       extraSpecialArgs = { inherit display_type waybarParams; };
       };
 
       mkHost = { pkgs, configPath } : pkgs.lib.nixosSystem {
@@ -36,8 +38,22 @@
       pj-desktop = mkHost { pkgs = nixpkgs-25-05; configPath = ./hosts/pj-desktop/configuration.nix; };
    };
     homeConfigurations = {
-      "paddy@pj-laptop" = mkHome { hm = home-manager-unstable; display_type = "laptop"; };
-      "paddy@pj-desktop" = mkHome { hm = home-manager-25-05; display_type = "ultrawide"; };
+      "paddy@pj-laptop" = mkHome {
+          hm = home-manager-unstable; 
+          display_type = "laptop"; 
+          waybarParams = {
+            battery = "BAT1";
+            hwmonPath = "/sys/class/hwmon/hwmon0/temp1_input";
+          };
+        };
+      "paddy@pj-desktop" = mkHome { 
+          hm = home-manager-25-05;
+          display_type = "ultrawide"; 
+          waybarParams = {
+            # don't set battery
+            hwmonPath = "/sys/class/hwmon/hwmon0/temp1_input";
+          };
+        };
     };
   };
 }
