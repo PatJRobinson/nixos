@@ -9,7 +9,7 @@
     ../../modules/caches.nix
     ../../modules/bootloader.nix
     ../../modules/time-zone.nix
-    #../../modules/auto-upgrade.nix
+    ../../modules/auto-upgrade.nix
     ./modules/display-manager.nix
     ./modules/networking.nix
     ../../modules/firewall.nix
