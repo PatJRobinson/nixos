@@ -88,5 +88,6 @@ in
 
   home.file.".config/nvim".source = neovimRepo;
   home.file."wallpapers".source = ./wallpapers;
+  home.file.".config/rofi".source = ./rofi;
 }
 
