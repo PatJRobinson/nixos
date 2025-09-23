@@ -1,4 +1,4 @@
-{ config, pkgs, hyprParams, waybarParams, ... }:
+{ config, pkgs, userName, hyprParams, waybarParams, ... }:
 
 let 
 
@@ -12,8 +12,8 @@ let
 in
 {
   # Basic info
-  home.username = "paddy";
-  home.homeDirectory = "/home/paddy";
+  home.username = userName;
+  home.homeDirectory = "/home/${userName}";
   home.stateVersion = "25.05";
 
   programs.home-manager.enable = true;
