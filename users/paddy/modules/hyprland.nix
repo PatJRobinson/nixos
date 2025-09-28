@@ -11,7 +11,7 @@ in {
 ################
 
 # See https://wiki.hyprland.org/Configuring/Monitors/
-monitor=,preferred,auto,auto
+monitor=,preferred,auto,1.175000
 #monitor=DP-3, 1920x1080@60, auto, auto
 
 

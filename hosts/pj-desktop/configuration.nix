@@ -32,6 +32,9 @@
     ../../modules/intel-graphics.nix
     ../../modules/monitoring.nix
     ../../modules/gc.nix
+    ../../modules/firejail.nix
+    ../../modules/filesystem.nix
+    ../../modules/power.nix
   ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }

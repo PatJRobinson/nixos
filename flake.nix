@@ -15,14 +15,14 @@
     let
       system = "x86_64-linux";
 
-      mkHome = { hm, userName, hyprParams, waybarParams } : hm.lib.homeManagerConfiguration {
+      mkHome = { hm, userName, hyprParams } : hm.lib.homeManagerConfiguration {
         pkgs = hm.inputs.nixpkgs.legacyPackages.${system};
 
         modules = [
             ./users/paddy/home.nix
           ];
 
-       extraSpecialArgs = { inherit userName hyprParams waybarParams; };
+       extraSpecialArgs = { inherit hyprParams userName; };
       };
 
       mkHost = { pkgs, configPath, hm} : pkgs.lib.nixosSystem {
@@ -56,35 +56,23 @@
     homeConfigurations = {
       "paddy@pj-laptop" = mkHome {
           hm = home-manager-unstable; 
-	  userName = "paddy";
+          userName = "paddy";
           hyprParams = {
             displayType = "laptop"; 
-          };
-          waybarParams = {
-            battery = "BAT1";
-            hwmonPath = "/sys/class/hwmon/hwmon0/temp1_input";
           };
         };
       "paddy@pj-desktop" = mkHome { 
           hm = home-manager-25-05;
-	  userName = "paddy";
+          userName = "paddy";
           hyprParams = {
             displayType = "ultrawide"; 
-          };
-          waybarParams = {
-            # don't set battery
-            hwmonPath = "/sys/class/hwmon/hwmon0/temp1_input";
           };
         };
       "patrick@work-laptop" = mkHome {
           hm = home-manager-unstable; 
-	  userName = "patrick";
+          userName = "patrick";
           hyprParams = {
             displayType = "laptop"; 
-          };
-          waybarParams = {
-            battery = "BAT1";
-            hwmonPath = "/sys/class/hwmon/hwmon0/temp1_input";
           };
         };
 
