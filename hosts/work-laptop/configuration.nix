@@ -5,6 +5,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/audio.nix
+    ../../modules/bluetooth.nix
     ../../modules/caches.nix
     ../../modules/bootloader.nix
     ../../modules/time-zone.nix
