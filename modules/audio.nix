@@ -19,13 +19,4 @@
   environment.systemPackages = with pkgs; [
     pavucontrol
   ];
-
-  #
-  # Bluetooth
-  #
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-  };
-
 }
