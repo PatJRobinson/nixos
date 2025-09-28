@@ -1,4 +1,4 @@
-{ config, pkgs, hyprParams, waybarParams, ... }:
+{ config, pkgs, hyprParams, ... }:
 
 let 
 
@@ -82,12 +82,17 @@ in
   services.hyprpaper.enable = true;
 
   imports = [
-    (import ./modules/waybar.nix { inherit waybarParams; } )
     (import ./modules/hyprland.nix { inherit hyprParams; } )
+    (import ./modules/visualisation.nix )
   ];
 
   home.file.".config/nvim".source = neovimRepo;
   home.file."wallpapers".source = ./wallpapers;
   home.file.".config/rofi".source = ./rofi;
+  
+
+  programs.waybar.enable = true;
+  # src: https://github.com/poetaste/dotfiles.git
+  home.file.".config/waybar".source = ./waybar;
 }
 

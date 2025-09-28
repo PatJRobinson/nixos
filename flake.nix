@@ -15,14 +15,14 @@
     let
       system = "x86_64-linux";
 
-      mkHome = { hm, hyprParams, waybarParams } : hm.lib.homeManagerConfiguration {
+      mkHome = { hm, hyprParams } : hm.lib.homeManagerConfiguration {
         pkgs = hm.inputs.nixpkgs.legacyPackages.${system};
 
         modules = [
             ./users/paddy/home.nix
           ];
 
-       extraSpecialArgs = { inherit hyprParams waybarParams; };
+       extraSpecialArgs = { inherit hyprParams; };
       };
 
       mkHost = { pkgs, configPath, hm} : pkgs.lib.nixosSystem {
@@ -54,19 +54,11 @@
           hyprParams = {
             displayType = "laptop"; 
           };
-          waybarParams = {
-            battery = "BAT1";
-            hwmonPath = "/sys/class/hwmon/hwmon0/temp1_input";
-          };
         };
       "paddy@pj-desktop" = mkHome { 
           hm = home-manager-25-05;
           hyprParams = {
             displayType = "ultrawide"; 
-          };
-          waybarParams = {
-            # don't set battery
-            hwmonPath = "/sys/class/hwmon/hwmon0/temp1_input";
           };
         };
     };
