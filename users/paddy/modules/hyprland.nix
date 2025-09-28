@@ -37,6 +37,7 @@ $menu = wofi --show drun
 # exec-once = nm-applet &
 # exec-once = waybar & hyprpaper & firefox
 
+exec-once = systemctl --user restart hyprpaper
 exec-once = waybar & hyprpaper
 exec-once = sleep 2; exec ~/.config/hypr/scripts/set-random-wallpaper.sh
 
@@ -220,6 +221,10 @@ device {
 # See https://wiki.hyprland.org/Configuring/Keywords/
 $mainMod = SUPER # Sets "Windows" key as main modifier
 $moonlightMod = CTRL
+
+# Screen brightness
+bind = , XF86MonBrightnessUp, exec, ~/.config/hypr/scripts/brightness_inc.sh 
+bind = , XF86MonBrightnessDown, exec, ~/.config/hypr/scripts/brightness_dec.sh 
 
 bind = SUPER, C, exec, ~/.config/hypr/scripts/fullscreen_toggle.sh 2>>~/.local/state/fullscreen_move.log
 # Send focused window to workspace 1..9 with SUPER+ALT+[number]

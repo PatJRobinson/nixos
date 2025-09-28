@@ -34,6 +34,8 @@
     ../../modules/firejail.nix
     ../../modules/filesystem.nix
     ../../modules/power.nix
+    ../../modules/utils.nix
+    ../../modules/backlight.nix
   ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }
