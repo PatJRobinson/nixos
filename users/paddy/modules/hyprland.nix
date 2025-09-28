@@ -3,6 +3,7 @@
 let
   params = hyprParams;
   layout = if hyprParams.displayType == "ultrawide" then "master" else "dwindle";
+  scale = if hyprParams.displayType == "ultrawide" then "1" else "1.175000";
 in {
   home.file.".config/hypr/scripts".source = ../hyprland-scripts;
   home.file.".config/hypr/hyprland.conf".text = ''
@@ -11,7 +12,7 @@ in {
 ################
 
 # See https://wiki.hyprland.org/Configuring/Monitors/
-monitor=,preferred,auto,1.175000
+monitor=,preferred,auto,${scale}
 #monitor=DP-3, 1920x1080@60, auto, auto
 
 
