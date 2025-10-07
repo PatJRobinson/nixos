@@ -10,7 +10,6 @@
   environment.systemPackages = with pkgs; [
     wl-clipboard
     ghostty
-    kitty
     wget
     git
     jq

@@ -58,7 +58,7 @@
           hm = home-manager-unstable; 
           userName = "paddy";
           hyprParams = {
-            displayType = "laptop"; 
+            displayType = "dual"; 
           };
         };
       "paddy@pj-desktop" = mkHome { 

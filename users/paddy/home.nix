@@ -53,14 +53,6 @@ in
 
   programs.git.enable = true;
 
-  programs.kitty = {
-    enable = true;
-
-    extraConfig = ''
-      include ${./Misterioso.conf}
-    '';
-  };
-
   # Example environment variables
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -79,17 +71,21 @@ in
     ranger
   ];
 
-  services.hyprpaper.enable = true;
-
   imports = [
     (import ./modules/hyprland.nix { inherit hyprParams; } )
     (import ./modules/visualisation.nix )
   ];
 
   home.file.".config/nvim".source = neovimRepo;
+
+  services.hyprpaper.enable = true;
+  # script in ~/.config/hypr/scripts to select random wallpaper
   home.file."wallpapers".source = ./wallpapers;
   home.file.".config/rofi".source = ./rofi;
-  
+
+  programs.ghostty.enable = true;
+  # set gruvbox theme
+  home.file.".config/ghostty".source = ./ghostty;
 
   programs.waybar.enable = true;
   # src: https://github.com/poetaste/dotfiles.git

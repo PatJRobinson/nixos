@@ -3,7 +3,18 @@
 let
   params = hyprParams;
   layout = if hyprParams.displayType == "ultrawide" then "master" else "dwindle";
-  scale = if hyprParams.displayType == "ultrawide" then "1" else "1.175000";
+  monitors = 
+    if hyprParams.displayType == "ultrawide" then ''
+      monitor=,preferred, auto, 1
+    '' else
+    if hyprParams.displayType == "dual" then ''
+      monitor=eDP-1,preferred, auto, 1.566667
+      monitor=DP-2,preferred, auto, 1
+    '' else
+    if hyprParams.displayType == "laptop" then ''
+      monitor=eDP-1,preferred, auto, 1.566667
+    '' else "";
+
 in {
   home.file.".config/hypr/scripts".source = ../hyprland-scripts;
   home.file.".config/hypr/hyprland.conf".text = ''
@@ -12,9 +23,7 @@ in {
 ################
 
 # See https://wiki.hyprland.org/Configuring/Monitors/
-monitor=,preferred,auto,${scale}
-#monitor=DP-3, 1920x1080@60, auto, auto
-
+${monitors}
 
 ###################
 ### MY PROGRAMS ###
@@ -23,7 +32,7 @@ monitor=,preferred,auto,${scale}
 # See https://wiki.hyprland.org/Configuring/Keywords/
 
 # Set programs that you use
-$terminal = kitty
+$terminal = ghostty
 $fileManager = nautilus
 $menu = wofi --show drun
 
