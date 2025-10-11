@@ -1,1 +1,4 @@
 theme = Gruvbox Dark Hard
+renderer=wayland
+text-scaling=1.0
+dpi-aware=true

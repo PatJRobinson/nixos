@@ -2,9 +2,9 @@
 
 {
   environment.systemPackages = with pkgs; [
-    syncthing
-    nautilus
-    dua
-    ncdu
+    imv
+    bat
+    jump
   ];
+
 }

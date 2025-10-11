@@ -48,10 +48,30 @@ in
 
         bw get password "$@" | wl-copy
      }
+     alias lsd="yazi"
+    function y() {
+      local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+      yazi "$@" --cwd-file="$tmp"
+      if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        builtin cd -- "$cwd"
+      fi
+      rm -f -- "$tmp"
+    }
     '';
   };
 
   programs.git.enable = true;
+
+  programs.tmux = {
+    enable = true;
+    extraConfig = ''
+      set-option -g default-shell "${pkgs.zsh}/bin/zsh"
+      set-option -g default-command "${pkgs.zsh}/bin/zsh -l"
+      set-option -g default-terminal "tmux-256color"
+    '';
+  };
+
+  programs.yazi.enable = true;
 
   # Example environment variables
   home.sessionVariables = {
@@ -84,6 +104,8 @@ in
   home.file.".config/rofi".source = ./rofi;
 
   programs.ghostty.enable = true;
+  programs.kitty.enable = true;
+  home.file.".config/kitty".source = ./kitty;
   # set gruvbox theme
   home.file.".config/ghostty".source = ./ghostty;
 
