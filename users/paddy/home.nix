@@ -48,8 +48,8 @@ in
 
         bw get password "$@" | wl-copy
      }
-     alias lsd="yazi"
-    function y() {
+
+    function f() {
       local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
       yazi "$@" --cwd-file="$tmp"
       if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
@@ -57,20 +57,12 @@ in
       fi
       rm -f -- "$tmp"
     }
+
     '';
   };
 
+  programs.lsd.enable = true;
   programs.git.enable = true;
-
-  programs.tmux = {
-    enable = true;
-    extraConfig = ''
-      set-option -g default-shell "${pkgs.zsh}/bin/zsh"
-      set-option -g default-command "${pkgs.zsh}/bin/zsh -l"
-      set-option -g default-terminal "tmux-256color"
-    '';
-  };
-
   programs.yazi.enable = true;
 
   # Example environment variables
@@ -88,7 +80,6 @@ in
     qutebrowser
     bitwarden-desktop
     bitwarden-cli
-    ranger
   ];
 
   imports = [

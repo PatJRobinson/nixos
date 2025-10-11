@@ -206,6 +206,8 @@ input {
     kb_options =
     kb_rules =
 
+    kb_options = caps:escape
+
     follow_mouse = 1
 
     sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
@@ -270,8 +272,8 @@ bind = $mainMod SHIFT, t, exec, $terminal
 bind = $moonlightMod SHIFT, t, exec, $terminal
 bind = $mainMod SHIFT, f, exec, firefox
 bind = $mainMod SHIFT, c, exec, ungoogled-chromium-wayland
-bind = $mainMod SHIFT, b, exec, brave-wayland
-#bind = $mainMod SHIFT, b, exec, qutebrowser
+#bind = $mainMod SHIFT, b, exec, brave-google
+bind = $mainMod SHIFT, b, exec, qute-casual
 bind = $mainMod SHIFT, o, exec, obsidian
 bind = $mainMod SHIFT, s, exec, steam
 bind = $moonlightMod SHIFT, s, exec, steam
