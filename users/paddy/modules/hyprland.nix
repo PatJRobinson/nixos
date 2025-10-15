@@ -47,8 +47,10 @@ $menu = wofi --show drun
 # exec-once = nm-applet &
 # exec-once = waybar & hyprpaper & firefox
 
+# make sure wayland properly loads, then restart these services 
 exec-once = systemctl --user restart hyprpaper
-exec-once = waybar & hyprpaper
+exec-once = systemctl --user restart hyprsunset
+exec-once = waybar & hyprpaper & hyprsunset
 exec-once = sleep 2; exec ~/.config/hypr/scripts/set-random-wallpaper.sh
 
 #############################
@@ -366,5 +368,6 @@ windowrule = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned
   home.file.".config/hypr/hyprpaper.conf".text = ''
     # empty config so hyprpaper doesn’t crash
   '';
-  home.file.".config/hypr/hyprlock.conf".source = ./hyprlock/hyprlock.conf;
+  home.file.".config/hypr/hyprlock.conf".source = ./hypr/hyprlock.conf;
+  home.file.".config/hypr/hyprsunset.conf".source = ./hypr/hyprsunset.conf;
 }

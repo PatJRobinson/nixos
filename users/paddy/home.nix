@@ -80,6 +80,7 @@ in
     qutebrowser
     bitwarden-desktop
     bitwarden-cli
+    libnotify
   ];
 
   imports = [
@@ -90,6 +91,7 @@ in
   home.file.".config/nvim".source = neovimRepo;
 
   services.hyprpaper.enable = true;
+  services.hyprsunset.enable = true;
   # script in ~/.config/hypr/scripts to select random wallpaper
   home.file."wallpapers".source = ./wallpapers;
   home.file.".config/rofi".source = ./rofi;
