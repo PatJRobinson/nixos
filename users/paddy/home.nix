@@ -5,8 +5,8 @@ let
     neovimRepo = pkgs.fetchFromGitHub {
       owner = "PatJRobinson";
       repo = "kickstart.nvim";
-      rev = "/refs/tags/v1.0.0";
-      sha256 = "1hw6ls68vyq5vnz36gcqq61ipzwwnwa00aic8jx7vaxb2jp0qg2w";
+      rev = "/refs/tags/v1.0.2";
+      sha256 = "0ggbrlg1yn4raplw7rv216hq44lywzi3i854pb0f8xl073whq6cd";
     };
 
 in
