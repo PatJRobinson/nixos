@@ -94,6 +94,8 @@ in
   home.file."wallpapers".source = ./wallpapers;
   home.file.".config/rofi".source = ./rofi;
 
+  home.file.".p10k.zsh".source = ./p10k-config/.p10k.zsh;
+
   programs.ghostty.enable = true;
   programs.kitty.enable = true;
   home.file.".config/kitty".source = ./kitty;
