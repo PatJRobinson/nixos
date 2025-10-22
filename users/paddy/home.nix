@@ -9,6 +9,8 @@ let
       sha256 = "1hw6ls68vyq5vnz36gcqq61ipzwwnwa00aic8jx7vaxb2jp0qg2w";
     };
 
+    wallpapers_dir = 
+      if hyprParams.displayType == "ultrawide" then ./wallpapers-ultrawide else ./wallpapers;
 in
 {
   # Basic info
@@ -87,11 +89,10 @@ in
     (import ./modules/visualisation.nix )
   ];
 
-  home.file.".config/nvim".source = neovimRepo;
 
   services.hyprpaper.enable = true;
   # script in ~/.config/hypr/scripts to select random wallpaper
-  home.file."wallpapers".source = ./wallpapers;
+  home.file."wallpapers".source = "${wallpapers_dir}";
   home.file.".config/rofi".source = ./rofi;
 
   programs.ghostty.enable = true;
@@ -103,5 +104,7 @@ in
   programs.waybar.enable = true;
   # src: https://github.com/poetaste/dotfiles.git
   home.file.".config/waybar".source = ./waybar;
+
+  home.file.".config/nvim".source = neovimRepo;
 }
 
