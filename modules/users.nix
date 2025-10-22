@@ -2,8 +2,6 @@
 
 {
 
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.paddy = {
     isNormalUser = true;
     description = "Paddy";
@@ -12,4 +10,6 @@
     #  thunderbird
     ];
   };
+  nix.settings.trusted-users = [ "root" "paddy" ];
+
 }
