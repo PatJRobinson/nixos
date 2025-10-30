@@ -15,14 +15,14 @@
     let
       system = "x86_64-linux";
 
-      mkHome = { hm, userName, hyprParams } : hm.lib.homeManagerConfiguration {
+      mkHome = { hm, userName, hyprParams, channel } : hm.lib.homeManagerConfiguration {
         pkgs = hm.inputs.nixpkgs.legacyPackages.${system};
 
         modules = [
             ./users/paddy/home.nix
           ];
 
-       extraSpecialArgs = { inherit hyprParams userName; };
+       extraSpecialArgs = { inherit channel hyprParams userName; };
       };
 
       mkHost = { pkgs, configPath, hm} : pkgs.lib.nixosSystem {
@@ -51,7 +51,7 @@
           pkgs = nixpkgs-unstable; 
           configPath = ./hosts/work-laptop/configuration.nix;
           hm = home-manager-unstable;
-        };   
+        };
     };
     homeConfigurations = {
       "paddy@pj-laptop" = mkHome {
@@ -60,6 +60,7 @@
           hyprParams = {
             displayType = "dual"; 
           };
+          channel = "unstable";
         };
       "paddy@pj-desktop" = mkHome { 
           hm = home-manager-25-05;
@@ -67,6 +68,7 @@
           hyprParams = {
             displayType = "ultrawide"; 
           };
+          channel = "25.05";
         };
       "patrick@work-laptop" = mkHome {
           hm = home-manager-unstable; 
@@ -74,6 +76,7 @@
           hyprParams = {
             displayType = "laptop"; 
           };
+          channel = "unstable";
         };
 
     };

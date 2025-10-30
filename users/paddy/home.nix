@@ -1,4 +1,4 @@
-{ config, pkgs, userName, hyprParams, ... }:
+{ config, pkgs, nixpkgsUrl, channel, userName, hyprParams, ... }:
 
 let 
 
@@ -67,6 +67,8 @@ in
   programs.git.enable = true;
   programs.yazi.enable = true;
 
+  programs.direnv.enable = true;
+
   # Example environment variables
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -83,6 +85,7 @@ in
     bitwarden-desktop
     bitwarden-cli
     libnotify
+    nix-direnv
   ];
 
   imports = [
@@ -90,6 +93,16 @@ in
     (import ./modules/visualisation.nix )
   ];
 
+  programs.ssh = {
+    enable = true;
+    extraConfig = "
+      Host gitlab.com
+        HostName gitlab.com
+        User git
+        IdentityFile ~/.ssh/id_rsa
+        IdentitiesOnly yes
+      ";
+  };
 
   services.hyprpaper.enable = true;
   services.hyprsunset.enable = true;
@@ -103,7 +116,9 @@ in
   programs.kitty.enable = true;
   home.file.".config/kitty".source = ./kitty;
   # set gruvbox theme
-  home.file.".config/ghostty".source = ./ghostty;
+  home.file.".config/ghostty/config".text = 
+    if channel == "25.05" then 
+      "theme = GruvboxDarkHard" else "theme = Gruvbox Dark Hard";
 
   programs.waybar.enable = true;
   # src: https://github.com/poetaste/dotfiles.git

@@ -37,4 +37,14 @@
     ../../modules/power.nix
   ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  programs.ssh = {
+    extraConfig = "
+      Host gitlab.com
+        HostName gitlab.com
+        User git
+        IdentityFile /etc/nix/gitlab_deploy_key
+        IdentitiesOnly yes
+    ";
+  };
 }
