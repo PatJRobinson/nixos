@@ -1,7 +1,5 @@
 {
-  config,
   pkgs,
-  nixpkgsUrl,
   channel,
   userName,
   hyprParams,
@@ -10,15 +8,23 @@
 
 let
 
+  darkMode = false;
+  ghosttyTheme = if darkMode then "Dark" else "Light";
+
   neovimRepo = pkgs.fetchFromGitHub {
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-VQaHqLQIeM+UuXZttlhsd/ubmvTunkQ/5HMHgFjgadQ=";
+    sha256 = "sha256-Ih0e22T0506N8dvEz8C5ggX6rCyHI4a2jxgSFZO8BJ8=";
   };
 
   wallpapers_dir =
-    if hyprParams.displayType == "ultrawide" then ./wallpapers-ultrawide else ./wallpapers;
+    if hyprParams.displayType == "ultrawide" then
+      ./wallpapers-ultrawide
+    else if darkMode then
+      ./wallpapers-dark
+    else
+      ./wallpapers-light;
 in
 {
   # Basic info
@@ -137,14 +143,37 @@ in
   programs.kitty.enable = true;
   home.file.".config/kitty".source = ./kitty;
   # set gruvbox theme
-  home.file.".config/ghostty/config".text =
-    if channel == "25.05" then "theme = GruvboxDarkHard" else "theme = Gruvbox Dark Hard";
+  home.file.".config/ghostty/config".text = ''
+    ${
+      if channel == "25.05" then
+        "theme = Gruvbox${ghosttyTheme}Hard"
+      else
+        "theme = Gruvbox ${ghosttyTheme} Hard"
+    }
+  '';
+
+  home.sessionVariables = {
+    NVIM_DARK_MODE = if darkMode then "1" else "0";
+  };
 
   programs.waybar.enable = true;
   # src: https://github.com/poetaste/dotfiles.git
-  home.file.".config/waybar".source = ./waybar;
+  home.file.".config/waybar/config".source = ./waybar/config;
+  home.file.".config/waybar/style.css".source =
+    if darkMode then ./waybar/style-dark.css else ./waybar/style-light.css;
+  home.file.".config/waybar/scripts".source = ./waybar/scripts;
 
   home.file.".config/nvim".source = neovimRepo;
-  home.file.".local/firejail/qute-casual/.config/qutebrowser/config.py".source =
-    ./qutebrowser/config.py;
+  home.file.".local/firejail/qute-casual/.config/qutebrowser/config.py" = {
+    text =
+      builtins.readFile (
+        if darkMode then ./qutebrowser/colours-dark.py else ./qutebrowser/colours-light.py
+      )
+      + builtins.readFile ./qutebrowser/config.py
+      + ''
+        c.colors.webpage.darkmode.enabled = ${if darkMode then "True" else "False"}
+        config.load_autoconfig(False)
+      '';
+  };
+
 }
