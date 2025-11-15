@@ -14,7 +14,7 @@ let
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-PkmC9iC5CkBmO+fduGuB/wNPT2VcAxkOq5yopFmKlSc=";
+    sha256 = "sha256-0ElumoH+wJMU+xrTAmy+UU6uuw0D/Vw8+0cDTGpFA14=";
   };
 
   wallpapers_dir =
@@ -110,13 +110,18 @@ in
 
   programs.ssh = {
     enable = true;
-    extraConfig = "
-      Host gitlab.com
-        HostName gitlab.com
-        User git
-        IdentityFile ~/.ssh/id_rsa
-        IdentitiesOnly yes
-      ";
+    # Disable the old default host blocks to avoid warnings
+    enableDefaultConfig = false;
+
+    # Add your custom hosts manually
+    matchBlocks = {
+      "gitlab.com" = {
+        hostname = "gitlab.com";
+        user = "git";
+        identityFile = "~/.ssh/id_rsa";
+        identitiesOnly = true;
+      };
+    };
   };
 
   services.hyprpaper.enable = true;
