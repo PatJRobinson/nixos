@@ -5,8 +5,8 @@ let
     neovimRepo = pkgs.fetchFromGitHub {
       owner = "PatJRobinson";
       repo = "kickstart.nvim";
-      rev = "/refs/tags/v1.0.3";
-      sha256 = "0ggbrlg1yn4raplw7rv216hq44lywzi3i854pb0f8xl073whq6cd";
+      rev = "/refs/heads/master";
+      sha256 = "sha256-3PnyAYxOUapuPfDd+AHL8JHPPQcKUhL/zJEsrNkW2fQ=";
     };
 
     wallpapers_dir = 
@@ -68,6 +68,7 @@ in
   programs.yazi.enable = true;
 
   programs.direnv.enable = true;
+  programs.zathura.enable = true;
 
   # Example environment variables
   home.sessionVariables = {
@@ -125,5 +126,6 @@ in
   home.file.".config/waybar".source = ./waybar;
 
   home.file.".config/nvim".source = neovimRepo;
+  home.file.".local/firejail/qute-casual/.config/qutebrowser/config.py".source = ./qutebrowser/config.py;
 }
 
