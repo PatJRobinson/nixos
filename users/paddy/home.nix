@@ -38,24 +38,21 @@ in
   programs.zsh = {
     enable = true;
 
-    zplug = {
-      enable = true;
-      plugins = [
-        { name = "zsh-users/zsh-autosuggestions"; } # Simple plugin installation
-        {
-          name = "romkatv/powerlevel10k";
-          tags = [
-            "as:theme"
-            "depth:1"
-          ];
-        } # Installations with additional options. For the list of options, please refer to Zplug README.
-      ];
-    };
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
 
     oh-my-zsh = {
       # "ohMyZsh" without Home Manager
       enable = true;
     };
+
+    plugins = [
+      {
+        name = "powerlevel10k";
+        src = pkgs.zsh-powerlevel10k;
+        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      }
+    ];
 
     initContent = ''
         [[ ! -f ${./p10k-config/.p10k.zsh} ]] || source ${./p10k-config/.p10k.zsh}
@@ -82,6 +79,7 @@ in
   };
 
   programs.lsd.enable = true;
+  programs.bat.enable = true;
   programs.fzf.enable = true;
   programs.git.enable = true;
   programs.yazi.enable = true;
@@ -97,6 +95,7 @@ in
 
   # Packages to install
   home.packages = with pkgs; [
+    zsh-powerlevel10k
     neovim
     htop
     wget
