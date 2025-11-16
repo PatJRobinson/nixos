@@ -20,11 +20,9 @@ let
 
   wallpapers_dir =
     if hyprParams.displayType == "ultrawide" then
-      ./wallpapers-ultrawide
-    else if darkMode then
-      ./wallpapers-dark
-    else
-      ./wallpapers-light;
+      if darkMode then ./wallpapers-ultrawide-dark else ./wallpapers-ultrawide-light
+    else 
+      if darkMode then ./wallpapers-dark else ./wallpapers-light;
 in
 {
   # Basic info
@@ -114,32 +112,50 @@ in
     (import ./modules/visualisation.nix)
   ];
 
-  programs.ssh = {
-    enable = true;
-    # Disable the old default host blocks to avoid warnings
-    enableDefaultConfig = false;
 
-    # Add your custom hosts manually
-    matchBlocks = {
-      "gitlab.com" = {
-        hostname = "gitlab.com";
-        user = "git";
-        identityFile = "~/.ssh/id_rsa";
-        identitiesOnly = true;
+  programs.ssh =
+    if channel == "25.05" then {
+      enable = true;
+
+      # Only options valid for the old version
+      extraConfig = ''
+        Host gitlab.com
+          HostName gitlab.com
+          User git
+          IdentityFile ~/.ssh/id_rsa
+          IdentitiesOnly yes
+      '';
+    } else {
+      enable = true;
+
+      # Disable legacy defaults (new HM versions)
+      enableDefaultConfig = false;
+
+      matchBlocks = {
+        "gitlab.com" = {
+          host = "gitlab.com";     # or "hostname"
+          hostname = "gitlab.com";
+          user = "git";
+          identityFile = "~/.ssh/id_rsa";
+          identitiesOnly = true;
+        };
       };
     };
-  };
 
   services.hyprpaper.enable = true;
   services.hyprsunset.enable = true;
-  # script in ~/.config/hypr/scripts to select random wallpaper
+  programs.waybar.enable = true;
+  programs.ghostty.enable = true;
+
+  home.sessionVariables = {
+    NVIM_DARK_MODE = if darkMode then "1" else "0";
+  };
+
   home.file."wallpapers".source = "${wallpapers_dir}";
   home.file.".config/rofi".source = ./rofi;
 
   home.file.".p10k.zsh".source = ./p10k-config/.p10k.zsh;
 
-  programs.ghostty.enable = true;
-  programs.kitty.enable = true;
   home.file.".config/kitty".source = ./kitty;
   # set gruvbox theme
   home.file.".config/ghostty/config".text = ''
@@ -151,11 +167,6 @@ in
     }
   '';
 
-  home.sessionVariables = {
-    NVIM_DARK_MODE = if darkMode then "1" else "0";
-  };
-
-  programs.waybar.enable = true;
   # src: https://github.com/poetaste/dotfiles.git
   home.file.".config/waybar/config".source = ./waybar/config;
   home.file.".config/waybar/style.css".source =
@@ -174,5 +185,6 @@ in
         config.load_autoconfig(False)
       '';
   };
+
 
 }
