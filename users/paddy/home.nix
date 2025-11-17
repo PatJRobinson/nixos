@@ -21,8 +21,10 @@ let
   wallpapers_dir =
     if hyprParams.displayType == "ultrawide" then
       if darkMode then ./wallpapers-ultrawide-dark else ./wallpapers-ultrawide-light
-    else 
-      if darkMode then ./wallpapers-dark else ./wallpapers-light;
+    else if darkMode then
+      ./wallpapers-dark
+    else
+      ./wallpapers-light;
 in
 {
   # Basic info
@@ -55,14 +57,14 @@ in
     initContent = ''
         [[ ! -f ${./p10k-config/.p10k.zsh} ]] || source ${./p10k-config/.p10k.zsh}
 
-        pw() {
-          if [[ $# -lt 1 ]]; then
-            echo "Usage: bwcopy <item-name-or-id>"
-            return 1
-          fi
+      pw() {
+        if [[ $# -lt 1 ]]; then
+          echo "Usage: bwcopy <item-name-or-id>"
+          return 1
+        fi
 
-          bw get password "$@" | wl-copy
-       }
+        bw get password "$@" | wl-copy
+      }
 
       function f() {
         local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -73,6 +75,9 @@ in
         rm -f -- "$tmp"
       }
 
+      rcp() {
+        rsync -avh --progress "$@"
+      }
     '';
   };
 
@@ -98,6 +103,7 @@ in
     htop
     wget
     curl
+    rsync
     qutebrowser
     bitwarden-desktop
     bitwarden-cli
@@ -112,35 +118,37 @@ in
     (import ./modules/visualisation.nix)
   ];
 
-
   programs.ssh =
-    if channel == "25.05" then {
-      enable = true;
+    if channel == "25.05" then
+      {
+        enable = true;
 
-      # Only options valid for the old version
-      extraConfig = ''
-        Host gitlab.com
-          HostName gitlab.com
-          User git
-          IdentityFile ~/.ssh/id_rsa
-          IdentitiesOnly yes
-      '';
-    } else {
-      enable = true;
+        # Only options valid for the old version
+        extraConfig = ''
+          Host gitlab.com
+            HostName gitlab.com
+            User git
+            IdentityFile ~/.ssh/id_rsa
+            IdentitiesOnly yes
+        '';
+      }
+    else
+      {
+        enable = true;
 
-      # Disable legacy defaults (new HM versions)
-      enableDefaultConfig = false;
+        # Disable legacy defaults (new HM versions)
+        enableDefaultConfig = false;
 
-      matchBlocks = {
-        "gitlab.com" = {
-          host = "gitlab.com";     # or "hostname"
-          hostname = "gitlab.com";
-          user = "git";
-          identityFile = "~/.ssh/id_rsa";
-          identitiesOnly = true;
+        matchBlocks = {
+          "gitlab.com" = {
+            host = "gitlab.com"; # or "hostname"
+            hostname = "gitlab.com";
+            user = "git";
+            identityFile = "~/.ssh/id_rsa";
+            identitiesOnly = true;
+          };
         };
       };
-    };
 
   services.hyprpaper.enable = true;
   services.hyprsunset.enable = true;
@@ -185,6 +193,5 @@ in
         config.load_autoconfig(False)
       '';
   };
-
 
 }
