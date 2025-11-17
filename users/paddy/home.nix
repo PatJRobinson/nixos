@@ -15,7 +15,7 @@ let
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-Ih0e22T0506N8dvEz8C5ggX6rCyHI4a2jxgSFZO8BJ8=";
+    sha256 = "sha256-Qal3cIxm4E9vki3fAxrKyi8t7cATqD9uYfV5iZt12go=";
   };
 
   wallpapers_dir =
@@ -111,6 +111,7 @@ in
     nix-direnv
     lua-language-server
     nil
+    marksman
   ];
 
   imports = [
