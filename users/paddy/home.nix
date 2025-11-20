@@ -112,6 +112,7 @@ in
     lua-language-server
     nil
     marksman
+    (flameshot.override { enableWlrSupport = true; })
   ];
 
   imports = [
@@ -131,6 +132,13 @@ in
             User git
             IdentityFile ~/.ssh/id_rsa
             IdentitiesOnly yes
+
+          Host patri
+            HostName 192.168.2.192
+            User patri
+            IdentityFile ~/.ssh/id_rsa
+            IdentitiesOnly yes
+            SetEnv TERM=xterm-256color
         '';
       }
     else
@@ -148,6 +156,25 @@ in
             identityFile = "~/.ssh/id_rsa";
             identitiesOnly = true;
           };
+          "patri" = {
+            hostname = "192.168.2.192";
+            user = "patri";
+            identityFile = "~/.ssh/id_rsa";
+            identitiesOnly = true;
+            setEnv = {
+              TERM = "xterm-256color";
+            };
+          };
+          "buildserver" = {
+            hostname = "192.168.2.192";
+            user = "calyo";
+            identityFile = "~/.ssh/id_rsa";
+            identitiesOnly = true;
+            setEnv = {
+              TERM = "xterm-256color";
+            };
+          };
+
         };
       };
 
