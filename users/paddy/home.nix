@@ -181,6 +181,12 @@ in {
             TERM = "xterm-256color";
           };
         };
+        "paddy" = {
+          hostname = "192.168.0.18";
+          user = "paddy";
+          identityFile = "~/.ssh/id_rsa";
+          identitiesOnly = true;
+        };
       };
     };
 
@@ -206,8 +212,14 @@ in {
   home.file.".config/ghostty/config".text = ''
     ${
       if channel == "25.05"
-      then "theme = Gruvbox${ghosttyTheme}Hard"
-      else "theme = Gruvbox ${ghosttyTheme} Hard"
+      then ''
+        theme = Gruvbox${ghosttyTheme}Hard
+        app-notifications = no-clipboard-copy
+      ''
+      else ''
+        theme = Gruvbox ${ghosttyTheme} Hard
+        app-notifications = no-clipboard-copy
+      ''
     }
   '';
 
