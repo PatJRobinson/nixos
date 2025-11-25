@@ -4,29 +4,30 @@
   userName,
   hyprParams,
   ...
-}:
-
-let
-
+}: let
   darkMode = false;
-  ghosttyTheme = if darkMode then "Dark" else "Light";
+  ghosttyTheme =
+    if darkMode
+    then "Dark"
+    else "Light";
 
   neovimRepo = pkgs.fetchFromGitHub {
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-Qal3cIxm4E9vki3fAxrKyi8t7cATqD9uYfV5iZt12go=";
+    sha256 = "sha256-h5Xj+t2BejH/vOURdDnK6zfh7K9faesGem0DX9NgGrk=";
   };
 
   wallpapers_dir =
-    if hyprParams.displayType == "ultrawide" then
-      if darkMode then ./wallpapers-ultrawide-dark else ./wallpapers-ultrawide-light
-    else if darkMode then
-      ./wallpapers-dark
-    else
-      ./wallpapers-light;
-in
-{
+    if hyprParams.displayType == "ultrawide"
+    then
+      if darkMode
+      then ./wallpapers-ultrawide-dark
+      else ./wallpapers-ultrawide-light
+    else if darkMode
+    then ./wallpapers-dark
+    else ./wallpapers-light;
+in {
   # Basic info
   home.username = userName;
   home.homeDirectory = "/home/${userName}";
@@ -81,6 +82,13 @@ in
     '';
   };
 
+  programs.neovim = {
+    enable = true;
+    plugins = with pkgs.vimPlugins; [
+      focus-nvim
+    ];
+  };
+
   programs.lsd.enable = true;
   programs.bat.enable = true;
   programs.fzf.enable = true;
@@ -99,7 +107,6 @@ in
   # Packages to install
   home.packages = with pkgs; [
     zsh-powerlevel10k
-    neovim
     htop
     wget
     curl
@@ -112,71 +119,70 @@ in
     lua-language-server
     nil
     marksman
-    (flameshot.override { enableWlrSupport = true; })
+    (flameshot.override {enableWlrSupport = true;})
+    alejandra
   ];
 
   imports = [
-    (import ./modules/hyprland.nix { inherit hyprParams; })
+    (import ./modules/hyprland.nix {inherit hyprParams;})
     (import ./modules/visualisation.nix)
   ];
 
   programs.ssh =
-    if channel == "25.05" then
-      {
-        enable = true;
+    if channel == "25.05"
+    then {
+      enable = true;
 
-        # Only options valid for the old version
-        extraConfig = ''
-          Host gitlab.com
-            HostName gitlab.com
-            User git
-            IdentityFile ~/.ssh/id_rsa
-            IdentitiesOnly yes
+      # Only options valid for the old version
+      extraConfig = ''
+        Host gitlab.com
+          HostName gitlab.com
+          User git
+          IdentityFile ~/.ssh/id_rsa
+          IdentitiesOnly yes
 
-          Host patri
-            HostName 192.168.2.192
-            User patri
-            IdentityFile ~/.ssh/id_rsa
-            IdentitiesOnly yes
-            SetEnv TERM=xterm-256color
-        '';
-      }
-    else
-      {
-        enable = true;
+        Host patri
+          HostName 192.168.2.192
+          User patri
+          IdentityFile ~/.ssh/id_rsa
+          IdentitiesOnly yes
+          SetEnv TERM=xterm-256color
+      '';
+    }
+    else {
+      enable = true;
 
-        # Disable legacy defaults (new HM versions)
-        enableDefaultConfig = false;
+      # Disable legacy defaults (new HM versions)
+      enableDefaultConfig = false;
 
-        matchBlocks = {
-          "gitlab.com" = {
-            host = "gitlab.com"; # or "hostname"
-            hostname = "gitlab.com";
-            user = "git";
-            identityFile = "~/.ssh/id_rsa";
-            identitiesOnly = true;
+      matchBlocks = {
+        "gitlab.com" = {
+          host = "gitlab.com"; # or "hostname"
+          hostname = "gitlab.com";
+          user = "git";
+          identityFile = "~/.ssh/id_rsa";
+          identitiesOnly = true;
+        };
+        "patri" = {
+          hostname = "192.168.2.192";
+          user = "patri";
+          identityFile = "~/.ssh/id_rsa";
+          identitiesOnly = true;
+          setEnv = {
+            TERM = "xterm-256color";
           };
-          "patri" = {
-            hostname = "192.168.2.192";
-            user = "patri";
-            identityFile = "~/.ssh/id_rsa";
-            identitiesOnly = true;
-            setEnv = {
-              TERM = "xterm-256color";
-            };
+        };
+        "buildserver" = {
+          hostname = "192.168.2.192";
+          user = "calyo";
+          identityFile = "~/.ssh/id_rsa";
+          identitiesOnly = true;
+          setEnv = {
+            TERM = "xterm-256color";
           };
-          "buildserver" = {
-            hostname = "192.168.2.192";
-            user = "calyo";
-            identityFile = "~/.ssh/id_rsa";
-            identitiesOnly = true;
-            setEnv = {
-              TERM = "xterm-256color";
-            };
-          };
-
         };
       };
+    };
 
   services.hyprpaper.enable = true;
   services.hyprsunset.enable = true;
@@ -184,7 +190,10 @@ in
   programs.ghostty.enable = true;
 
   home.sessionVariables = {
-    NVIM_DARK_MODE = if darkMode then "1" else "0";
+    NVIM_DARK_MODE =
+      if darkMode
+      then "1"
+      else "0";
   };
 
   home.file."wallpapers".source = "${wallpapers_dir}";
@@ -196,30 +205,36 @@ in
   # set gruvbox theme
   home.file.".config/ghostty/config".text = ''
     ${
-      if channel == "25.05" then
-        "theme = Gruvbox${ghosttyTheme}Hard"
-      else
-        "theme = Gruvbox ${ghosttyTheme} Hard"
+      if channel == "25.05"
+      then "theme = Gruvbox${ghosttyTheme}Hard"
+      else "theme = Gruvbox ${ghosttyTheme} Hard"
     }
   '';
 
   # src: https://github.com/poetaste/dotfiles.git
   home.file.".config/waybar/config".source = ./waybar/config;
   home.file.".config/waybar/style.css".source =
-    if darkMode then ./waybar/style-dark.css else ./waybar/style-light.css;
+    if darkMode
+    then ./waybar/style-dark.css
+    else ./waybar/style-light.css;
   home.file.".config/waybar/scripts".source = ./waybar/scripts;
 
   home.file.".config/nvim".source = neovimRepo;
   home.file.".local/firejail/qute-casual/.config/qutebrowser/config.py" = {
     text =
       builtins.readFile (
-        if darkMode then ./qutebrowser/colours-dark.py else ./qutebrowser/colours-light.py
+        if darkMode
+        then ./qutebrowser/colours-dark.py
+        else ./qutebrowser/colours-light.py
       )
       + builtins.readFile ./qutebrowser/config.py
       + ''
-        c.colors.webpage.darkmode.enabled = ${if darkMode then "True" else "False"}
+        c.colors.webpage.darkmode.enabled = ${
+          if darkMode
+          then "True"
+          else "False"
+        }
         config.load_autoconfig(False)
       '';
   };
-
 }
