@@ -1,27 +1,30 @@
-{ hyprParams, ... }:
-
-let
+{hyprParams, ...}: let
   params = hyprParams;
-  layout = if hyprParams.displayType == "ultrawide" then "master" else "dwindle";
+  layout =
+    if hyprParams.displayType == "ultrawide"
+    then "master"
+    else "dwindle";
   monitors =
-    if hyprParams.displayType == "ultrawide" then
-      ''
-        monitor=,preferred, auto, 1
-      ''
-    else if hyprParams.displayType == "dual" then
-      ''
-        monitor=eDP-1,preferred, auto, 1.566667
-        monitor=DP-2,preferred, auto, 1
-      ''
-    else if hyprParams.displayType == "laptop" then
-      ''
-        monitor=eDP-1,preferred, auto, 1.566667
-      ''
-    else
-      "";
-
-in
-{
+    if hyprParams.displayType == "ultrawide"
+    then ''
+      monitor=,preferred, auto, 1
+    ''
+    else if hyprParams.displayType == "dual"
+    then ''
+      monitor=eDP-1,preferred, auto, 1.566667
+      monitor=DP-2,preferred, auto, 1
+    ''
+    else if hyprParams.displayType == "dual-4k"
+    then ''
+      monitor=eDP-1,preferred, auto, 1.566667
+      monitor=DP-2,preferred, auto, 1.333334
+    ''
+    else if hyprParams.displayType == "laptop"
+    then ''
+      monitor=eDP-1,preferred, auto, 1.566667
+    ''
+    else "";
+in {
   home.file.".config/hypr/scripts".source = ../hyprland-scripts;
   home.file.".config/hypr/hyprland.conf".text = ''
     ################
@@ -57,7 +60,7 @@ in
     # exec-once = nm-applet &
     # exec-once = waybar & hyprpaper & firefox
 
-    # make sure wayland properly loads, then restart these services 
+    # make sure wayland properly loads, then restart these services
     exec-once = systemctl --user restart hyprpaper
     exec-once = systemctl --user restart hyprsunset
     exec-once = waybar & hyprpaper & hyprsunset
@@ -244,14 +247,14 @@ in
     ###################
 
     # See https://wiki.hyprland.org/Configuring/Keywords/
-    $mainMod = SUPER # Sets "Windows" key as main modifier
+    $mainMod = ALT # Sets "Windows" key as main modifier
     $moonlightMod = CTRL
 
     # Screen brightness
-    bind = , XF86MonBrightnessUp, exec, ~/.config/hypr/scripts/brightness_inc.sh 
-    bind = , XF86MonBrightnessDown, exec, ~/.config/hypr/scripts/brightness_dec.sh 
+    bind = , XF86MonBrightnessUp, exec, ~/.config/hypr/scripts/brightness_inc.sh
+    bind = , XF86MonBrightnessDown, exec, ~/.config/hypr/scripts/brightness_dec.sh
 
-    bind = SUPER, C, exec, ~/.config/hypr/scripts/fullscreen_toggle.sh 2>>~/.local/state/fullscreen_move.log
+    bind = $mainMod, C, exec, ~/.config/hypr/scripts/fullscreen_toggle.sh 2>>~/.local/state/fullscreen_move.log
     # Send focused window to workspace 1..9 with SUPER+ALT+[number]
     bind = SUPER_ALT, 1, movetoworkspace, 1
     bind = SUPER_ALT, 2, movetoworkspace, 2
@@ -270,11 +273,11 @@ in
     bind = SUPER_ALT, LEFT, movetoworkspace, r-1
 
     # Swap focused window with master
-    bind = SUPER, Return, layoutmsg, swapwithmaster
+    bind = $mainMod, Return, layoutmsg, swapwithmaster
 
     # Swap next and prev
-    bind = SUPER, bracketleft, layoutmsg, swapprev
-    bind = SUPER, bracketright, layoutmsg, swapnext
+    bind = $mainMod, bracketleft, layoutmsg, swapprev
+    bind = $mainMod, bracketright, layoutmsg, swapnext
 
     # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
     bind = $mainMod, d, exec, rofi -show drun

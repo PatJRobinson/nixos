@@ -11,74 +11,89 @@
     home-manager-25-05.inputs.nixpkgs.follows = "nixpkgs-25-05";
   };
 
-  outputs = { self, nixpkgs-unstable, nixpkgs-25-05, home-manager-unstable, home-manager-25-05 }:
-    let
-      system = "x86_64-linux";
+  outputs = {
+    self,
+    nixpkgs-unstable,
+    nixpkgs-25-05,
+    home-manager-unstable,
+    home-manager-25-05,
+  }: let
+    system = "x86_64-linux";
 
-      mkHome = { hm, userName, hyprParams, channel } : hm.lib.homeManagerConfiguration {
+    mkHome = {
+      hm,
+      userName,
+      hyprParams,
+      channel,
+    }:
+      hm.lib.homeManagerConfiguration {
         pkgs = hm.inputs.nixpkgs.legacyPackages.${system};
 
         modules = [
-            ./users/paddy/home.nix
-          ];
+          ./users/paddy/home.nix
+        ];
 
-       extraSpecialArgs = { inherit channel hyprParams userName; };
+        extraSpecialArgs = {inherit channel hyprParams userName;};
       };
 
-      mkHost = { pkgs, configPath, hm} : pkgs.lib.nixosSystem {
+    mkHost = {
+      pkgs,
+      configPath,
+      hm,
+    }:
+      pkgs.lib.nixosSystem {
         inherit system;
         modules = [
-          ({ ...}: { 
+          ({...}: {
             _module.args.flakePath = self.outPath;
             _module.args.homeManagerPkg = hm.packages.${system}.home-manager;
           })
           configPath
         ];
       };
-    in {
+  in {
     nixosConfigurations = {
-      pj-laptop = mkHost { 
-          pkgs = nixpkgs-unstable; 
-          configPath = ./hosts/pj-laptop/configuration.nix;
-          hm = home-manager-unstable;
-        };
-      pj-desktop = mkHost { 
-          pkgs = nixpkgs-25-05;
-          configPath = ./hosts/pj-desktop/configuration.nix;
-          hm = home-manager-25-05;
-        };
-      work-laptop = mkHost { 
-          pkgs = nixpkgs-unstable; 
-          configPath = ./hosts/work-laptop/configuration.nix;
-          hm = home-manager-unstable;
-        };
+      pj-laptop = mkHost {
+        pkgs = nixpkgs-unstable;
+        configPath = ./hosts/pj-laptop/configuration.nix;
+        hm = home-manager-unstable;
+      };
+      pj-desktop = mkHost {
+        pkgs = nixpkgs-25-05;
+        configPath = ./hosts/pj-desktop/configuration.nix;
+        hm = home-manager-25-05;
+      };
+      work-laptop = mkHost {
+        pkgs = nixpkgs-unstable;
+        configPath = ./hosts/work-laptop/configuration.nix;
+        hm = home-manager-unstable;
+      };
     };
     homeConfigurations = {
       "paddy@pj-laptop" = mkHome {
-          hm = home-manager-unstable; 
-          userName = "paddy";
-          hyprParams = {
-            displayType = "dual"; 
-          };
-          channel = "unstable";
+        hm = home-manager-unstable;
+        userName = "paddy";
+        hyprParams = {
+          displayType = "dual-4k";
         };
-      "paddy@pj-desktop" = mkHome { 
-          hm = home-manager-25-05;
-          userName = "paddy";
-          hyprParams = {
-            displayType = "ultrawide"; 
-          };
-          channel = "25.05";
+        channel = "unstable";
+      };
+      "paddy@pj-desktop" = mkHome {
+        hm = home-manager-25-05;
+        userName = "paddy";
+        hyprParams = {
+          displayType = "ultrawide";
         };
+        channel = "25.05";
+      };
       "patrick@work-laptop" = mkHome {
-          hm = home-manager-unstable; 
-          userName = "patrick";
-          hyprParams = {
-            displayType = "laptop"; 
-          };
-          channel = "unstable";
+        hm = home-manager-unstable;
+        userName = "patrick";
+        hyprParams = {
+          displayType = "laptop";
         };
-
+        channel = "unstable";
+      };
     };
   };
 }

@@ -15,7 +15,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-h5Xj+t2BejH/vOURdDnK6zfh7K9faesGem0DX9NgGrk=";
+    sha256 = "sha256-/o0vpSbeAdhSZj6HuvQt8H0ZQnjtnVQ5oQ+Qwj0seRM=";
   };
 
   wallpapers_dir =
@@ -94,6 +94,7 @@ in {
   programs.fzf.enable = true;
   programs.git.enable = true;
   programs.yazi.enable = true;
+  programs.ripgrep.enable = true;
 
   programs.direnv.enable = true;
   programs.zathura.enable = true;
@@ -117,10 +118,12 @@ in {
     libnotify
     nix-direnv
     lua-language-server
+    yaml-language-server
     nil
     marksman
     (flameshot.override {enableWlrSupport = true;})
     alejandra
+    bluetuith
   ];
 
   imports = [
