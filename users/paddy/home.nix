@@ -15,7 +15,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-h5Xj+t2BejH/vOURdDnK6zfh7K9faesGem0DX9NgGrk=";
+    sha256 = "sha256-AWfoNJGhpEb1Q6jVx91/Er3G74zaIMdryAkgXOBFFOs=";
   };
 
   wallpapers_dir =
@@ -89,6 +89,7 @@ in {
     ];
   };
 
+  programs.ripgrep.enable = true;
   programs.lsd.enable = true;
   programs.bat.enable = true;
   programs.fzf.enable = true;
@@ -97,6 +98,18 @@ in {
 
   programs.direnv.enable = true;
   programs.zathura.enable = true;
+
+  programs.tmux = {
+    enable = true;
+    shell = "${pkgs.zsh}/bin/zsh";
+    terminal = "tmux-256color";
+    historyLimit = 100000;
+    plugins = with pkgs; [
+      tmuxPlugins.better-mouse-mode
+    ];
+    extraConfig = ''
+    '';
+  };
 
   # Example environment variables
   home.sessionVariables = {
@@ -107,6 +120,7 @@ in {
   # Packages to install
   home.packages = with pkgs; [
     zsh-powerlevel10k
+    fastfetch
     htop
     wget
     curl
@@ -121,6 +135,8 @@ in {
     marksman
     (flameshot.override {enableWlrSupport = true;})
     alejandra
+    gdu
+    (import ./modules/rust-packages/keifu.nix {inherit pkgs;})
   ];
 
   imports = [
@@ -215,6 +231,7 @@ in {
       then ''
         theme = Gruvbox${ghosttyTheme}Hard
         app-notifications = no-clipboard-copy
+        term=xterm-256color
       ''
       else ''
         theme = Gruvbox ${ghosttyTheme} Hard

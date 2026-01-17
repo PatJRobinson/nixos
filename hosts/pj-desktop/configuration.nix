@@ -1,6 +1,4 @@
-{ config, pkgs, ...}:
-
-{
+{...}: {
   system.stateVersion = "25.05";
   imports = [
     ./hardware-configuration.nix
@@ -35,8 +33,9 @@
     ../../modules/firejail.nix
     ../../modules/filesystem.nix
     ../../modules/power.nix
+    ../../modules/launchers.nix
   ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   programs.ssh = {
     extraConfig = "
