@@ -15,7 +15,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-/o0vpSbeAdhSZj6HuvQt8H0ZQnjtnVQ5oQ+Qwj0seRM=";
+    sha256 = "sha256-3MojV+3I1PYSqAKslTegLyJNgKo4qm2aJ4w5YUu69Ms=";
   };
 
   wallpapers_dir =
