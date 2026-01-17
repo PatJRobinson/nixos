@@ -87,7 +87,7 @@
         hm = laptop.hm;
         userName = "paddy";
         hyprParams = {
-          displayType = "dual-4k";
+          displayType = "dual";
         };
         channel = laptop.channel;
       };
