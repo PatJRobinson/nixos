@@ -14,6 +14,11 @@
       monitor=eDP-1,preferred, auto, 1.566667
       monitor=DP-2,preferred, auto, 1
     ''
+    else if hyprParams.displayType == "dual-4k"
+    then ''
+      monitor=eDP-1,preferred, auto, 1.566667
+      monitor=DP-2,preferred, auto, 1.333334
+    ''
     else if hyprParams.displayType == "laptop"
     then ''
       monitor=eDP-1,preferred, auto, 1.566667
@@ -249,7 +254,7 @@ in {
     bind = , XF86MonBrightnessUp, exec, ~/.config/hypr/scripts/brightness_inc.sh
     bind = , XF86MonBrightnessDown, exec, ~/.config/hypr/scripts/brightness_dec.sh
 
-    bind = SUPER, C, exec, ~/.config/hypr/scripts/fullscreen_toggle.sh 2>>~/.local/state/fullscreen_move.log
+    bind = $mainMod, C, exec, ~/.config/hypr/scripts/fullscreen_toggle.sh 2>>~/.local/state/fullscreen_move.log
     # Send focused window to workspace 1..9 with SUPER+ALT+[number]
     bind = SUPER_ALT, 1, movetoworkspace, 1
     bind = SUPER_ALT, 2, movetoworkspace, 2
@@ -268,11 +273,11 @@ in {
     bind = SUPER_ALT, LEFT, movetoworkspace, r-1
 
     # Swap focused window with master
-    bind = SUPER, Return, layoutmsg, swapwithmaster
+    bind = $mainMod, Return, layoutmsg, swapwithmaster
 
     # Swap next and prev
-    bind = SUPER, bracketleft, layoutmsg, swapprev
-    bind = SUPER, bracketright, layoutmsg, swapnext
+    bind = $mainMod, bracketleft, layoutmsg, swapprev
+    bind = $mainMod, bracketright, layoutmsg, swapnext
 
     # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
     bind = $mainMod, d, exec, rofi -show drun

@@ -15,7 +15,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-AWfoNJGhpEb1Q6jVx91/Er3G74zaIMdryAkgXOBFFOs=";
+    sha256 = "sha256-/o0vpSbeAdhSZj6HuvQt8H0ZQnjtnVQ5oQ+Qwj0seRM=";
   };
 
   wallpapers_dir =
@@ -131,10 +131,12 @@ in {
     libnotify
     nix-direnv
     lua-language-server
+    yaml-language-server
     nil
     marksman
     (flameshot.override {enableWlrSupport = true;})
     alejandra
+    bluetuith
     gdu
     (import ./modules/rust-packages/keifu.nix {inherit pkgs;})
   ];
