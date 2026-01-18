@@ -2,6 +2,7 @@
   system.stateVersion = "25.05";
   imports = [
     ./hardware-configuration.nix
+    ../../modules/bootloader.nix
     ../../modules/audio.nix
     ../../modules/bluetooth.nix
     ../../modules/caches.nix
