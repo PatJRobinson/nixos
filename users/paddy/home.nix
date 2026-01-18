@@ -2,9 +2,11 @@
   pkgs,
   channel,
   userName,
-  wm,
+  hostParams,
   ...
 }: let
+  wm = hostParams.wm;
+
   darkMode = false;
   ghosttyTheme =
     if darkMode
@@ -19,7 +21,7 @@
   };
 
   wallpapers_dir =
-    if wm.displayParms.displayType == "ultrawide"
+    if wm.displayParams.displayType == "ultrawide"
     then
       if darkMode
       then ./wallpapers-ultrawide-dark
@@ -28,55 +30,54 @@
     then ./wallpapers-dark
     else ./wallpapers-light;
 in {
-  home =
+  home = {
+    username = userName;
+    homeDirectory = "/home/${userName}";
+    stateVersion = "25.05";
+
+    # Example environment variables
+    sessionVariables = {
+      EDITOR = "nvim";
+      PAGER = "less";
+      NVIM_DARK_MODE =
+        if darkMode
+        then "1"
+        else "0";
+    };
+
+    # Packages to install
+    packages = with pkgs; [
+      zsh-powerlevel10k
+      fastfetch
+      htop
+      wget
+      curl
+      rsync
+      qutebrowser
+      bitwarden-desktop
+      bitwarden-cli
+      libnotify
+      nix-direnv
+      lua-language-server
+      yaml-language-server
+      nil
+      marksman
+      (flameshot.override {enableWlrSupport = true;})
+      alejandra
+      bluetuith
+      gdu
+      (import ./modules/rust-packages/keifu.nix {inherit pkgs;})
+    ];
+  };
+
+  home.file =
     {
-      username = userName;
-      homeDirectory = "/home/${userName}";
-      stateVersion = "25.05";
+      "wallpapers/".source = wallpapers_dir;
 
-      # Example environment variables
-      sessionVariables = {
-        EDITOR = "nvim";
-        PAGER = "less";
-      };
-
-      # Packages to install
-      packages = with pkgs; [
-        zsh-powerlevel10k
-        fastfetch
-        htop
-        wget
-        curl
-        rsync
-        qutebrowser
-        bitwarden-desktop
-        bitwarden-cli
-        libnotify
-        nix-direnv
-        lua-language-server
-        yaml-language-server
-        nil
-        marksman
-        (flameshot.override {enableWlrSupport = true;})
-        alejandra
-        bluetuith
-        gdu
-        (import ./modules/rust-packages/keifu.nix {inherit pkgs;})
-      ];
-
-      sessionVariables = {
-        NVIM_DARK_MODE =
-          if darkMode
-          then "1"
-          else "0";
-      };
-
-      file."wallpapers".source = "${wallpapers_dir}";
-
-      file.".p10k.zsh".source = ./p10k-config/.p10k.zsh;
+      ".p10k.zsh".source = ./p10k-config/.p10k.zsh;
 
       # set gruvbox theme
-      file.".config/ghostty/config".text = ''
+      ".config/ghostty/config".text = ''
         ${
           if channel == "25.05"
           then ''
@@ -91,8 +92,8 @@ in {
         }
       '';
 
-      file.".config/nvim".source = neovimRepo;
-      file.".local/firejail/qute-casual/.config/qutebrowser/config.py" = {
+      ".config/nvim".source = neovimRepo;
+      ".local/firejail/qute-casual/.config/qutebrowser/config.py" = {
         text =
           builtins.readFile (
             if darkMode
@@ -110,15 +111,15 @@ in {
           '';
       };
     }
-    // pkgs.lib.mkIf (wm.type == "hypr") {
-      file.".config/rofi".source = ./rofi;
+    // pkgs.lib.optionalAttrs (wm.type == "hypr") {
+      ".config/rofi".source = ./rofi;
       # src: https://github.com/poetaste/dotfiles.git
-      file.".config/waybar/config".source = ./waybar/config;
-      file.".config/waybar/style.css".source =
+      ".config/waybar/config".source = ./waybar/config;
+      ".config/waybar/style.css".source =
         if darkMode
         then ./waybar/style-dark.css
         else ./waybar/style-light.css;
-      file.".config/waybar/scripts".source = ./waybar/scripts;
+      ".config/waybar/scripts".source = ./waybar/scripts;
     };
 
   programs =
@@ -260,25 +261,33 @@ in {
           };
         };
     }
-    // pkgs.lib.mkIf (wm.type == "hypr") {
-      waybar.enable =
-        if wm.type == "hypr"
-        then true
-        else false;
+    // pkgs.lib.optionalAttrs (wm.type == "hypr") {
+      waybar.enable = true;
     };
 
   imports =
-    [
-    ]
-    ++ pkgs.lib.optionals wm.type
-    == "hypr"
-    [
-      (import ./modules/hyprland.nix {displayParms = wm.displayParms;})
+    []
+    ++ pkgs.lib.optionals (wm.type == "hypr") [
+      (import ./modules/hyprland.nix {displayParams = wm.displayParams;})
       (import ./modules/visualisation.nix)
+    ]
+    ++ pkgs.lib.optionals (hostParams.name == "deck") [
+      (
+        # Put the most recent revision here:
+        let
+          revision = "0.66";
+        in
+          builtins.fetchTarball {
+            url = "https://github.com/Jovian-Experiments/Jovian-NixOS/archive/${revision}.tar.gz";
+            # Update the hash as needed:
+            sha256 = "sha256:0000000000000000000000000000000000000000000000000000";
+          }
+          + "/modules"
+      )
     ];
 
   services =
-    if wm.type == "hypr"
+    if (wm.type == "hypr")
     then {
       hyprpaper.enable = true;
       hyprsunset.enable = true;

@@ -41,18 +41,24 @@
 
     mkHome = {
       hm,
+      pkgs,
       userName,
-      wm,
+      hostParams,
       channel,
-    }:
+    }: let
+      pkgs' = pkgs.legacyPackages.${system};
+    in
       hm.lib.homeManagerConfiguration {
-        pkgs = hm.inputs.nixpkgs.legacyPackages.${system};
+        pkgs = pkgs';
 
         modules = [
           ./users/paddy/home.nix
         ];
 
-        extraSpecialArgs = {inherit channel wm userName;};
+        extraSpecialArgs = {
+          inherit channel hostParams userName;
+          pkgs = pkgs';
+        };
       };
 
     mkHost = {
@@ -96,44 +102,60 @@
     homeConfigurations = {
       "paddy@pj-laptop" = mkHome {
         hm = laptop.hm;
+        pkgs = laptop.pkgs;
         userName = "paddy";
-        wm = {
-          type = "hypr";
-          displayParams = {
-            displayType = "dual-4k";
+        hostParams = {
+          name = "pj-laptop";
+          wm = {
+            type = "hypr";
+            displayParams = {
+              displayType = "dual-4k";
+            };
           };
         };
         channel = laptop.channel;
       };
       "paddy@pj-desktop" = mkHome {
         hm = desktop.hm;
+        pkgs = desktop.pkgs;
         userName = "paddy";
-        wm = {
-          type = "hypr";
-          displayParams = {
-            displayType = "ultrawide";
+        hostParams = {
+          name = "pj-desktop";
+          wm = {
+            type = "hypr";
+            displayParams = {
+              displayType = "ultrawide";
+            };
           };
         };
         channel = desktop.channel;
       };
       "patrick@work-laptop" = mkHome {
         hm = laptop.hm;
+        pkgs = laptop.pkgs;
         userName = "patrick";
-        wm = {
-          type = "hypr";
-          displayParams = {
-            displayType = "laptop";
+        hostParams = {
+          name = "work-laptop";
+          wm = {
+            type = "hypr";
+            displayParams = {
+              displayType = "laptop";
+            };
           };
         };
         channel = laptop.channel;
       };
       "paddy@deck" = mkHome {
         hm = deck.hm;
+        pkgs = deck.pkgs;
         userName = "paddy";
-        wm = {
-          type = "gnome";
-          displayParams = {
-            displayType = "dual-4k";
+        hostParams = {
+          name = "deck";
+          wm = {
+            type = "gnome";
+            displayParams = {
+              displayType = "deck";
+            };
           };
         };
         channel = deck.channel;
