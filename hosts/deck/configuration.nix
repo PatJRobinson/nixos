@@ -19,6 +19,18 @@
     ../../modules/gc.nix
     ../../modules/filesystem.nix
     ../../modules/power.nix
+    (
+      # Put the most recent revision here:
+      let
+        revision = "development";
+      in
+        builtins.fetchTarball {
+          url = "https://github.com/Jovian-Experiments/Jovian-NixOS/archive/${revision}.tar.gz";
+          # Update the hash as needed:
+          sha256 = "sha256:18czwjnzd5vp5dsk88iq0dsx97mhdygwmyxf8xi8mdrfpraaigpv";
+        }
+        + "/modules"
+    )
   ];
   nix.settings.experimental-features = ["nix-command" "flakes"];
 }

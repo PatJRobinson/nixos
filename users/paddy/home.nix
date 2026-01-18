@@ -270,20 +270,6 @@ in {
     ++ pkgs.lib.optionals (wm.type == "hypr") [
       (import ./modules/hyprland.nix {displayParams = wm.displayParams;})
       (import ./modules/visualisation.nix)
-    ]
-    ++ pkgs.lib.optionals (hostParams.name == "deck") [
-      (
-        # Put the most recent revision here:
-        let
-          revision = "0.66";
-        in
-          builtins.fetchTarball {
-            url = "https://github.com/Jovian-Experiments/Jovian-NixOS/archive/${revision}.tar.gz";
-            # Update the hash as needed:
-            sha256 = "sha256:0000000000000000000000000000000000000000000000000000";
-          }
-          + "/modules"
-      )
     ];
 
   services =
