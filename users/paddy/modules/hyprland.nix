@@ -1,25 +1,24 @@
-{hyprParams, ...}: let
-  params = hyprParams;
+{displayParams, ...}: let
   layout =
-    if hyprParams.displayType == "ultrawide"
+    if displayParams.displayType == "ultrawide"
     then "master"
     else "dwindle";
   monitors =
-    if hyprParams.displayType == "ultrawide"
+    if displayParams.displayType == "ultrawide"
     then ''
       monitor=,preferred, auto, 1
     ''
-    else if hyprParams.displayType == "dual"
+    else if displayParams.displayType == "dual"
     then ''
       monitor=eDP-1,preferred, auto, 1.566667
       monitor=DP-2,preferred, auto, 1
     ''
-    else if hyprParams.displayType == "dual-4k"
+    else if displayParams.displayType == "dual-4k"
     then ''
       monitor=eDP-1,preferred, auto, 1.566667
       monitor=DP-2,preferred, auto, 1.333334
     ''
-    else if hyprParams.displayType == "laptop"
+    else if displayParams.displayType == "laptop"
     then ''
       monitor=eDP-1,preferred, auto, 1.566667
     ''

@@ -1,7 +1,4 @@
-{ pkgs, ...}:
-
-{
-
+{...}: {
   services.sunshine = {
     enable = true;
     autoStart = true;
@@ -11,7 +8,9 @@
 
   systemd.user.services.sunshine = {
     enable = true;
-    wantedBy = [  "default.target"
-                  "graphical-session.target" ];
+    wantedBy = [
+      "default.target"
+      "graphical-session.target"
+    ];
   };
 }

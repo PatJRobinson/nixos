@@ -33,10 +33,16 @@
       channel = "unstable";
     };
 
+    deck = {
+      hm = home-manager-unstable;
+      pkgs = nixpkgs-unstable;
+      channel = "unstable";
+    };
+
     mkHome = {
       hm,
       userName,
-      hyprParams,
+      wm,
       channel,
     }:
       hm.lib.homeManagerConfiguration {
@@ -46,7 +52,7 @@
           ./users/paddy/home.nix
         ];
 
-        extraSpecialArgs = {inherit channel hyprParams userName;};
+        extraSpecialArgs = {inherit channel wm userName;};
       };
 
     mkHost = {
@@ -81,31 +87,56 @@
         configPath = ./hosts/work-laptop/configuration.nix;
         hm = laptop.hm;
       };
+      deck = mkHost {
+        pkgs = deck.pkgs;
+        configPath = ./hosts/deck/configuration.nix;
+        hm = deck.hm;
+      };
     };
     homeConfigurations = {
       "paddy@pj-laptop" = mkHome {
         hm = laptop.hm;
         userName = "paddy";
-        hyprParams = {
-          displayType = "dual-4k";
+        wm = {
+          type = "hypr";
+          displayParams = {
+            displayType = "dual-4k";
+          };
         };
         channel = laptop.channel;
       };
       "paddy@pj-desktop" = mkHome {
         hm = desktop.hm;
         userName = "paddy";
-        hyprParams = {
-          displayType = "ultrawide";
+        wm = {
+          type = "hypr";
+          displayParams = {
+            displayType = "ultrawide";
+          };
         };
         channel = desktop.channel;
       };
       "patrick@work-laptop" = mkHome {
         hm = laptop.hm;
         userName = "patrick";
-        hyprParams = {
-          displayType = "laptop";
+        wm = {
+          type = "hypr";
+          displayParams = {
+            displayType = "laptop";
+          };
         };
         channel = laptop.channel;
+      };
+      "paddy@deck" = mkHome {
+        hm = deck.hm;
+        userName = "paddy";
+        wm = {
+          type = "gnome";
+          displayParams = {
+            displayType = "dual-4k";
+          };
+        };
+        channel = deck.channel;
       };
     };
   };

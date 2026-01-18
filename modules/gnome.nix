@@ -7,5 +7,5 @@
     enable = true;
     autoSuspend = false;
   };
-  services.desktopManager.gnome.enable = false;
+  services.desktopManager.gnome.enable = true;
 }
