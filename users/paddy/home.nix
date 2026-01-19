@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   channel,
   userName,
@@ -212,6 +213,37 @@ in {
   services.hyprsunset.enable = true;
   programs.waybar.enable = true;
   programs.ghostty.enable = true;
+
+  systemd.user.services.set-random-wallpaper = {
+    Unit = {
+      Description = "Set a random wallpaper via hyprpaper";
+      PartOf = ["graphical-session.target"];
+
+      # Important ordering:
+      After = [
+        "graphical-session.target"
+        "hyprpaper.service"
+      ];
+      Wants = [
+        "graphical-session.target"
+        "hyprpaper.service"
+      ];
+    };
+
+    Service = {
+      Type = "oneshot";
+
+      # Optionally: if your script assumes PATH entries, you can set PATH explicitly.
+      # Usually not necessary if the script uses /run/current-system/sw or env.
+      # Environment = "PATH=${pkgs.coreutils}/bin:${pkgs.hyprland}/bin:${pkgs.bash}/bin";
+
+      ExecStart = "${pkgs.bash}/bin/bash ${config.home.homeDirectory}/.config/hypr/scripts/set-random-wallpaper.sh";
+    };
+
+    Install = {
+      WantedBy = ["graphical-session.target"];
+    };
+  };
 
   home.sessionVariables = {
     NVIM_DARK_MODE =

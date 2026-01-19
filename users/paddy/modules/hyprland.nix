@@ -1,5 +1,4 @@
 {hyprParams, ...}: let
-  params = hyprParams;
   layout =
     if hyprParams.displayType == "ultrawide"
     then "master"
@@ -61,10 +60,7 @@ in {
     # exec-once = waybar & hyprpaper & firefox
 
     # make sure wayland properly loads, then restart these services
-    exec-once = systemctl --user restart hyprpaper
-    exec-once = systemctl --user restart hyprsunset
-    exec-once = waybar & hyprpaper & hyprsunset
-    exec-once = sleep 2; exec ~/.config/hypr/scripts/set-random-wallpaper.sh
+    exec-once = systemctl --user start graphical-session.target
 
     #############################
     ### ENVIRONMENT VARIABLES ###
@@ -149,7 +145,7 @@ in {
 
     # https://wiki.hyprland.org/Configuring/Variables/#animations
     animations {
-        enabled = yes, please :)
+        enabled = true
 
         # Default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
 
@@ -371,10 +367,11 @@ in {
     # windowrule = float,class:^(kitty)$,title:^(kitty)$
 
     # Ignore maximize requests from apps. You'll probably like this.
-    windowrule = suppressevent maximize, class:.*
+    # DEPRECATED SYNTAX: windowrule = match:class .*, suppress_event maximize
+
 
     # Fix some dragging issues with XWayland
-    windowrule = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
+    # DEPRECATED SYNTAX: windowrule = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
 
   '';
 
