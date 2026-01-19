@@ -54,6 +54,8 @@ in {
 
     exec-once = sh -lc 'systemctl --user start hyprpaper.service; eglinfo >/dev/null 2>&1 || true'
     exec-once = systemctl --user start set-random-wallpaper.service
+    exec-once = waybar
+
 
     # make sure wayland properly loads, then restart these services
     #exec-once = systemctl --user start waybar.service hyprpaper.service

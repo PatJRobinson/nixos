@@ -37,7 +37,6 @@
   ];
   nix.settings.experimental-features = ["nix-command" "flakes"];
   hardware.graphics.enable = true;
-  hardware.opengl.enable = true;
   environment.sessionVariables.__EGL_VENDOR_LIBRARY_DIRS = "/run/opengl-driver/share/glvnd/egl_vendor.d/:/run/opengl-driver-32/share/glvnd/egl_vendor.d/";
 
   programs.ssh = {

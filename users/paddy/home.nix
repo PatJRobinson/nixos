@@ -47,6 +47,7 @@ in {
 
     # Packages to install
     packages = with pkgs; [
+      mesa-demos
       zsh-powerlevel10k
       fastfetch
       htop
@@ -81,6 +82,39 @@ in {
       Type = "oneshot";
       ExecStart = "${pkgs.bash}/bin/bash -lc 'systemctl --user start hyprpaper.service; systemctl --user is-active --quiet hyprpaper.service; %h/.local/bin/set-random-wallpaper.sh'";
     };
+  };
+
+  systemd.user.services.pipewire = {
+    Unit = {Description = "PipeWire Multimedia Service";};
+    Service = {
+      ExecStart = "${pkgs.pipewire}/bin/pipewire";
+      Restart = "on-failure";
+    };
+    Install = {WantedBy = ["default.target"];};
+  };
+
+  systemd.user.services.wireplumber = {
+    Unit = {
+      Description = "WirePlumber Session Manager";
+      After = ["pipewire.service"];
+    };
+    Service = {
+      ExecStart = "${pkgs.wireplumber}/bin/wireplumber";
+      Restart = "on-failure";
+    };
+    Install = {WantedBy = ["default.target"];};
+  };
+
+  systemd.user.services.pipewire-pulse = {
+    Unit = {
+      Description = "PipeWire PulseAudio";
+      After = ["pipewire.service"];
+    };
+    Service = {
+      ExecStart = "${pkgs.pipewire}/bin/pipewire-pulse";
+      Restart = "on-failure";
+    };
+    Install = {WantedBy = ["default.target"];};
   };
 
   home.file =
