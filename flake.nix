@@ -2,42 +2,37 @@
   description = "My System Configuration";
 
   inputs = {
-    nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nixpkgs-25-11.url = "github:nixos/nixpkgs/nixos-25.11";
-
-    home-manager-unstable.url = "github:nix-community/home-manager";
-    home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager-25-11.url = "github:nix-community/home-manager/release-25.11";
     home-manager-25-11.inputs.nixpkgs.follows = "nixpkgs-25-11";
+
+    # nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    # home-manager-unstable.url = "github:nix-community/home-manager";
+    # home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs = {
     self,
-    nixpkgs-unstable,
     nixpkgs-25-11,
-    home-manager-unstable,
     home-manager-25-11,
   }: let
     system = "x86_64-linux";
 
-    # drivers for audio on my desktop appears to work better on latest stable channel
-    desktop = {
-      hm = home-manager-25-11;
-      pkgs = nixpkgs-25-11;
-      channel = "25.11";
+    mkHostCfg = channel: {
+      inherit channel;
+      hm =
+        if channel == "25.11"
+        then home-manager-25-11
+        else null;
+      pkgs =
+        if channel == "25.11"
+        then nixpkgs-25-11
+        else null;
     };
 
-    laptop = {
-      hm = home-manager-unstable;
-      pkgs = nixpkgs-unstable;
-      channel = "unstable";
-    };
-
-    deck = {
-      hm = home-manager-unstable;
-      pkgs = nixpkgs-unstable;
-      channel = "unstable";
-    };
+    desktop = mkHostCfg "25.11";
+    laptop = mkHostCfg "25.11";
+    deck = mkHostCfg "25.11";
 
     mkHome = {
       hm,
