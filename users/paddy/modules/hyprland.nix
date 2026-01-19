@@ -52,18 +52,11 @@ in {
     ### AUTOSTART ###
     #################
 
-    # Autostart necessary processes (like notifications daemons, status bars, etc.)
-    # Or execute your favorite apps at launch like this:
-
-    # exec-once = $terminal
-    # exec-once = nm-applet &
-    # exec-once = waybar & hyprpaper & firefox
+    exec-once = sh -lc 'systemctl --user start hyprpaper.service; eglinfo >/dev/null 2>&1 || true'
+    exec-once = systemctl --user start set-random-wallpaper.service
 
     # make sure wayland properly loads, then restart these services
-    exec-once = systemctl --user restart hyprpaper
-    exec-once = systemctl --user restart hyprsunset
-    exec-once = waybar & hyprpaper & hyprsunset
-    exec-once = sleep 2; exec ~/.config/hypr/scripts/set-random-wallpaper.sh
+    #exec-once = systemctl --user start waybar.service hyprpaper.service
 
     #############################
     ### ENVIRONMENT VARIABLES ###
@@ -148,7 +141,7 @@ in {
 
     # https://wiki.hyprland.org/Configuring/Variables/#animations
     animations {
-        enabled = yes, please :)
+        enabled = true;
 
         # Default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
 

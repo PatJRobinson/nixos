@@ -3,28 +3,28 @@
 
   inputs = {
     nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    nixpkgs-25-05.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-25-11.url = "github:nixos/nixpkgs/nixos-25.11";
 
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    home-manager-25-05.url = "github:nix-community/home-manager/release-25.05";
-    home-manager-25-05.inputs.nixpkgs.follows = "nixpkgs-25-05";
+    home-manager-25-11.url = "github:nix-community/home-manager/release-25.11";
+    home-manager-25-11.inputs.nixpkgs.follows = "nixpkgs-25-11";
   };
 
   outputs = {
     self,
     nixpkgs-unstable,
-    nixpkgs-25-05,
+    nixpkgs-25-11,
     home-manager-unstable,
-    home-manager-25-05,
+    home-manager-25-11,
   }: let
     system = "x86_64-linux";
 
     # drivers for audio on my desktop appears to work better on latest stable channel
     desktop = {
-      hm = home-manager-25-05;
-      pkgs = nixpkgs-25-05;
-      channel = "25.05";
+      hm = home-manager-25-11;
+      pkgs = nixpkgs-25-11;
+      channel = "25.11";
     };
 
     laptop = {

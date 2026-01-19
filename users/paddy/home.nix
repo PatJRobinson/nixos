@@ -70,9 +70,23 @@ in {
     ];
   };
 
+  systemd.user.services.set-random-wallpaper = {
+    Unit = {
+      Description = "Set random wallpaper (after hyprpaper)";
+      After = ["hyprpaper.service"];
+      Wants = ["hyprpaper.service"];
+    };
+
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.bash}/bin/bash -lc 'systemctl --user start hyprpaper.service; systemctl --user is-active --quiet hyprpaper.service; %h/.local/bin/set-random-wallpaper.sh'";
+    };
+  };
+
   home.file =
     {
       "wallpapers/".source = wallpapers_dir;
+      ".local/bin/set-random-wallpaper.sh".source = ./hyprland-scripts/set-random-wallpaper.sh;
 
       ".p10k.zsh".source = ./p10k-config/.p10k.zsh;
 
@@ -125,6 +139,7 @@ in {
   programs =
     {
       home-manager.enable = true;
+      foot.enable = true;
       ghostty.enable = true;
       ripgrep.enable = true;
       lsd.enable = true;
@@ -262,7 +277,10 @@ in {
         };
     }
     // pkgs.lib.optionalAttrs (wm.type == "hypr") {
-      waybar.enable = true;
+      waybar = {
+        enable = true;
+        systemd.enable = false;
+      };
     };
 
   imports =
