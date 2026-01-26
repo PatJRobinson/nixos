@@ -6,15 +6,17 @@
     home-manager-25-11.url = "github:nix-community/home-manager/release-25.11";
     home-manager-25-11.inputs.nixpkgs.follows = "nixpkgs-25-11";
 
-    # nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    # home-manager-unstable.url = "github:nix-community/home-manager";
-    # home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    home-manager-unstable.url = "github:nix-community/home-manager";
+    home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs = {
     self,
     nixpkgs-25-11,
     home-manager-25-11,
+    nixpkgs-unstable,
+    home-manager-unstable,
   }: let
     system = "x86_64-linux";
 
@@ -23,16 +25,21 @@
       hm =
         if channel == "25.11"
         then home-manager-25-11
+        else if channel == "unstable"
+        then home-manager-unstable
         else null;
       pkgs =
         if channel == "25.11"
         then nixpkgs-25-11
+        else if channel == "unstable"
+        then nixpkgs-unstable
         else null;
     };
 
     desktop = mkHostCfg "25.11";
     laptop = mkHostCfg "25.11";
-    deck = mkHostCfg "25.11";
+    # according to Jovian docs, has to be unstable
+    deck = mkHostCfg "unstable";
 
     mkHome = {
       hm,
