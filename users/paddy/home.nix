@@ -262,7 +262,7 @@ in {
               IdentitiesOnly yes
 
             Host patri
-              HostName 192.168.2.192
+              HostName 192.168.2.10
               User patri
               IdentityFile ~/.ssh/id_rsa
               IdentitiesOnly yes
@@ -284,7 +284,7 @@ in {
               identitiesOnly = true;
             };
             "patri" = {
-              hostname = "192.168.2.192";
+              hostname = "192.168.2.10";
               user = "patri";
               identityFile = "~/.ssh/id_rsa";
               identitiesOnly = true;
@@ -293,7 +293,7 @@ in {
               };
             };
             "buildserver" = {
-              hostname = "192.168.2.192";
+              hostname = "192.168.2.10";
               user = "calyo";
               identityFile = "~/.ssh/id_rsa";
               identitiesOnly = true;

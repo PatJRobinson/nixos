@@ -1,6 +1,4 @@
-{ config, pkgs, ...}:
-
-{
+{...}: {
   system.stateVersion = "25.05";
   imports = [
     ./hardware-configuration.nix
@@ -18,7 +16,7 @@
     ../../modules/terminal.nix
     ../../modules/steam.nix
     ../../modules/hyprland.nix
-    ./modules/users.nix
+    ../../modules/users.nix
     ../../modules/browsers.nix
     ../../modules/fonts.nix
     ../../modules/docker.nix
@@ -37,5 +35,5 @@
     ../../modules/power.nix
     ../../modules/backlight.nix
   ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 }
