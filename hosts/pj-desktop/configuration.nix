@@ -8,7 +8,7 @@
     ../../modules/bootloader.nix
     ../../modules/time-zone.nix
     ../../modules/auto-upgrade.nix
-    ./modules/display-manager.nix
+    ../../modules/display-manager.nix
     ./modules/networking.nix
     ../../modules/firewall.nix
     ../../modules/sunshine.nix
@@ -27,7 +27,6 @@
     ../../modules/files.nix
     ../../modules/office.nix
     ../../modules/notifications.nix
-    ../../modules/intel-graphics.nix
     ../../modules/monitoring.nix
     ../../modules/gc.nix
     ../../modules/firejail.nix
@@ -36,6 +35,7 @@
     ../../modules/launchers.nix
   ];
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  hardware.graphics.enable = true;
 
   programs.ssh = {
     extraConfig = "

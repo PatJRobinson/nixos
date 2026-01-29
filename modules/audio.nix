@@ -1,7 +1,4 @@
-{ pkgs, ...}:
-
-{
-
+{pkgs, ...}: {
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
 
@@ -9,6 +6,7 @@
 
   services.pipewire = {
     enable = true;
+    socketActivation = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;

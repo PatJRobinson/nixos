@@ -2,51 +2,58 @@
   description = "My System Configuration";
 
   inputs = {
-    nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    nixpkgs-25-05.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-25-11.url = "github:nixos/nixpkgs/nixos-25.11";
+    home-manager-25-11.url = "github:nix-community/home-manager/release-25.11";
+    home-manager-25-11.inputs.nixpkgs.follows = "nixpkgs-25-11";
 
-    home-manager-unstable.url = "github:nix-community/home-manager";
-    home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    home-manager-25-05.url = "github:nix-community/home-manager/release-25.05";
-    home-manager-25-05.inputs.nixpkgs.follows = "nixpkgs-25-05";
+    # nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    # home-manager-unstable.url = "github:nix-community/home-manager";
+    # home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs = {
     self,
-    nixpkgs-unstable,
-    nixpkgs-25-05,
-    home-manager-unstable,
-    home-manager-25-05,
+    nixpkgs-25-11,
+    home-manager-25-11,
   }: let
     system = "x86_64-linux";
 
-    # drivers for audio on my desktop appears to work better on latest stable channel
-    desktop = {
-      hm = home-manager-25-05;
-      pkgs = nixpkgs-25-05;
-      channel = "25.05";
+    mkHostCfg = channel: {
+      inherit channel;
+      hm =
+        if channel == "25.11"
+        then home-manager-25-11
+        else null;
+      pkgs =
+        if channel == "25.11"
+        then nixpkgs-25-11
+        else null;
     };
 
-    laptop = {
-      hm = home-manager-unstable;
-      pkgs = nixpkgs-unstable;
-      channel = "unstable";
-    };
+    desktop = mkHostCfg "25.11";
+    laptop = mkHostCfg "25.11";
+    deck = mkHostCfg "25.11";
 
     mkHome = {
       hm,
+      pkgs,
       userName,
-      hyprParams,
+      hostParams,
       channel,
-    }:
+    }: let
+      pkgs' = pkgs.legacyPackages.${system};
+    in
       hm.lib.homeManagerConfiguration {
-        pkgs = hm.inputs.nixpkgs.legacyPackages.${system};
+        pkgs = pkgs';
 
         modules = [
           ./users/paddy/home.nix
         ];
 
-        extraSpecialArgs = {inherit channel hyprParams userName;};
+        extraSpecialArgs = {
+          inherit channel hostParams userName;
+          pkgs = pkgs';
+        };
       };
 
     mkHost = {
@@ -81,31 +88,72 @@
         configPath = ./hosts/work-laptop/configuration.nix;
         hm = laptop.hm;
       };
+      deck = mkHost {
+        pkgs = deck.pkgs;
+        configPath = ./hosts/deck/configuration.nix;
+        hm = deck.hm;
+      };
     };
     homeConfigurations = {
       "paddy@pj-laptop" = mkHome {
         hm = laptop.hm;
+        pkgs = laptop.pkgs;
         userName = "paddy";
-        hyprParams = {
-          displayType = "dual";
+        hostParams = {
+          name = "pj-laptop";
+          wm = {
+            type = "hypr";
+            displayParams = {
+              displayType = "dual-4k";
+            };
+          };
         };
         channel = laptop.channel;
       };
       "paddy@pj-desktop" = mkHome {
         hm = desktop.hm;
+        pkgs = desktop.pkgs;
         userName = "paddy";
-        hyprParams = {
-          displayType = "ultrawide";
+        hostParams = {
+          name = "pj-desktop";
+          wm = {
+            type = "hypr";
+            displayParams = {
+              displayType = "ultrawide";
+            };
+          };
         };
         channel = desktop.channel;
       };
-      "patrick@work-laptop" = mkHome {
+      "paddy@work-laptop" = mkHome {
         hm = laptop.hm;
-        userName = "patrick";
-        hyprParams = {
-          displayType = "laptop";
+        pkgs = laptop.pkgs;
+        userName = "paddy";
+        hostParams = {
+          name = "work-laptop";
+          wm = {
+            type = "hypr";
+            displayParams = {
+              displayType = "laptop";
+            };
+          };
         };
         channel = laptop.channel;
+      };
+      "paddy@deck" = mkHome {
+        hm = deck.hm;
+        pkgs = deck.pkgs;
+        userName = "paddy";
+        hostParams = {
+          name = "deck";
+          wm = {
+            type = "gnome";
+            displayParams = {
+              displayType = "deck";
+            };
+          };
+        };
+        channel = deck.channel;
       };
     };
   };

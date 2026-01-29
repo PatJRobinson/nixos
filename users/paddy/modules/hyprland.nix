@@ -1,25 +1,24 @@
-{hyprParams, ...}: let
-  params = hyprParams;
+{displayParams, ...}: let
   layout =
-    if hyprParams.displayType == "ultrawide"
+    if displayParams.displayType == "ultrawide"
     then "master"
     else "dwindle";
   monitors =
-    if hyprParams.displayType == "ultrawide"
+    if displayParams.displayType == "ultrawide"
     then ''
       monitor=,preferred, auto, 1
     ''
-    else if hyprParams.displayType == "dual"
+    else if displayParams.displayType == "dual"
     then ''
       monitor=eDP-1,preferred, auto, 1.566667
       monitor=DP-2,preferred, auto, 1
     ''
-    else if hyprParams.displayType == "dual-4k"
+    else if displayParams.displayType == "dual-4k"
     then ''
       monitor=eDP-1,preferred, auto, 1.566667
       monitor=DP-2,preferred, auto, 1.333334
     ''
-    else if hyprParams.displayType == "laptop"
+    else if displayParams.displayType == "laptop"
     then ''
       monitor=eDP-1,preferred, auto, 1.566667
     ''
@@ -53,18 +52,13 @@ in {
     ### AUTOSTART ###
     #################
 
-    # Autostart necessary processes (like notifications daemons, status bars, etc.)
-    # Or execute your favorite apps at launch like this:
+    exec-once = sh -lc 'systemctl --user start hyprpaper.service; eglinfo >/dev/null 2>&1 || true'
+    exec-once = systemctl --user start set-random-wallpaper.service
+    exec-once = waybar
 
-    # exec-once = $terminal
-    # exec-once = nm-applet &
-    # exec-once = waybar & hyprpaper & firefox
 
     # make sure wayland properly loads, then restart these services
-    exec-once = systemctl --user restart hyprpaper
-    exec-once = systemctl --user restart hyprsunset
-    exec-once = waybar & hyprpaper & hyprsunset
-    exec-once = sleep 2; exec ~/.config/hypr/scripts/set-random-wallpaper.sh
+    #exec-once = systemctl --user start waybar.service hyprpaper.service
 
     #############################
     ### ENVIRONMENT VARIABLES ###
@@ -149,7 +143,7 @@ in {
 
     # https://wiki.hyprland.org/Configuring/Variables/#animations
     animations {
-        enabled = yes, please :)
+        enabled = true;
 
         # Default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
 

@@ -1,7 +1,5 @@
-{ pkgs, ...}:
-
-{
-    # visualisation
+{...}: {
+  # visualisation
   programs.cava = {
     enable = true;
   };

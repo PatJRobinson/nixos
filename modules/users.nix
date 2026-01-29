@@ -1,15 +1,8 @@
-{ pkgs, ...}:
-
-{
-
+{...}: {
   users.users.paddy = {
     isNormalUser = true;
     description = "Paddy";
-    extraGroups = [ "networkmanager" "wheel" "docker"];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+    extraGroups = ["networkmanager" "wheel" "docker" "video"];
   };
-  nix.settings.trusted-users = [ "root" "paddy" ];
-
+  nix.settings.trusted-users = ["root" "paddy"];
 }
