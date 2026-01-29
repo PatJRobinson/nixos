@@ -125,10 +125,10 @@
         };
         channel = desktop.channel;
       };
-      "patrick@work-laptop" = mkHome {
+      "paddy@work-laptop" = mkHome {
         hm = laptop.hm;
         pkgs = laptop.pkgs;
-        userName = "patrick";
+        userName = "paddy";
         hostParams = {
           name = "work-laptop";
           wm = {
