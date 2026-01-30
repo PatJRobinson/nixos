@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Brave (Casual)
+Exec=brave-casual %U
+Icon=brave-browser
+Categories=Network;WebBrowser;
+Terminal=false
+StartupNotify=true

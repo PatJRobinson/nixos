@@ -318,7 +318,9 @@ in {
     };
 
   imports =
-    []
+    [
+      ./modules/desktop-shortcuts.nix
+    ]
     ++ pkgs.lib.optionals (wm.type == "hypr") [
       (import ./modules/hyprland.nix {displayParams = wm.displayParams;})
       (import ./modules/visualisation.nix)
