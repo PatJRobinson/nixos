@@ -9,12 +9,16 @@
     # nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     # home-manager-unstable.url = "github:nix-community/home-manager";
     # home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
+    sops-nix-25-11.url = "github:Mic92/sops-nix";
+    sops-nix-25-11.inputs.nixpkgs.follows = "nixpkgs-25-11";
   };
 
   outputs = {
     self,
     nixpkgs-25-11,
     home-manager-25-11,
+    sops-nix-25-11,
   }: let
     system = "x86_64-linux";
 
@@ -28,6 +32,10 @@
         if channel == "25.11"
         then nixpkgs-25-11
         else null;
+      sops =
+        if channel == "25.11"
+        then sops-nix-25-11
+        else null;
     };
 
     desktop = mkHostCfg "25.11";
@@ -40,6 +48,7 @@
       userName,
       hostParams,
       channel,
+      sops,
     }: let
       pkgs' = pkgs.legacyPackages.${system};
     in
@@ -51,7 +60,7 @@
         ];
 
         extraSpecialArgs = {
-          inherit channel hostParams userName;
+          inherit channel hostParams userName sops;
           pkgs = pkgs';
         };
       };
@@ -98,6 +107,7 @@
       "paddy@pj-laptop" = mkHome {
         hm = laptop.hm;
         pkgs = laptop.pkgs;
+        sops = laptop.sops;
         userName = "paddy";
         hostParams = {
           name = "pj-laptop";
@@ -113,6 +123,7 @@
       "paddy@pj-desktop" = mkHome {
         hm = desktop.hm;
         pkgs = desktop.pkgs;
+        sops = desktop.sops;
         userName = "paddy";
         hostParams = {
           name = "pj-desktop";
@@ -128,6 +139,7 @@
       "paddy@work-laptop" = mkHome {
         hm = laptop.hm;
         pkgs = laptop.pkgs;
+        sops = laptop.sops;
         userName = "paddy";
         hostParams = {
           name = "work-laptop";
@@ -143,6 +155,7 @@
       "paddy@deck" = mkHome {
         hm = deck.hm;
         pkgs = deck.pkgs;
+        sops = deck.sops;
         userName = "paddy";
         hostParams = {
           name = "deck";

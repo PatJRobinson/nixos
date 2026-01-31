@@ -3,6 +3,7 @@
   channel,
   userName,
   hostParams,
+  sops,
   ...
 }: let
   wm = hostParams.wm;
@@ -320,11 +321,20 @@ in {
   imports =
     [
       ./modules/desktop-shortcuts.nix
+      sops.homeManagerModules.sops
     ]
     ++ pkgs.lib.optionals (wm.type == "hypr") [
       (import ./modules/hyprland.nix {displayParams = wm.displayParams;})
       (import ./modules/visualisation.nix)
     ];
+
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops.defaultSopsFormat = "yaml";
+
+  sops.age.keyFile = "~/.config/sops/age/keys.txt";
+  sops.secrets."myservice/my_subdir/my_secret" = {
+    owner = userName;
+  };
 
   services =
     if (wm.type == "hypr")

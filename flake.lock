@@ -40,7 +40,28 @@
     "root": {
       "inputs": {
         "home-manager-25-11": "home-manager-25-11",
-        "nixpkgs-25-11": "nixpkgs-25-11"
+        "nixpkgs-25-11": "nixpkgs-25-11",
+        "sops-nix-25-11": "sops-nix-25-11"
+      }
+    },
+    "sops-nix-25-11": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-25-11"
+        ]
+      },
+      "locked": {
+        "lastModified": 1769469829,
+        "narHash": "sha256-wFcr32ZqspCxk4+FvIxIL0AZktRs6DuF8oOsLt59YBU=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "c5eebd4eb2e3372fe12a8d70a248a6ee9dd02eff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "type": "github"
       }
     }
   },
