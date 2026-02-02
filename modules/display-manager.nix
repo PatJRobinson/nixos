@@ -15,7 +15,7 @@
     settings = {
       default_session = {
         # tuigreet runs as the greeter user, and then launches your session command
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --asterisks --cmd ${pkgs.hyprland}/bin/Hyprland";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --asterisks --cmd ${pkgs.hyprland}/bin/Hyprland";
         user = "greeter";
       };
     };
@@ -24,6 +24,7 @@
   # Some people also set this; harmless and often useful for Wayland apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
+  # quieten logs during boot to prevent journalctl logs overruning over greeter
   boot.kernelParams = [
     "quiet"
     "loglevel=3"
