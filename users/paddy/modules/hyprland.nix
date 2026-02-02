@@ -330,7 +330,7 @@ in {
 
     # Example special workspace (scratchpad)
     bind = $mainMod, S, togglespecialworkspace, magic
-    bind = $mainMod SHIFT, S, movetoworkspace, special:magic
+    # bind = $mainMod SHIFT, S, movetoworkspace, special:magic # -- conflicts with steam
 
     # Scroll through existing workspaces with mainMod + scroll
     bind = $mainMod, mouse_down, workspace, e+1
