@@ -283,7 +283,7 @@ in {
     bind = $mainMod SHIFT, f, exec, firefox
     bind = $mainMod SHIFT, c, exec, ungoogled-chromium-wayland
     #bind = $mainMod SHIFT, b, exec, brave-google
-    bind = $mainMod SHIFT, b, exec, qute-casual
+    bind = $mainMod SHIFT, b, exec, brave-casual
     bind = $mainMod SHIFT, o, exec, obsidian-wayland
     bind = $mainMod SHIFT, s, exec, steam
     bind = $moonlightMod SHIFT, s, exec, steam
@@ -330,7 +330,7 @@ in {
 
     # Example special workspace (scratchpad)
     bind = $mainMod, S, togglespecialworkspace, magic
-    bind = $mainMod SHIFT, S, movetoworkspace, special:magic
+    # bind = $mainMod SHIFT, S, movetoworkspace, special:magic # -- conflicts with steam
 
     # Scroll through existing workspaces with mainMod + scroll
     bind = $mainMod, mouse_down, workspace, e+1

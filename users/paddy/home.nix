@@ -17,7 +17,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-/o0vpSbeAdhSZj6HuvQt8H0ZQnjtnVQ5oQ+Qwj0seRM=";
+    sha256 = "sha256-iDJTAiDc0/EN+P43DytvYQMmEUieL8mW3Nqos+j/TZ4=";
   };
 
   wallpapers_dir =
@@ -262,7 +262,7 @@ in {
               IdentitiesOnly yes
 
             Host patri
-              HostName 192.168.2.192
+              HostName 192.168.2.10
               User patri
               IdentityFile ~/.ssh/id_rsa
               IdentitiesOnly yes
@@ -284,7 +284,7 @@ in {
               identitiesOnly = true;
             };
             "patri" = {
-              hostname = "192.168.2.192";
+              hostname = "192.168.2.10";
               user = "patri";
               identityFile = "~/.ssh/id_rsa";
               identitiesOnly = true;
@@ -293,7 +293,7 @@ in {
               };
             };
             "buildserver" = {
-              hostname = "192.168.2.192";
+              hostname = "192.168.2.10";
               user = "calyo";
               identityFile = "~/.ssh/id_rsa";
               identitiesOnly = true;
@@ -318,7 +318,9 @@ in {
     };
 
   imports =
-    []
+    [
+      ./modules/desktop-shortcuts.nix
+    ]
     ++ pkgs.lib.optionals (wm.type == "hypr") [
       (import ./modules/hyprland.nix {displayParams = wm.displayParams;})
       (import ./modules/visualisation.nix)
