@@ -2,6 +2,8 @@
   system.stateVersion = "25.05";
   imports = [
     ./hardware-configuration.nix
+    ../../modules/home-manager.nix
+    ../../modules/open-ssh.nix
     ../../modules/bootloader.nix
     ../../modules/audio.nix
     ../../modules/bluetooth.nix
@@ -33,5 +35,6 @@
         + "/modules"
     )
   ];
+  jovian.devices.steamdeck.enable = true;
   nix.settings.experimental-features = ["nix-command" "flakes"];
 }
