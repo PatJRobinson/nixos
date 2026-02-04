@@ -17,7 +17,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-iDJTAiDc0/EN+P43DytvYQMmEUieL8mW3Nqos+j/TZ4=";
+    sha256 = "sha256-NIREPKC2daZHtSwDt82DOSTN1GzCpn6Ea8jtbHxO0/I=";
   };
 
   wallpapers_dir =
@@ -223,6 +223,75 @@ in {
               builtin cd -- "$cwd"
             fi
             rm -f -- "$tmp"
+          }
+
+          # Smart Neovim launcher
+          function nv() {
+            local mode=""
+            local query=""
+            local open_yazi=0
+
+            # parse our custom flags
+            while (( $# )); do
+              case "$1" in
+                -d|--dir)
+                  open_yazi=1
+                  shift
+                  ;;
+                -f|--find)
+                  mode="find"
+                  shift
+                  if (( $# )) && [[ "$1" != -* ]]; then
+                    query="$1"
+                    shift
+                  fi
+                  ;;
+                -g|--grep)
+                  mode="grep"
+                  shift
+                  if (( $# )) && [[ "$1" != -* ]]; then
+                    query="$1"
+                    shift
+                  fi
+                  ;;
+                --)
+                  shift
+                  break
+                  ;;
+                -*) # real nvim flags: stop parsing
+                  break
+                  ;;
+                *)  # first non-flag arg
+                  break
+                  ;;
+              esac
+            done
+
+            # remaining args go straight to nvim
+            local -a args
+            args=("$@")
+
+            if [[ "$mode" == "find" ]]; then
+              if [[ -n "$query" ]]; then
+                args+=("+lua require('telescope.builtin').find_files({ default_text = [[$query]] })")
+              else
+                args+=("+lua require('telescope.builtin').find_files()")
+              fi
+            fi
+
+            if [[ "$mode" == "grep" ]]; then
+              if [[ -n "$query" ]]; then
+                args+=("+lua require('telescope.builtin').live_grep({ default_text = [[$query]] })")
+              else
+                args+=("+lua require('telescope.builtin').live_grep()")
+              fi
+            fi
+
+            if (( open_yazi )); then
+              args+=("+Yazi")
+            fi
+
+            command nvim "$args[@]"
           }
 
           rcp() {
