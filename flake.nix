@@ -111,7 +111,7 @@
           wm = {
             type = "hypr";
             displayParams = {
-              displayType = "dual-4k";
+              displayType = "dual";
             };
           };
         };
