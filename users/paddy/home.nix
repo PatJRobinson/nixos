@@ -16,8 +16,8 @@
   neovimRepo = pkgs.fetchFromGitHub {
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
-    rev = "/refs/heads/master";
-    sha256 = "sha256-Ze5j3EEtlBby6Ksa3FEuHOfcvuuj1BDM3mAFlAzkt2w=";
+    rev = "/refs/heads/stable";
+    sha256 = "sha256-TZ9TKafuK1niyMulYvaJLNgRXYp4VbuPyaXDvorFSPQ=";
   };
 
   wallpapers_dir =
@@ -230,12 +230,17 @@ in {
             local mode=""
             local query=""
             local open_yazi=0
+            local open_terminal=0
 
             # parse our custom flags
             while (( $# )); do
               case "$1" in
                 -d|--dir)
                   open_yazi=1
+                  shift
+                  ;;
+                -t|--term)
+                  open_terminal=1
                   shift
                   ;;
                 -f|--find)
@@ -289,6 +294,10 @@ in {
 
             if (( open_yazi )); then
               args+=("+Yazi")
+            fi
+
+            if (( open_terminal )); then
+              args+=("+term")
             fi
 
             command nvim "$args[@]"
