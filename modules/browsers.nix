@@ -1,28 +1,20 @@
-{pkgs, ...}:
-
-let
-
+{pkgs, ...}: let
   braveWayland = pkgs.writeShellScriptBin "brave-wayland" ''
     exec ${pkgs.brave}/bin/brave \
       --enable-features=UseOzonePlatform \
       --ozone-platform=wayland \
       "$@"
   '';
-
- in
-{
-
+in {
   environment.systemPackages = with pkgs; [
     brave
     braveWayland
     qutebrowser
   ];
 
-
   programs.firejail = {
     enable = true;
     wrappedBinaries = {
-
       brave-google = {
         executable = "${braveWayland}/bin/brave-wayland";
         profile = "${pkgs.firejail}/etc/firejail/brave.profile";
@@ -71,8 +63,8 @@ let
         extraArgs = [
           "--private=~/.local/firejail/qute-chatgpt"
           "--env=QUTE_NOIPC=1"
-          "--dbus-user.talk=org.freedesktop.Notifications"         
-       ];
+          "--dbus-user.talk=org.freedesktop.Notifications"
+        ];
       };
 
       qute-casual = {
@@ -81,10 +73,9 @@ let
         extraArgs = [
           "--private=~/.local/firejail/qute-casual"
           "--env=QUTE_NOIPC=1"
-          "--dbus-user.talk=org.freedesktop.Notifications"         
+          "--dbus-user.talk=org.freedesktop.Notifications"
         ];
       };
-
-     };
+    };
   };
 }

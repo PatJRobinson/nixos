@@ -4,6 +4,7 @@
   system.stateVersion = "25.05";
   imports = [
     ./hardware-configuration.nix
+    ../../modules/home-manager.nix
     ../../modules/audio.nix
     ../../modules/bluetooth.nix
     ../../modules/caches.nix
