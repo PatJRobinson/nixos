@@ -1,5 +1,5 @@
-{...}: {
-  networking.hostName = "pj-laptop"; # Define your hostname.
+{hostName, ...}: {
+  networking.hostName = hostName; # Define your hostname.
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 

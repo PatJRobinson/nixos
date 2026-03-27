@@ -1,5 +1,5 @@
 {
-  description = "My System Configuration";
+  description = "Nixos system configuration builder";
 
   inputs = {
     nixpkgs-25-11.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -19,149 +19,72 @@
     home-manager-unstable,
   }: let
     system = "x86_64-linux";
-
-    mkHostCfg = channel: {
-      inherit channel;
-      hm =
-        if channel == "25.11"
-        then home-manager-25-11
-        else if channel == "unstable"
-        then home-manager-unstable
-        else null;
-      pkgs =
-        if channel == "25.11"
-        then nixpkgs-25-11
-        else if channel == "unstable"
-        then nixpkgs-unstable
-        else null;
-    };
-
-    desktop = mkHostCfg "25.11";
-    laptop = mkHostCfg "25.11";
-    # according to Jovian docs, has to be unstable
-    deck = mkHostCfg "unstable";
-
-    mkHome = {
-      hm,
-      pkgs,
-      userName,
-      hostParams,
-      channel,
-    }: let
-      pkgs' = pkgs.legacyPackages.${system};
-    in
-      hm.lib.homeManagerConfiguration {
-        pkgs = pkgs';
-
-        modules = [
-          ./users/paddy/home.nix
-        ];
-
-        extraSpecialArgs = {
-          inherit channel hostParams userName;
-          pkgs = pkgs';
-        };
-      };
-
-    mkHost = {
-      pkgs,
-      configPath,
-      hm,
-    }:
-      pkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ({...}: {
-            _module.args.flakePath = self.outPath;
-            _module.args.homeManagerPkg = hm.packages.${system}.home-manager;
-          })
-          configPath
-        ];
-      };
   in {
-    nixosConfigurations = {
-      pj-laptop = mkHost {
-        pkgs = laptop.pkgs;
-        configPath = ./hosts/pj-laptop/configuration.nix;
-        hm = laptop.hm;
+    lib = {
+      mkHostCfg = channel: {
+        inherit channel;
+        hm =
+          if channel == "25.11"
+          then home-manager-25-11
+          else if channel == "unstable"
+          then home-manager-unstable
+          else null;
+        pkgs =
+          if channel == "25.11"
+          then nixpkgs-25-11
+          else if channel == "unstable"
+          then nixpkgs-unstable
+          else null;
       };
-      pj-desktop = mkHost {
-        pkgs = desktop.pkgs;
-        configPath = ./hosts/pj-desktop/configuration.nix;
-        hm = desktop.hm;
-      };
-      work-laptop = mkHost {
-        pkgs = laptop.pkgs;
-        configPath = ./hosts/work-laptop/configuration.nix;
-        hm = laptop.hm;
-      };
-      deck = mkHost {
-        pkgs = deck.pkgs;
-        configPath = ./hosts/deck/configuration.nix;
-        hm = deck.hm;
-      };
-    };
-    homeConfigurations = {
-      "paddy@pj-laptop" = mkHome {
-        hm = laptop.hm;
-        pkgs = laptop.pkgs;
-        userName = "paddy";
-        hostParams = {
-          name = "pj-laptop";
-          wm = {
-            type = "hypr";
-            displayParams = {
-              displayType = "dual";
-            };
+
+      mkHome = {
+        hm,
+        pkgs,
+        userName,
+        hostParams,
+        channel,
+        sshCfg ? {enable = false;},
+      }: let
+        pkgs' = pkgs.legacyPackages.${system};
+      in
+        hm.lib.homeManagerConfiguration {
+          pkgs = pkgs';
+
+          modules = [
+            ./users/paddy/home.nix
+          ];
+
+          extraSpecialArgs = {
+            inherit channel hostParams userName sshCfg;
+            pkgs = pkgs';
           };
         };
-        channel = laptop.channel;
-      };
-      "paddy@pj-desktop" = mkHome {
-        hm = desktop.hm;
-        pkgs = desktop.pkgs;
-        userName = "paddy";
-        hostParams = {
-          name = "pj-desktop";
-          wm = {
-            type = "hypr";
-            displayParams = {
-              displayType = "ultrawide";
-            };
-          };
+
+      mkHost = {
+        hostName,
+        pkgs,
+        hm,
+        flakePath,
+        gpuSupport ? null, # "nvidia | "amd" | "intel" | null
+        extraModules ? [],
+      }:
+        pkgs.lib.nixosSystem {
+          inherit system;
+          modules =
+            [
+              ({...}: {
+                _module.args.hostName = hostName;
+                _module.args.flakePath = flakePath;
+                _module.args.homeManagerPkg = hm.packages.${system}.home-manager;
+              })
+              ./hosts/base-configuration.nix
+              (flakePath + "/hardware-configuration.nix")
+            ]
+            ++ pkgs.lib.optionals (gpuSupport == "nvidia") [./modules/nvidia-graphics.nix]
+            #++ pkgs.lib.optionals (gpuSupport == "amd") [ ./modules/amd.nix ]
+            ++ pkgs.lib.optionals (gpuSupport == "intel") [./modules/intel-graphics.nix]
+            ++ extraModules;
         };
-        channel = desktop.channel;
-      };
-      "paddy@work-laptop" = mkHome {
-        hm = laptop.hm;
-        pkgs = laptop.pkgs;
-        userName = "paddy";
-        hostParams = {
-          name = "work-laptop";
-          wm = {
-            type = "hypr";
-            displayParams = {
-              displayType = "laptop";
-            };
-          };
-        };
-        channel = laptop.channel;
-      };
-      "paddy@deck" = mkHome {
-        hm = deck.hm;
-        pkgs = deck.pkgs;
-        userName = "paddy";
-        hostParams = {
-          name = "deck";
-          wm = {
-            type = "gnome";
-            displayParams = {
-              displayType = "deck";
-            };
-          };
-        };
-        channel = deck.channel;
-      };
     };
   };
 }

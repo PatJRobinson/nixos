@@ -3,6 +3,7 @@
   channel,
   userName,
   hostParams,
+  sshCfg,
   ...
 }: let
   wm = hostParams.wm;
@@ -47,6 +48,10 @@ in {
 
     # Packages to install
     packages = with pkgs; [
+      wlsunset
+      dunst
+      hyprlock
+      rofi
       mesa-demos
       zsh-powerlevel10k
       fastfetch
@@ -68,6 +73,8 @@ in {
       bluetuith
       gdu
       (import ./modules/rust-packages/keifu.nix {inherit pkgs;})
+      heroic
+      libreoffice-qt
     ];
   };
 
@@ -326,67 +333,7 @@ in {
         extraConfig = ''
         '';
       };
-      ssh =
-        if channel == "25.05"
-        then {
-          enable = true;
-
-          # Only options valid for the old version
-          extraConfig = ''
-            Host gitlab.com
-              HostName gitlab.com
-              User git
-              IdentityFile ~/.ssh/id_rsa
-              IdentitiesOnly yes
-
-            Host patri
-              HostName 192.168.2.10
-              User patri
-              IdentityFile ~/.ssh/id_rsa
-              IdentitiesOnly yes
-              SetEnv TERM=xterm-256color
-          '';
-        }
-        else {
-          enable = true;
-
-          # Disable legacy defaults (new HM versions)
-          enableDefaultConfig = false;
-
-          matchBlocks = {
-            "gitlab.com" = {
-              host = "gitlab.com"; # or "hostname"
-              hostname = "gitlab.com";
-              user = "git";
-              identityFile = "~/.ssh/id_rsa";
-              identitiesOnly = true;
-            };
-            "patri" = {
-              hostname = "192.168.2.10";
-              user = "patri";
-              identityFile = "~/.ssh/id_rsa";
-              identitiesOnly = true;
-              setEnv = {
-                TERM = "xterm-256color";
-              };
-            };
-            "buildserver" = {
-              hostname = "192.168.2.10";
-              user = "calyo";
-              identityFile = "~/.ssh/id_rsa";
-              identitiesOnly = true;
-              setEnv = {
-                TERM = "xterm-256color";
-              };
-            };
-            "paddy" = {
-              hostname = "192.168.0.18";
-              user = "paddy";
-              identityFile = "~/.ssh/id_rsa";
-              identitiesOnly = true;
-            };
-          };
-        };
+      ssh = sshCfg;
     }
     // pkgs.lib.optionalAttrs (wm.type == "hypr") {
       waybar = {
