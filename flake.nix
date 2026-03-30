@@ -44,6 +44,7 @@
         hostParams,
         channel,
         sshCfg ? {enable = false;},
+        envVars ? {},
       }: let
         pkgs' = pkgs.legacyPackages.${system};
       in
@@ -55,7 +56,7 @@
           ];
 
           extraSpecialArgs = {
-            inherit channel hostParams userName sshCfg;
+            inherit channel hostParams userName sshCfg envVars;
             pkgs = pkgs';
           };
         };

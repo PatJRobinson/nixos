@@ -4,6 +4,7 @@
   userName,
   hostParams,
   sshCfg,
+  envVars ? {},
   ...
 }: let
   wm = hostParams.wm;
@@ -17,8 +18,15 @@
   neovimRepo = pkgs.fetchFromGitHub {
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
-    rev = "/refs/heads/stable";
-    sha256 = "sha256-x/v2Gf5qWAYWMW0kzJxxdTAnEkvstcqEUgayy7iOiMA=";
+    rev = "/refs/heads/master";
+    sha256 = "sha256-lA+vjMIbXYI/cAWqfmDO18JyZgsF20fy/FkoKgj4LZ4=";
+  };
+
+  zoteroRepo = pkgs.fetchFromGitHub {
+    owner = "PatJRobinson";
+    repo = "zotero-add";
+    rev = "/refs/heads/main";
+    sha256 = "sha256-R3rOwFlAyhlnQioVlraSUEkrR4geP5cFMEDHJONPPBg=";
   };
 
   wallpapers_dir =
@@ -37,14 +45,16 @@ in {
     stateVersion = "25.05";
 
     # Example environment variables
-    sessionVariables = {
-      EDITOR = "nvim";
-      PAGER = "less";
-      NVIM_DARK_MODE =
-        if darkMode
-        then "1"
-        else "0";
-    };
+    sessionVariables =
+      {
+        EDITOR = "nvim";
+        PAGER = "less";
+        NVIM_DARK_MODE =
+          if darkMode
+          then "1"
+          else "0";
+      }
+      // envVars;
 
     # Packages to install
     packages = with pkgs; [
@@ -147,6 +157,7 @@ in {
         }
       '';
 
+      ".local/bin/zotero-add".source = zoteroRepo;
       ".config/nvim".source = neovimRepo;
       ".local/firejail/qute-casual/.config/qutebrowser/config.py" = {
         text =
@@ -312,6 +323,13 @@ in {
 
           rcp() {
             rsync -avh --progress "$@"
+          }
+
+          # wrapper for 'zotero add'
+          zadd() {
+            local -a args
+            args=("$@")
+            command ~/.local/bin/zotero-add/zotero_add "$args[@]"
           }
         '';
       };
