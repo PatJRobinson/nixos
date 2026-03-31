@@ -35,7 +35,7 @@
     # any additional env vars
     envVars = {};
   in {
-    nixosConfigurations.hostname = config-builder.lib.mkHost {
+    nixosConfigurations.${hostName} = config-builder.lib.mkHost {
       inherit hostCfg;
     };
 
