@@ -67,6 +67,7 @@
       mkHome = {
         hostCfg,
         userName,
+        gitCfg ? {enable = false;},
         sshCfg ? {enable = false;},
         envVars ? {},
       }:
@@ -81,7 +82,7 @@
             ];
 
             extraSpecialArgs = {
-              inherit channel hostParams userName sshCfg envVars;
+              inherit channel hostParams userName sshCfg gitCfg envVars;
               pkgs = pkgs';
             };
           };

@@ -3,7 +3,8 @@
   channel,
   userName,
   hostParams,
-  sshCfg,
+  sshCfg ? {},
+  gitCfg ? {},
   envVars ? {},
   ...
 }: let
@@ -86,6 +87,60 @@ in {
       heroic
       libreoffice-qt
     ];
+
+    file =
+      {
+        "wallpapers/".source = wallpapers_dir;
+        ".local/bin/set-random-wallpaper.sh".source = ./hyprland-scripts/set-random-wallpaper.sh;
+
+        ".p10k.zsh".source = ./p10k-config/.p10k.zsh;
+
+        # set gruvbox theme
+        ".config/ghostty/config".text = ''
+          ${
+            if channel == "25.05"
+            then ''
+              theme = Gruvbox${ghosttyTheme}Hard
+              app-notifications = no-clipboard-copy
+              term=xterm-256color
+            ''
+            else ''
+              theme = Gruvbox ${ghosttyTheme} Hard
+              app-notifications = no-clipboard-copy
+            ''
+          }
+        '';
+
+        ".local/bin/zotero-add".source = zoteroRepo;
+        ".config/nvim".source = neovimRepo;
+        ".local/firejail/qute-casual/.config/qutebrowser/config.py" = {
+          text =
+            builtins.readFile (
+              if darkMode
+              then ./qutebrowser/colours-dark.py
+              else ./qutebrowser/colours-light.py
+            )
+            + builtins.readFile ./qutebrowser/config.py
+            + ''
+              c.colors.webpage.darkmode.enabled = ${
+                if darkMode
+                then "True"
+                else "False"
+              }
+              config.load_autoconfig(False)
+            '';
+        };
+      }
+      // pkgs.lib.optionalAttrs (wm.type == "hypr") {
+        ".config/rofi".source = ./rofi;
+        # src: https://github.com/poetaste/dotfiles.git
+        ".config/waybar/config".source = ./waybar/config;
+        ".config/waybar/style.css".source =
+          if darkMode
+          then ./waybar/style-dark.css
+          else ./waybar/style-light.css;
+        ".config/waybar/scripts".source = ./waybar/scripts;
+      };
   };
 
   systemd.user.services.set-random-wallpaper = {
@@ -134,60 +189,6 @@ in {
     Install = {WantedBy = ["default.target"];};
   };
 
-  home.file =
-    {
-      "wallpapers/".source = wallpapers_dir;
-      ".local/bin/set-random-wallpaper.sh".source = ./hyprland-scripts/set-random-wallpaper.sh;
-
-      ".p10k.zsh".source = ./p10k-config/.p10k.zsh;
-
-      # set gruvbox theme
-      ".config/ghostty/config".text = ''
-        ${
-          if channel == "25.05"
-          then ''
-            theme = Gruvbox${ghosttyTheme}Hard
-            app-notifications = no-clipboard-copy
-            term=xterm-256color
-          ''
-          else ''
-            theme = Gruvbox ${ghosttyTheme} Hard
-            app-notifications = no-clipboard-copy
-          ''
-        }
-      '';
-
-      ".local/bin/zotero-add".source = zoteroRepo;
-      ".config/nvim".source = neovimRepo;
-      ".local/firejail/qute-casual/.config/qutebrowser/config.py" = {
-        text =
-          builtins.readFile (
-            if darkMode
-            then ./qutebrowser/colours-dark.py
-            else ./qutebrowser/colours-light.py
-          )
-          + builtins.readFile ./qutebrowser/config.py
-          + ''
-            c.colors.webpage.darkmode.enabled = ${
-              if darkMode
-              then "True"
-              else "False"
-            }
-            config.load_autoconfig(False)
-          '';
-      };
-    }
-    // pkgs.lib.optionalAttrs (wm.type == "hypr") {
-      ".config/rofi".source = ./rofi;
-      # src: https://github.com/poetaste/dotfiles.git
-      ".config/waybar/config".source = ./waybar/config;
-      ".config/waybar/style.css".source =
-        if darkMode
-        then ./waybar/style-dark.css
-        else ./waybar/style-light.css;
-      ".config/waybar/scripts".source = ./waybar/scripts;
-    };
-
   programs =
     {
       home-manager.enable = true;
@@ -197,7 +198,7 @@ in {
       lsd.enable = true;
       bat.enable = true;
       fzf.enable = true;
-      git.enable = true;
+      git = gitCfg;
       yazi.enable = true;
 
       direnv.enable = true;
