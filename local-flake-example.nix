@@ -11,10 +11,11 @@
   }: let
     hostName = "host"; # what to call the machine
     userName = "user"; # what to call the user
+    hardwareConfigurationFile = "/path/to/hardware-configuration.nix";
 
     # create config parameters
     hostCfg = config-builder.lib.mkHostCfg {
-      inherit hostName;
+      inherit hostName hardwareConfigurationFile;
       channel = "25.11";
       flakePath = self.outPath;
       gpuSupport = "nvidia"; # or 'amd' or 'intel'

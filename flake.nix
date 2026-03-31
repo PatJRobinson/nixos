@@ -23,13 +23,14 @@
     lib = {
       mkHostCfg = {
         hostName,
+        hardwareConfigurationFile,
         channel,
         flakePath,
         gpuSupport ? null, # "nvidia | "amd" | "intel" | null
         hostParams,
         extraModules ? [],
       }: {
-        inherit hostName channel flakePath gpuSupport hostParams extraModules;
+        inherit hostName hardwareConfigurationFile channel flakePath gpuSupport hostParams extraModules;
         hm =
           if channel == "25.11"
           then home-manager-25-11
@@ -56,7 +57,7 @@
                   _module.args.homeManagerPkg = hm.packages.${system}.home-manager;
                 })
                 ./hosts/base-configuration.nix
-                (flakePath + "/hardware-configuration.nix")
+                hardwareConfigurationFile
               ]
               ++ pkgs.lib.optionals (gpuSupport == "nvidia") [./modules/nvidia-graphics.nix]
               #++ pkgs.lib.optionals (gpuSupport == "amd") [ ./modules/amd.nix ]
