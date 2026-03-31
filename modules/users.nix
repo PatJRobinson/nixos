@@ -1,7 +1,7 @@
-{...}: {
-  users.users.paddy = {
+{userName, ...}: {
+  users.users.${userName} = {
     isNormalUser = true;
-    description = "Paddy";
+    description = "Main user";
     extraGroups = ["networkmanager" "wheel" "docker" "video"];
   };
 
@@ -11,5 +11,5 @@
     description = "nixos";
     extraGroups = ["networkmanager" "wheel" "docker" "video"];
   };
-  nix.settings.trusted-users = ["root" "paddy" "nixos"];
+  nix.settings.trusted-users = ["root" "${userName}" "nixos"];
 }

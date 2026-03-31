@@ -18,6 +18,7 @@
       inherit hostName hardwareConfigurationFile;
       channel = "25.11";
       flakePath = self.outPath;
+      defaultUserName = userName;
       gpuSupport = "nvidia"; # or 'amd' or 'intel'
       hostParams = {
         name = hostName;

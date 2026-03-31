@@ -98,7 +98,7 @@ Defines user config:
 ```
 flake.nix                       # builder functions
 hosts/base-configuration.nix    # base configuration file
-users/                          # home-manager config
+user/                           # home-manager config
 modules/                        # shared modules
 ```
 

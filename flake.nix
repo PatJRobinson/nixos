@@ -26,11 +26,12 @@
         hardwareConfigurationFile,
         channel,
         flakePath,
+        defaultUserName,
         gpuSupport ? null, # "nvidia | "amd" | "intel" | null
         hostParams,
         extraModules ? [],
       }: {
-        inherit hostName hardwareConfigurationFile channel flakePath gpuSupport hostParams extraModules;
+        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams extraModules;
         hm =
           if channel == "25.11"
           then home-manager-25-11
@@ -53,10 +54,11 @@
               [
                 ({...}: {
                   _module.args.hostName = hostName;
+                  _module.args.userName = defaultUserName;
                   _module.args.flakePath = flakePath;
                   _module.args.homeManagerPkg = hm.packages.${system}.home-manager;
                 })
-                ./hosts/base-configuration.nix
+                ./host/base-configuration.nix
                 hardwareConfigurationFile
               ]
               ++ pkgs.lib.optionals (gpuSupport == "nvidia") [./modules/nvidia-graphics.nix]
@@ -79,7 +81,7 @@
             pkgs = pkgs';
 
             modules = [
-              ./users/paddy/home.nix
+              ./user/home.nix
             ];
 
             extraSpecialArgs = {
