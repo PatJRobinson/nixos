@@ -97,18 +97,10 @@ in {
 
         # set gruvbox theme
         ".config/ghostty/config".text = ''
-          ${
-            if channel == "25.05"
-            then ''
-              theme = Gruvbox${ghosttyTheme}Hard
-              app-notifications = no-clipboard-copy
-              term=xterm-256color
-            ''
-            else ''
-              theme = Gruvbox ${ghosttyTheme} Hard
-              app-notifications = no-clipboard-copy
-            ''
-          }
+          ${''
+            theme = Gruvbox ${ghosttyTheme} Hard
+             app-notifications = no-clipboard-copy
+          ''}
         '';
 
         ".local/bin/zotero-add".source = zoteroRepo;
