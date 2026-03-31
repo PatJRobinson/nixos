@@ -21,8 +21,15 @@
     system = "x86_64-linux";
   in {
     lib = {
-      mkHostCfg = channel: {
-        inherit channel;
+      mkHostCfg = {
+        hostName,
+        channel,
+        flakePath,
+        gpuSupport ? null, # "nvidia | "amd" | "intel" | null
+        hostParams,
+        extraModules ? [],
+      }: {
+        inherit hostName channel flakePath gpuSupport hostParams extraModules;
         hm =
           if channel == "25.11"
           then home-manager-25-11
@@ -37,55 +44,47 @@
           else null;
       };
 
+      mkHost = {hostCfg}:
+        with hostCfg;
+          pkgs.lib.nixosSystem {
+            inherit system;
+            modules =
+              [
+                ({...}: {
+                  _module.args.hostName = hostName;
+                  _module.args.flakePath = flakePath;
+                  _module.args.homeManagerPkg = hm.packages.${system}.home-manager;
+                })
+                ./hosts/base-configuration.nix
+                (flakePath + "/hardware-configuration.nix")
+              ]
+              ++ pkgs.lib.optionals (gpuSupport == "nvidia") [./modules/nvidia-graphics.nix]
+              #++ pkgs.lib.optionals (gpuSupport == "amd") [ ./modules/amd.nix ]
+              ++ pkgs.lib.optionals (gpuSupport == "intel") [./modules/intel-graphics.nix]
+              ++ extraModules;
+          };
+
       mkHome = {
-        hm,
-        pkgs,
+        hostCfg,
         userName,
-        hostParams,
-        channel,
         sshCfg ? {enable = false;},
         envVars ? {},
-      }: let
-        pkgs' = pkgs.legacyPackages.${system};
-      in
-        hm.lib.homeManagerConfiguration {
-          pkgs = pkgs';
-
-          modules = [
-            ./users/paddy/home.nix
-          ];
-
-          extraSpecialArgs = {
-            inherit channel hostParams userName sshCfg envVars;
-            pkgs = pkgs';
-          };
-        };
-
-      mkHost = {
-        hostName,
-        pkgs,
-        hm,
-        flakePath,
-        gpuSupport ? null, # "nvidia | "amd" | "intel" | null
-        extraModules ? [],
       }:
-        pkgs.lib.nixosSystem {
-          inherit system;
-          modules =
-            [
-              ({...}: {
-                _module.args.hostName = hostName;
-                _module.args.flakePath = flakePath;
-                _module.args.homeManagerPkg = hm.packages.${system}.home-manager;
-              })
-              ./hosts/base-configuration.nix
-              (flakePath + "/hardware-configuration.nix")
-            ]
-            ++ pkgs.lib.optionals (gpuSupport == "nvidia") [./modules/nvidia-graphics.nix]
-            #++ pkgs.lib.optionals (gpuSupport == "amd") [ ./modules/amd.nix ]
-            ++ pkgs.lib.optionals (gpuSupport == "intel") [./modules/intel-graphics.nix]
-            ++ extraModules;
-        };
+        with hostCfg; let
+          pkgs' = pkgs.legacyPackages.${system};
+        in
+          hm.lib.homeManagerConfiguration {
+            pkgs = pkgs';
+
+            modules = [
+              ./users/paddy/home.nix
+            ];
+
+            extraSpecialArgs = {
+              inherit channel hostParams userName sshCfg envVars;
+              pkgs = pkgs';
+            };
+          };
     };
   };
 }
