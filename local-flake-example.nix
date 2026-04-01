@@ -11,6 +11,8 @@
   }: let
     hostName = "host"; # what to call the machine
     userName = "user"; # what to call the user
+
+    # the system-generated file for your system
     hardwareConfigurationFile = "/path/to/hardware-configuration.nix";
 
     # create config parameters
