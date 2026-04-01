@@ -10,22 +10,15 @@
     ../modules/display-manager.nix
     ../modules/networking.nix
     ../modules/firewall.nix
-    ../modules/sunshine.nix
+    ../modules/sunshine.nix # move to hm
     ../modules/open-ssh.nix
-    ../modules/terminal.nix
     ../modules/steam.nix
     ../modules/hyprland.nix
     ../modules/users.nix
-    ../modules/browsers.nix
+    ../modules/browsers.nix # move to hm
     ../modules/fonts.nix
     ../modules/docker.nix
-    ../modules/text-editing.nix
-    ../modules/rust.nix
-    ../modules/cpp.nix
-    ../modules/moonlight.nix
-    ../modules/files.nix
-    ../modules/notifications.nix
-    ../modules/monitoring.nix
+    ../modules/notifications.nix # move to hm
     ../modules/gc.nix
     ../modules/firejail.nix
     ../modules/filesystem.nix
