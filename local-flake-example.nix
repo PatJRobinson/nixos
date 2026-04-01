@@ -29,6 +29,12 @@
           };
         };
       };
+
+      # firewall configuration (becomes `networking.firewall')
+      # https://nixos.wiki/wiki/Firewall
+      firewallCfg = {
+        enable = true;
+      };
     };
     # put ssh config here
     # https://mynixos.com/home-manager/option/programs.ssh.matchBlocks

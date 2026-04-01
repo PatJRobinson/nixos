@@ -29,9 +29,10 @@
         defaultUserName,
         gpuSupport ? null, # "nvidia | "amd" | "intel" | null
         hostParams,
+        firewallCfg ? {},
         extraModules ? [],
       }: {
-        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams extraModules;
+        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams firewallCfg extraModules;
         hm =
           if channel == "25.11"
           then home-manager-25-11
@@ -57,6 +58,7 @@
                   _module.args.userName = defaultUserName;
                   _module.args.flakePath = flakePath;
                   _module.args.homeManagerPkg = hm.packages.${system}.home-manager;
+                  _module.args.firewallCfg = firewallCfg;
                 })
                 ./host/base-configuration.nix
                 hardwareConfigurationFile
