@@ -5,6 +5,7 @@
     ../modules/audio.nix
     ../modules/caches.nix
     ../modules/bootloader.nix
+    ../modules/bluetooth.nix
     ../modules/time-zone.nix
     ../modules/auto-upgrade.nix
     ../modules/display-manager.nix
