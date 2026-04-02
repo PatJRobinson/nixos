@@ -3,6 +3,10 @@
   pkgs,
   ...
 }: {
+  # default shell set at the system level, package needs to be
+  # available
+  programs.zsh.enable = true;
+
   users.users.${userName} = {
     isNormalUser = true;
     description = "Main user";
