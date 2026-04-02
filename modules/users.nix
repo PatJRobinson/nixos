@@ -1,8 +1,13 @@
-{userName, ...}: {
+{
+  userName,
+  pkgs,
+  ...
+}: {
   users.users.${userName} = {
     isNormalUser = true;
     description = "Main user";
     extraGroups = ["networkmanager" "wheel" "docker" "video"];
+    shell = pkgs.zsh;
   };
 
   # recovery user

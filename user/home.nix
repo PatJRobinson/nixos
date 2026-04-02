@@ -86,6 +86,7 @@ in {
       (import ./modules/rust-packages/keifu.nix {inherit pkgs;})
       heroic
       libreoffice-qt
+      jq
     ];
 
     file =
