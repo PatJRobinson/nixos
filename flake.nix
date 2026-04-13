@@ -31,8 +31,9 @@
         hostParams,
         firewallCfg ? {},
         extraModules ? [],
+        enableDocker ? true,
       }: {
-        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams firewallCfg extraModules;
+        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams firewallCfg extraModules enableDocker;
         hm =
           if channel == "25.11"
           then home-manager-25-11
@@ -59,6 +60,7 @@
                   _module.args.flakePath = flakePath;
                   _module.args.homeManagerPkg = hm.packages.${system}.home-manager;
                   _module.args.firewallCfg = firewallCfg;
+                  _module.args.enableDocker = enableDocker;
                 })
                 ./host/base-configuration.nix
                 hardwareConfigurationFile
