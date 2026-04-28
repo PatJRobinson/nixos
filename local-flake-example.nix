@@ -37,6 +37,10 @@
       firewallCfg = {
         enable = true;
       };
+
+      # string array of package names to be mapped to nixos pkgs set
+      # and appended to environment.systemPackages
+      extraPackageNames = [];
     };
     # put ssh config here
     # https://mynixos.com/home-manager/option/programs.ssh.matchBlocks
@@ -48,13 +52,16 @@
 
     # any additional env vars
     envVars = {};
+
+    # allow unfree packages in the home manager config
+    allowUnfree = true;
   in {
     nixosConfigurations.${hostName} = config-builder.lib.mkHost {
       inherit hostCfg;
     };
 
     homeConfigurations."${userName}@${hostName}" = config-builder.lib.mkHome {
-      inherit hostCfg userName sshCfg gitCfg envVars;
+      inherit hostCfg userName allowUnfree sshCfg gitCfg envVars;
     };
   };
 }

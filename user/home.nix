@@ -1,6 +1,5 @@
 {
   pkgs,
-  channel,
   userName,
   hostParams,
   sshCfg ? {},
@@ -20,7 +19,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-lA+vjMIbXYI/cAWqfmDO18JyZgsF20fy/FkoKgj4LZ4=";
+    sha256 = "sha256-pJPYUIim4N9Xo0Ruq5Azv4TtjL3PRGfYuxRpSSfII44=";
   };
 
   zoteroRepo = pkgs.fetchFromGitHub {

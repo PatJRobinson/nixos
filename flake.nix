@@ -31,16 +31,17 @@
         hostParams,
         firewallCfg ? {},
         extraModules ? [],
+        extraPackageNames ? [],
         enableDocker ? true,
       }: {
-        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams firewallCfg extraModules enableDocker;
+        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams firewallCfg extraModules extraPackageNames enableDocker;
         hm =
           if channel == "25.11"
           then home-manager-25-11
           else if channel == "unstable"
           then home-manager-unstable
           else null;
-        pkgs =
+        nixpkgs =
           if channel == "25.11"
           then nixpkgs-25-11
           else if channel == "unstable"
@@ -50,7 +51,7 @@
 
       mkHost = {hostCfg}:
         with hostCfg;
-          pkgs.lib.nixosSystem {
+          nixpkgs.lib.nixosSystem {
             inherit system;
             modules =
               [
@@ -61,13 +62,14 @@
                   _module.args.homeManagerPkg = hm.packages.${system}.home-manager;
                   _module.args.firewallCfg = firewallCfg;
                   _module.args.enableDocker = enableDocker;
+                  _module.args.extraPackageNames = extraPackageNames;
                 })
                 ./host/base-configuration.nix
                 hardwareConfigurationFile
               ]
-              ++ pkgs.lib.optionals (gpuSupport == "nvidia") [./modules/nvidia-graphics.nix]
+              ++ nixpkgs.lib.optionals (gpuSupport == "nvidia") [./modules/nvidia-graphics.nix]
               #++ pkgs.lib.optionals (gpuSupport == "amd") [ ./modules/amd.nix ]
-              ++ pkgs.lib.optionals (gpuSupport == "intel") [./modules/intel-graphics.nix]
+              ++ nixpkgs.lib.optionals (gpuSupport == "intel") [./modules/intel-graphics.nix]
               ++ extraModules;
           };
 
@@ -79,18 +81,17 @@
         envVars ? {},
       }:
         with hostCfg; let
-          pkgs' = pkgs.legacyPackages.${system};
+          pkgs = nixpkgs.legacyPackages.${system};
         in
           hm.lib.homeManagerConfiguration {
-            pkgs = pkgs';
+            inherit pkgs;
 
             modules = [
               ./user/home.nix
             ];
 
             extraSpecialArgs = {
-              inherit channel hostParams userName sshCfg gitCfg envVars;
-              pkgs = pkgs';
+              inherit pkgs hostParams userName sshCfg gitCfg envVars;
             };
           };
     };

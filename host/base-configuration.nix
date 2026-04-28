@@ -1,4 +1,8 @@
-{...}: {
+{
+  pkgs,
+  extraPackageNames,
+  ...
+}: {
   system.stateVersion = "25.05";
   imports = [
     ../modules/home-manager.nix
@@ -27,4 +31,7 @@
   ];
   nix.settings.experimental-features = ["nix-command" "flakes"];
   hardware.graphics.enable = true;
+
+  environment.systemPackages =
+    map (name: pkgs.${name}) extraPackageNames;
 }

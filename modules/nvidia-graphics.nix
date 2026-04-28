@@ -9,7 +9,7 @@
   services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
-    open = true; # or false if you're intentionally using proprietary
+    open = true; # CDI generation issue with proprietry driver 580.142, needs looking into
     modesetting.enable = true;
     powerManagement.enable = false;
     nvidiaSettings = true;
