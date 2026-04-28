@@ -19,7 +19,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-pJPYUIim4N9Xo0Ruq5Azv4TtjL3PRGfYuxRpSSfII44=";
+    sha256 = "sha256-EFNM4oEZxJ9cvyHm8CsRsGIGTWw5wwbA4omW2mYLuF4=";
   };
 
   zoteroRepo = pkgs.fetchFromGitHub {
