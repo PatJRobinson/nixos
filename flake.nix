@@ -9,6 +9,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    nix-flatpak.url = "github:gmodena/nix-flatpak/";
   };
 
   outputs = {
@@ -17,6 +18,7 @@
     home-manager-25-11,
     nixpkgs-unstable,
     home-manager-unstable,
+    nix-flatpak,
   }: let
     system = "x86_64-linux";
   in {
@@ -63,6 +65,7 @@
                   _module.args.firewallCfg = firewallCfg;
                   _module.args.enableDocker = enableDocker;
                   _module.args.extraPackageNames = extraPackageNames;
+                  _module.args.nix-flatpak = nix-flatpak;
                 })
                 ./host/base-configuration.nix
                 hardwareConfigurationFile

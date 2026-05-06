@@ -1,6 +1,7 @@
 {
   pkgs,
   extraPackageNames,
+  nix-flatpak,
   ...
 }: {
   system.stateVersion = "25.05";
@@ -28,6 +29,7 @@
     ../modules/firejail.nix
     ../modules/filesystem.nix
     ../modules/power.nix
+    "${nix-flatpak}/modules/nixos.nix"
     ../modules/flatpak.nix
   ];
   nix.settings.experimental-features = ["nix-command" "flakes"];
