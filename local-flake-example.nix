@@ -38,6 +38,15 @@
         enable = true;
       };
 
+      # flatpak configuration (becomes `services.flatpak`)
+      # uses `nix-flatpak` project: https://github.com/gmodena/nix-flatpak
+      flatpakConfig = {
+        enable = true;
+        packages = [
+          "com.nomachine.nxplayer"
+        ];
+      };
+
       # string array of package names to be mapped to nixos pkgs set
       # and appended to environment.systemPackages
       extraPackageNames = [];

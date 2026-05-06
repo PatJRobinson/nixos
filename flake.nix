@@ -35,8 +35,9 @@
         extraModules ? [],
         extraPackageNames ? [],
         enableDocker ? true,
+        flatpakConfig ? {enable = false;},
       }: {
-        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams firewallCfg extraModules extraPackageNames enableDocker;
+        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams firewallCfg extraModules extraPackageNames enableDocker flatpakConfig;
         hm =
           if channel == "25.11"
           then home-manager-25-11
@@ -57,6 +58,8 @@
             inherit system;
             modules =
               [
+                nix-flatpak.nixosModules.nix-flatpak
+
                 ({...}: {
                   _module.args.hostName = hostName;
                   _module.args.userName = defaultUserName;
@@ -65,7 +68,7 @@
                   _module.args.firewallCfg = firewallCfg;
                   _module.args.enableDocker = enableDocker;
                   _module.args.extraPackageNames = extraPackageNames;
-                  _module.args.nix-flatpak = nix-flatpak;
+                  _module.args.flatpakConfig = flatpakConfig;
                 })
                 ./host/base-configuration.nix
                 hardwareConfigurationFile
