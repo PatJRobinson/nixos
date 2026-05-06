@@ -28,6 +28,7 @@
     ../modules/firejail.nix
     ../modules/filesystem.nix
     ../modules/power.nix
+    ../modules/flatpak.nix
   ];
   nix.settings.experimental-features = ["nix-command" "flakes"];
   hardware.graphics.enable = true;
