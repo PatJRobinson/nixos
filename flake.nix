@@ -10,6 +10,8 @@
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nix-flatpak.url = "github:gmodena/nix-flatpak/";
+
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
   };
 
   outputs = {
@@ -19,6 +21,7 @@
     nixpkgs-unstable,
     home-manager-unstable,
     nix-flatpak,
+    determinate,
   }: let
     system = "x86_64-linux";
   in {
@@ -59,6 +62,7 @@
             modules =
               [
                 nix-flatpak.nixosModules.nix-flatpak
+                determinate.nixosModules.default
 
                 ({...}: {
                   _module.args.hostName = hostName;
