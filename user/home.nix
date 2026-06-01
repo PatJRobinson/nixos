@@ -333,17 +333,17 @@ in {
           focus-nvim
         ];
       };
-      tmux = {
-        enable = true;
-        shell = "${pkgs.zsh}/bin/zsh";
-        terminal = "tmux-256color";
-        historyLimit = 100000;
-        plugins = with pkgs; [
-          tmuxPlugins.better-mouse-mode
-        ];
-        extraConfig = ''
-        '';
-      };
+      # tmux = {
+      #   enable = true;
+      #   shell = "${pkgs.zsh}/bin/zsh";
+      #   terminal = "tmux-256color";
+      #   historyLimit = 100000;
+      #   plugins = with pkgs; [
+      #     tmuxPlugins.better-mouse-mode
+      #   ];
+      #   extraConfig = ''
+      #   '';
+      # };
       ssh = sshCfg;
     }
     // pkgs.lib.optionalAttrs (wm.type == "hypr") {
