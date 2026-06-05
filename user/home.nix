@@ -58,6 +58,7 @@ in {
 
     # Packages to install
     packages = with pkgs; [
+      gnumake
       wlsunset
       dunst
       hyprlock
