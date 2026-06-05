@@ -86,6 +86,11 @@ in {
       heroic
       libreoffice-qt
       jq
+
+      # latex
+      texpresso
+      tectonic
+      texlive.combined.scheme-medium
     ];
 
     file =
