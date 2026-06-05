@@ -90,7 +90,7 @@ in {
       # latex
       texpresso
       tectonic
-      texlive.combined.scheme-medium
+      texlive.combined.scheme-full
     ];
 
     file =
