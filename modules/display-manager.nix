@@ -15,7 +15,7 @@
     settings = {
       default_session = {
         # tuigreet runs as the greeter user, and then launches your session command
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --asterisks --cmd ${pkgs.hyprland}/bin/Hyprland";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --asterisks --cmd ${pkgs.hyprland}/bin/start-hyprland";
         user = "greeter";
       };
     };

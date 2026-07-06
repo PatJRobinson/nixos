@@ -1,22 +1,31 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-WALLPAPER_DIR="$HOME/wallpapers/"
-CURRENT_WALL=$(hyprctl hyprpaper listloaded)
+WALLPAPER_DIR="$HOME/wallpapers"
 
-# Find all wallpaper files
-WALLPAPERS=($(find "$WALLPAPER_DIR" -type f))
+mapfile -d '' WALLPAPERS < <(find -L "$WALLPAPER_DIR" -type f -print0)
+
 WALLPAPER_COUNT=${#WALLPAPERS[@]}
 
-if [[ $WALLPAPER_COUNT -eq 0 ]]; then
-    echo "No wallpapers found in $WALLPAPER_DIR"
-    exit 1
-elif [[ $WALLPAPER_COUNT -eq 1 ]]; then
-    WALLPAPER="${WALLPAPERS[0]}"
-else
-    # Get a random wallpaper that is not the current one
-    WALLPAPER=$(find "$WALLPAPER_DIR" -type f ! -name "$(basename "$CURRENT_WALL")" | shuf -n 1)
+if (( WALLPAPER_COUNT == 0 )); then
+  echo "No wallpapers found in $WALLPAPER_DIR" >&2
+  exit 1
 fi
 
-# Apply the selected wallpaper
-hyprctl hyprpaper preload "$WALLPAPER"
-hyprctl hyprpaper wallpaper ,"$WALLPAPER"
+CURRENT_WALL="$(hyprctl hyprpaper listloaded 2>/dev/null | head -n 1 || true)"
+
+if (( WALLPAPER_COUNT == 1 )); then
+  WALLPAPER="${WALLPAPERS[0]}"
+else
+  mapfile -d '' CANDIDATES < <(
+    find -L "$WALLPAPER_DIR" -type f ! -path "$CURRENT_WALL" -print0
+  )
+
+  if (( ${#CANDIDATES[@]} == 0 )); then
+    WALLPAPER="${WALLPAPERS[0]}"
+  else
+    WALLPAPER="$(printf '%s\0' "${CANDIDATES[@]}" | shuf -z -n 1 | tr -d '\0')"
+  fi
+fi
+
+hyprctl hyprpaper wallpaper ",${WALLPAPER},cover"

@@ -71,7 +71,6 @@ in {
       curl
       rsync
       qutebrowser
-      bitwarden-desktop
       bitwarden-cli
       libnotify
       nix-direnv
@@ -197,7 +196,10 @@ in {
       bat.enable = true;
       fzf.enable = true;
       git = gitCfg;
-      yazi.enable = true;
+      yazi = {
+        enable = true;
+        shellWrapperName = "yy";
+      };
 
       direnv.enable = true;
       zathura.enable = true;
@@ -335,6 +337,8 @@ in {
 
       neovim = {
         enable = true;
+        withRuby = false;
+        withPython3 = false;
         plugins = with pkgs.vimPlugins; [
           focus-nvim
         ];

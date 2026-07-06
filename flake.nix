@@ -2,9 +2,9 @@
   description = "Nixos system configuration builder";
 
   inputs = {
-    nixpkgs-25-11.url = "github:nixos/nixpkgs/nixos-25.11";
-    home-manager-25-11.url = "github:nix-community/home-manager/release-25.11";
-    home-manager-25-11.inputs.nixpkgs.follows = "nixpkgs-25-11";
+    nixpkgs-26-05.url = "github:nixos/nixpkgs/nixos-26.05";
+    home-manager-26-05.url = "github:nix-community/home-manager/release-26.05";
+    home-manager-26-05.inputs.nixpkgs.follows = "nixpkgs-26-05";
 
     nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     home-manager-unstable.url = "github:nix-community/home-manager";
@@ -16,8 +16,8 @@
 
   outputs = {
     self,
-    nixpkgs-25-11,
-    home-manager-25-11,
+    nixpkgs-26-05,
+    home-manager-26-05,
     nixpkgs-unstable,
     home-manager-unstable,
     nix-flatpak,
@@ -42,14 +42,14 @@
       }: {
         inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams firewallCfg extraModules extraPackageNames enableDocker flatpakConfig;
         hm =
-          if channel == "25.11"
-          then home-manager-25-11
+          if channel == "26.05"
+          then home-manager-26-05
           else if channel == "unstable"
           then home-manager-unstable
           else null;
         nixpkgs =
-          if channel == "25.11"
-          then nixpkgs-25-11
+          if channel == "26.05"
+          then nixpkgs-26-05
           else if channel == "unstable"
           then nixpkgs-unstable
           else null;
