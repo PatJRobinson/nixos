@@ -52,8 +52,11 @@ in {
     ### AUTOSTART ###
     #################
 
-    exec-once = sh -lc 'systemctl --user start hyprpaper.service; eglinfo >/dev/null 2>&1 || true'
-    exec-once = systemctl --user start set-random-wallpaper.service
+    # exec-once = sh -lc 'systemctl --user start hyprpaper.service; eglinfo >/dev/null 2>&1 || true'
+    exec-once = hyprpaper
+    exec-once = sh -lc 'for i in $(seq 1 50); do hyprctl hyprpaper listactive >/dev/null 2>&1 && break; sleep 0.1; done; /home/paddy/.local/bin/set-random-wallpaper.sh'
+
+    # exec-once = /home/paddy/.local/bin/set-random-wallpaper.sh
     exec-once = waybar
 
 
