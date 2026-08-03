@@ -39,7 +39,9 @@ cp ~/nixos/config-generator/local-flake-example.nix ~/nixos/config/flake.nix
 ```
 
 Modify the example with your user name, host name, and configuration options
-Make sure the flake input `config-generator` points to the correct path
+Make sure the flake input `config-generator` points to the correct local Git
+repository. Prefer `git+file:///absolute/path` for versioned local inputs so
+the lock follows commits rather than mutable directory metadata.
 
 Then, build and apply the config:
 

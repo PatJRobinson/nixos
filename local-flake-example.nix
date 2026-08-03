@@ -2,9 +2,9 @@
   description = "Local system configuration";
 
   inputs = {
-    config-builder.url = "path:/home/user/nixos/nixos-config-generator";
+    config-builder.url = "git+file:///home/user/nixos/nixos-config-generator";
     # Optional private/local Home Manager modules can be added as inputs.
-    # knowledge-hosting.url = "path:/home/user/Documents/knowledge/hosting";
+    # knowledge-hosting.url = "git+file:///home/user/Documents/knowledge/hosting";
   };
 
   outputs = {
