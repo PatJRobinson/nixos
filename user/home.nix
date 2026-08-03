@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   userName,
   hostParams,
@@ -93,6 +94,20 @@ in {
       texlive.combined.scheme-full
     ];
 
+    # OpenSSH rejects a config symlink into the group-writable Determinate Nix
+    # store. Materialise Home Manager's generated config as a private file
+    # after links are created; `force` below lets later activations refresh it.
+    activation.materializeSshConfig = lib.hm.dag.entryAfter ["linkGeneration"] ''
+      ssh_config="$HOME/.ssh/config"
+      if [[ -L "$ssh_config" ]]; then
+        ssh_config_source="$(${pkgs.coreutils}/bin/readlink -f -- "$ssh_config")"
+        ssh_config_temporary="$ssh_config.home-manager-copy"
+        ${pkgs.coreutils}/bin/cp -- "$ssh_config_source" "$ssh_config_temporary"
+        ${pkgs.coreutils}/bin/chmod 0600 "$ssh_config_temporary"
+        ${pkgs.coreutils}/bin/mv -f -- "$ssh_config_temporary" "$ssh_config"
+      fi
+    '';
+
     file =
       {
         "wallpapers/".source = wallpapers_dir;
@@ -137,6 +152,9 @@ in {
           then ./waybar/style-dark.css
           else ./waybar/style-light.css;
         ".config/waybar/scripts".source = ./waybar/scripts;
+      }
+      // pkgs.lib.optionalAttrs (sshCfg.enable or false) {
+        ".ssh/config".force = true;
       };
   };
 
