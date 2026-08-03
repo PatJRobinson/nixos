@@ -3,6 +3,8 @@
 
   inputs = {
     config-builder.url = "path:/home/user/nixos/nixos-config-generator";
+    # Optional private/local Home Manager modules can be added as inputs.
+    # knowledge-hosting.url = "path:/home/user/Documents/knowledge/hosting";
   };
 
   outputs = {
@@ -70,7 +72,11 @@
     };
 
     homeConfigurations."${userName}@${hostName}" = config-builder.lib.mkHome {
-      inherit hostCfg userName allowUnfree sshCfg gitCfg envVars;
+      inherit hostCfg userName sshCfg gitCfg envVars;
+      extraHomeModules = [
+        # knowledge-hosting.homeManagerModules.default
+        # ({...}: {services.knowledgeHosting.enable = true;})
+      ];
     };
   };
 }

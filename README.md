@@ -88,8 +88,13 @@ Defines user config:
   gitCfg = { ... };   # programs.git
   sshCfg = { ... };   # programs.ssh
   envVars = { ... };  # sessionVariables
+  extraHomeModules = [ ... ]; # optional machine-selected Home Manager modules
 }
 ```
+
+`extraHomeModules` lets a local flake conditionally add private or
+machine-specific modules without making the public generator depend on them.
+Put both the imported module and its host-specific option values in this list.
 
 ---
 

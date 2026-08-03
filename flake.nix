@@ -89,6 +89,7 @@
         gitCfg ? {enable = false;},
         sshCfg ? {enable = false;},
         envVars ? {},
+        extraHomeModules ? [],
       }:
         with hostCfg; let
           pkgs = nixpkgs.legacyPackages.${system};
@@ -96,9 +97,11 @@
           hm.lib.homeManagerConfiguration {
             inherit pkgs;
 
-            modules = [
-              ./user/home.nix
-            ];
+            modules =
+              [
+                ./user/home.nix
+              ]
+              ++ extraHomeModules;
 
             extraSpecialArgs = {
               inherit pkgs hostParams userName sshCfg gitCfg envVars;
