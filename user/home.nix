@@ -87,6 +87,7 @@ in {
       heroic
       libreoffice-qt
       jq
+      termusic
 
       # latex
       texpresso
