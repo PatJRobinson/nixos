@@ -360,7 +360,15 @@ in {
         withPython3 = false;
         plugins = with pkgs.vimPlugins; [
           focus-nvim
+          live-preview-nvim
         ];
+
+        extraLuaConfig = ''
+          require("livepreview.config").set({
+            browser = "firefox",
+            sync_scroll = true,
+          })
+        '';
       };
       # tmux = {
       #   enable = true;
