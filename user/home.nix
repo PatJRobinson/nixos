@@ -20,7 +20,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-MRBndUEDKGwtIhZF6/E6m2ycUXF+BkqvJ2g8aPPU5RU=";
+    sha256 = "sha256-bGCjnkaX1KrfhW55RommZoADe05JfsH1j26xvA8c4RI=";
   };
 
   zoteroRepo = pkgs.fetchFromGitHub {
@@ -360,15 +360,7 @@ in {
         withPython3 = false;
         plugins = with pkgs.vimPlugins; [
           focus-nvim
-          live-preview-nvim
         ];
-
-        extraLuaConfig = ''
-          require("livepreview.config").set({
-            browser = "firefox",
-            sync_scroll = true,
-          })
-        '';
       };
       # tmux = {
       #   enable = true;
