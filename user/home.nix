@@ -20,7 +20,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-EFNM4oEZxJ9cvyHm8CsRsGIGTWw5wwbA4omW2mYLuF4=";
+    sha256 = "sha256-bGCjnkaX1KrfhW55RommZoADe05JfsH1j26xvA8c4RI=";
   };
 
   zoteroRepo = pkgs.fetchFromGitHub {
@@ -87,6 +87,7 @@ in {
       heroic
       libreoffice-qt
       jq
+      termusic
 
       # latex
       texpresso
