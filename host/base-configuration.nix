@@ -29,6 +29,7 @@
     ../modules/filesystem.nix
     ../modules/power.nix
     ../modules/flatpak.nix
+    ../modules/services/kavita.nix
   ];
   nix.settings.experimental-features = ["nix-command" "flakes"];
   hardware.graphics.enable = true;
