@@ -116,6 +116,16 @@ in {
 
         ".p10k.zsh".source = ./p10k-config/.p10k.zsh;
 
+        # lazygit custom keybinds
+        ".config/lazygit/config".text = ''
+          customCommands:
+            - key: "V"
+              context: "global"
+              description: "View historical file"
+              command: 'git show "{{.SelectedCommit.Hash}}:{{.SelectedCommitFile.Name}}" | nvim -R -c "file {{.SelectedCommitFile.Name}}" -c "filetype detect" -'
+              output: terminal
+        '';
+
         # set gruvbox theme
         ".config/ghostty/config".text = ''
           ${''
