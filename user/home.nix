@@ -93,6 +93,7 @@ in {
       texpresso
       tectonic
       texlive.combined.scheme-full
+      lazygit
     ];
 
     # OpenSSH rejects a config symlink into the group-writable Determinate Nix
@@ -117,7 +118,7 @@ in {
         ".p10k.zsh".source = ./p10k-config/.p10k.zsh;
 
         # lazygit custom keybinds
-        ".config/lazygit/config".text = ''
+        ".config/lazygit/config.yml".text = ''
           customCommands:
             - key: "V"
               context: "global"
