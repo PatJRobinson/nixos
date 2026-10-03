@@ -10,6 +10,8 @@
 }: let
   wm = hostParams.wm;
 
+  neovimLocal = false;
+
   darkMode = false;
   ghosttyTheme =
     if darkMode
@@ -20,7 +22,7 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     rev = "/refs/heads/master";
-    sha256 = "sha256-9az8xC+BqG6Qjo3jkNWQ0Z5kpjOdWuGIUKtktf6k7jY=";
+    sha256 = "sha256-Ql1VQzLpqulJSMWSJAbEflPeOXmO6z28M5sv9GdMN6Y=";
   };
 
   zoteroRepo = pkgs.fetchFromGitHub {
@@ -58,43 +60,45 @@ in {
       // envVars;
 
     # Packages to install
-    packages = with pkgs; [
-      gnumake
-      wlsunset
-      dunst
-      hyprlock
-      rofi
-      mesa-demos
-      zsh-powerlevel10k
-      fastfetch
-      htop
-      wget
-      curl
-      rsync
-      qutebrowser
-      bitwarden-cli
-      libnotify
-      nix-direnv
-      lua-language-server
-      yaml-language-server
-      nil
-      marksman
-      (flameshot.override {enableWlrSupport = true;})
-      alejandra
-      bluetuith
-      gdu
-      (import ./modules/rust-packages/keifu.nix {inherit pkgs;})
-      heroic
-      libreoffice-qt
-      jq
-      termusic
+    packages = with pkgs;
+      [
+        gnumake
+        wlsunset
+        dunst
+        hyprlock
+        rofi
+        mesa-demos
+        zsh-powerlevel10k
+        fastfetch
+        htop
+        wget
+        curl
+        rsync
+        qutebrowser
+        bitwarden-cli
+        libnotify
+        nix-direnv
+        lua-language-server
+        yaml-language-server
+        nil
+        marksman
+        (flameshot.override {enableWlrSupport = true;})
+        alejandra
+        bluetuith
+        gdu
+        (import ./modules/rust-packages/keifu.nix {inherit pkgs;})
+        heroic
+        libreoffice-qt
+        jq
+        termusic
 
-      # latex
-      texpresso
-      tectonic
-      texlive.combined.scheme-full
-      lazygit
-    ];
+        # latex
+        texpresso
+        tectonic
+        texlive.combined.scheme-full
+        lazygit
+      ]
+      ++ pkgs.lib.optional neovimLocal neovim;
 
     # OpenSSH rejects a config symlink into the group-writable Determinate Nix
     # store. Materialise Home Manager's generated config as a private file
@@ -136,7 +140,6 @@ in {
         '';
 
         ".local/bin/zotero-add".source = zoteroRepo;
-        ".config/nvim".source = neovimRepo;
         ".local/firejail/qute-casual/.config/qutebrowser/config.py" = {
           text =
             builtins.readFile (
@@ -167,6 +170,9 @@ in {
       }
       // pkgs.lib.optionalAttrs (sshCfg.enable or false) {
         ".ssh/config".force = true;
+      }
+      // pkgs.lib.optionalAttrs (!neovimLocal) {
+        ".config/nvim".source = neovimRepo;
       };
   };
 
@@ -365,14 +371,17 @@ in {
         '';
       };
 
-      neovim = {
-        enable = true;
-        withRuby = false;
-        withPython3 = false;
-        plugins = with pkgs.vimPlugins; [
-          focus-nvim
-        ];
-      };
+      neovim =
+        if neovimLocal
+        then {enable = false;}
+        else {
+          enable = true;
+          withRuby = false;
+          withPython3 = false;
+          plugins = with pkgs.vimPlugins; [
+            focus-nvim
+          ];
+        };
       # tmux = {
       #   enable = true;
       #   shell = "${pkgs.zsh}/bin/zsh";
