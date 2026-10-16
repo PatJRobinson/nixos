@@ -9,6 +9,7 @@
   ...
 }: let
   wm = hostParams.wm;
+  softlight = (wm.theme or "gruvbox") == "softlight";
 
   neovimLocal = false;
 
@@ -21,8 +22,15 @@
   neovimRepo = pkgs.fetchFromGitHub {
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
-    rev = "/refs/heads/master";
-    sha256 = "sha256-Ql1VQzLpqulJSMWSJAbEflPeOXmO6z28M5sv9GdMN6Y=";
+    # This revision includes the existing NVIM_COLOURSCHEME hook.
+    rev =
+      if softlight
+      then "fce8695d9683da015d585cca3b3bdadf6e311e83"
+      else "/refs/heads/master";
+    sha256 =
+      if softlight
+      then "sha256-9az8xC+BqG6Qjo3jkNWQ0Z5kpjOdWuGIUKtktf6k7jY="
+      else "sha256-Ql1VQzLpqulJSMWSJAbEflPeOXmO6z28M5sv9GdMN6Y=";
   };
 
   zoteroRepo = pkgs.fetchFromGitHub {
@@ -406,6 +414,7 @@ in {
     [
       ./modules/desktop-shortcuts.nix
     ]
+    ++ pkgs.lib.optional softlight ./modules/softlight.nix
     ++ pkgs.lib.optionals (wm.type == "hypr") [
       (import ./modules/hyprland.nix {displayParams = wm.displayParams;})
       (import ./modules/visualisation.nix)

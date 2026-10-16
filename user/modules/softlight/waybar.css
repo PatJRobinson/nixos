@@ -1,0 +1,55 @@
+/* Softlight / Dayfox. The existing Waybar config owns all module behavior. */
+@define-color bg #f6f2ee;
+@define-color fg #3d2b5a;
+@define-color muted #837a72;
+@define-color surface #e4dcd4;
+@define-color selected #e7d2be;
+@define-color border #d3c7bb;
+@define-color red #a5222f;
+@define-color green #396847;
+@define-color amber #ac5402;
+* {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 12px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-shadow: none;
+}
+window#waybar {
+  background: @bg;
+  color: @fg;
+  border-bottom: 1px solid @border;
+}
+.modules-left, .modules-center, .modules-right { padding: 3px 4px; }
+#custom-launcher, #idle_inhibitor, #mpris, #wireplumber, #custom-cava,
+#clock, #custom-bluetooth, #network, #power-profiles-daemon, #cpu,
+#memory, #tray, #battery, #custom-swaync, #backlight {
+  padding: 4px 7px;
+  margin: 3px 1px;
+  border-radius: 8px;
+  color: @fg;
+}
+#clock { font-weight: bold; }
+#cpu, #memory, #custom-cava, #power-profiles-daemon { color: @muted; }
+#workspaces { margin: 3px; }
+#workspaces button {
+  color: @muted;
+  background: transparent;
+  min-width: 20px;
+  padding: 2px 5px;
+  margin: 2px;
+  border-radius: 7px;
+}
+#workspaces button.active { background: @selected; color: @fg; }
+#workspaces button:hover, #taskbar button:hover { background: @surface; }
+#taskbar button { padding: 3px; margin: 3px 1px; border-radius: 6px; }
+#taskbar button.active { background: @selected; }
+#battery.charging, #battery.plugged, #idle_inhibitor.activated { color: @green; }
+#battery.warning, #cpu.warning, #memory.warning,
+#power-profiles-daemon.performance { color: @amber; }
+#battery.critical, #cpu.critical, #memory.critical, #network.disconnected,
+#wireplumber.muted, #workspaces button.urgent, #taskbar button.urgent { color: @red; }
+tooltip { background: @bg; color: @fg; border: 1px solid @border; border-radius: 8px; }
+tooltip label { color: @fg; padding: 5px; }

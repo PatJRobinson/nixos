@@ -1,0 +1,27 @@
+* {
+    background-color: transparent;
+    text-color: #3d2b5a;
+    spacing: 8px;
+}
+window {
+    width: 560px;
+    background-color: #f6f2ee;
+    border: 1px;
+    border-color: #d3c7bb;
+    border-radius: 14px;
+}
+mainbox { padding: 24px; children: [inputbar, mode-switcher, message, listview]; }
+inputbar { padding: 12px; background-color: #e4dcd4; border-radius: 8px; children: [prompt, entry]; }
+prompt { text-color: #837a72; }
+entry { placeholder: "Search applications…"; placeholder-color: #837a72; }
+mode-switcher { spacing: 8px; }
+button { padding: 8px; border-radius: 6px; text-color: #837a72; }
+button selected { background-color: #e7d2be; text-color: #3d2b5a; }
+listview { lines: 8; fixed-height: false; scrollbar: false; spacing: 4px; }
+element { padding: 10px 12px; border-radius: 8px; children: [element-icon, element-text]; }
+element-icon { size: 24px; }
+element-text { vertical-align: 0.5; }
+element selected.normal { background-color: #e7d2be; }
+element normal.urgent, element selected.urgent { text-color: #a5222f; }
+element normal.active, element selected.active { text-color: #396847; }
+textbox { padding: 8px; }
