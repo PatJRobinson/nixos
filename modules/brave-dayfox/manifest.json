@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Dayfox for Brave",
+  "version": "1.0.0",
+  "description": "Dayfox colour theme for Brave",
+  "theme": {
+    "colors": {
+      "frame": [228, 220, 212],
+      "frame_inactive": [211, 199, 187],
+      "toolbar": [246, 242, 238],
+      "tab_text": [61, 43, 90],
+      "tab_background_text": [100, 63, 97],
+      "bookmark_text": [61, 43, 90],
+      "toolbar_button_icon": [61, 43, 90],
+      "omnibox_background": [228, 220, 212],
+      "omnibox_text": [61, 43, 90],
+      "ntp_background": [246, 242, 238],
+      "ntp_text": [61, 43, 90],
+      "ntp_link": [40, 72, 169]
+    }
+  }
+}
+

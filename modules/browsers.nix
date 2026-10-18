@@ -1,15 +1,27 @@
 {pkgs, ...}: let
+  dayfoxTheme =
+    pkgs.writeTextDir "manifest.json"
+    (builtins.readFile ./brave-dayfox/manifest.json);
+
   braveWayland = pkgs.writeShellScriptBin "brave-wayland" ''
+    # This runs inside Firejail's private home.
+    themeDir="$HOME/.config/brave-dayfox"
+
+    ${pkgs.coreutils}/bin/mkdir -p "$themeDir"
+    ${pkgs.coreutils}/bin/install -m 644 \
+      ${dayfoxTheme}/manifest.json \
+      "$themeDir/manifest.json"
+
     exec ${pkgs.brave}/bin/brave \
       --enable-features=UseOzonePlatform \
       --ozone-platform=wayland \
+      --load-extension="$themeDir" \
       "$@"
   '';
 in {
   environment.systemPackages = with pkgs; [
     brave
     braveWayland
-    qutebrowser
   ];
 
   programs.firejail = {
@@ -20,59 +32,8 @@ in {
         profile = "${pkgs.firejail}/etc/firejail/brave.profile";
         extraArgs = [
           "--private=~/.local/firejail/brave-google"
-          # Required for U2F USB stick
           "--ignore=private-dev"
-          # Enforce dark mode
           "--env=GTK_THEME=Adwaita:dark"
-          # Enable system notifications
-          "--dbus-user.talk=org.freedesktop.Notifications"
-        ];
-      };
-
-      brave-chatgpt = {
-        executable = "${braveWayland}/bin/brave-wayland";
-        profile = "${pkgs.firejail}/etc/firejail/brave.profile";
-        extraArgs = [
-          "--private=~/.local/firejail/brave-chatgpt"
-          # Required for U2F USB stick
-          "--ignore=private-dev"
-          # Enforce dark mode
-          "--env=GTK_THEME=Adwaita:dark"
-          # Enable system notifications
-          "--dbus-user.talk=org.freedesktop.Notifications"
-        ];
-      };
-
-      brave-casual = {
-        executable = "${braveWayland}/bin/brave-wayland";
-        profile = "${pkgs.firejail}/etc/firejail/brave.profile";
-        extraArgs = [
-          "--private=~/.local/firejail/brave-casual"
-          # Required for U2F USB stick
-          "--ignore=private-dev"
-          # Enforce dark mode
-          "--env=GTK_THEME=Adwaita:dark"
-          # Enable system notifications
-          "--dbus-user.talk=org.freedesktop.Notifications"
-        ];
-      };
-
-      qute-chatgpt = {
-        executable = "${pkgs.qutebrowser}/bin/qutebrowser";
-        profile = "${pkgs.firejail}/etc/firejail/qutebrowser.profile";
-        extraArgs = [
-          "--private=~/.local/firejail/qute-chatgpt"
-          "--env=QUTE_NOIPC=1"
-          "--dbus-user.talk=org.freedesktop.Notifications"
-        ];
-      };
-
-      qute-casual = {
-        executable = "${pkgs.qutebrowser}/bin/qutebrowser";
-        profile = "${pkgs.firejail}/etc/firejail/qutebrowser.profile";
-        extraArgs = [
-          "--private=~/.local/firejail/qute-casual"
-          "--env=QUTE_NOIPC=1"
           "--dbus-user.talk=org.freedesktop.Notifications"
         ];
       };
