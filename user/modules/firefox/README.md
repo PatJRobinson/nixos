@@ -50,7 +50,9 @@ Profiles are named `personal` (default, `~/.mozilla/firefox/nix-personal`),
 `firefox -P work` / `firefox -P google`, or the **Firefox (Work)** /
 **Firefox (Google)** application entries in rofi. The Google launcher uses the
 Google G icon, tinted to the desktop palette for Softlight. It runs Firefox
-directly without Firejail and opens YouTube on startup. Cookies, tabs, history
+directly without Firejail and opens YouTube on startup. The personal profile
+opens the Dayfox start page on startup; the work profile restores its session.
+Cookies, tabs, history
 and logins are separate.
 Existing profile directories are not overwritten; Home Manager
 owns the profile registry, so add any existing profile you want to retain to

@@ -56,12 +56,14 @@
       "browser.urlbar.trimURLs" = false;
       "browser.urlbar.showSearchTerms.enabled" = false;
       "browser.startup.page" =
-        if name == "google"
+        if name == "google" || name == "personal"
         then 1
         else 3;
       "browser.startup.homepage" =
         if name == "google"
         then "https://www.youtube.com/"
+        else if name == "personal"
+        then startPageUrl
         else "about:home";
       "browser.aboutwelcome.enabled" = false;
       "browser.shell.checkDefaultBrowser" = false;
