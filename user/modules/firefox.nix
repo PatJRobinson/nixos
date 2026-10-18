@@ -55,7 +55,14 @@
       "browser.toolbars.bookmarks.visibility" = "never";
       "browser.urlbar.trimURLs" = false;
       "browser.urlbar.showSearchTerms.enabled" = false;
-      "browser.startup.page" = 3;
+      "browser.startup.page" =
+        if name == "google"
+        then 1
+        else 3;
+      "browser.startup.homepage" =
+        if name == "google"
+        then "https://www.youtube.com/"
+        else "about:home";
       "browser.aboutwelcome.enabled" = false;
       "browser.shell.checkDefaultBrowser" = false;
       "browser.newtabpage.activity-stream.showSponsored" = false;

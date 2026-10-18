@@ -17,6 +17,10 @@
   box-shadow: none;
   text-shadow: none;
 }
+/* Compensate for the built-in display's lower scale. */
+window#waybar.eDP-1 * {
+  font-size: 14px;
+}
 window#waybar {
   background: @bg;
   color: @fg;
