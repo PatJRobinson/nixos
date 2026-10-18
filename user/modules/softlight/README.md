@@ -40,6 +40,11 @@ Hyprcursor and Xcursor formats, including GTK cursor settings, at size 24.
 Hyprland hides the pointer after five seconds without movement and immediately
 on keypress; keyboard focus changes do not warp it. Move the mouse to reveal it.
 
+Waybar's `Softlight-Monochrome` icon theme uses Gruvbox Plus's transparent small
+SVG artwork at every size. Larger size aliases resolve to the same artwork so
+display scaling cannot select opaque tiles whose logos disappear when tinted.
+Icons absent from this set fall back to Gruvbox Plus or hicolor.
+
 To restore the previous appearance, set `theme = "gruvbox";` in the local
 flake's `mkHostCfg` call, rerun the activation command and log out and back in. The existing `darkMode`
 toggle controls Gruvbox's light/dark variant; Softlight always uses light mode.

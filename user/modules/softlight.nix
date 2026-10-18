@@ -41,6 +41,12 @@
     cp -r ${pkgs.gruvbox-plus-icons}/share/icons/Gruvbox-Plus-Dark/apps "$out/share/icons/Softlight-Monochrome/apps"
     chmod -R u+w "$out/share/icons/Softlight-Monochrome"
 
+    # The large variants have opaque tiles: tinting their foreground and
+    # background alike hides the logo. Use the transparent small SVG artwork
+    # at every size, including the 32/48px aliases used on scaled displays.
+    rm -rf "$out/share/icons/Softlight-Monochrome/apps/scalable"
+    ln -s 16 "$out/share/icons/Softlight-Monochrome/apps/scalable"
+
     # Reuse the original theme for everything outside application icons.
     sed -i 's/^Inherits=.*/Inherits=Gruvbox-Plus-Dark,hicolor/' "$out/share/icons/Softlight-Monochrome/index.theme"
 
