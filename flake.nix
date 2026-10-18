@@ -33,6 +33,7 @@
         flakePath,
         defaultUserName,
         gpuSupport ? null, # "nvidia | "amd" | "intel" | null
+        theme ? "softlight",
         hostParams,
         firewallCfg ? {},
         extraModules ? [],
@@ -40,7 +41,7 @@
         enableDocker ? true,
         flatpakConfig ? {enable = false;},
       }: {
-        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport hostParams firewallCfg extraModules extraPackageNames enableDocker flatpakConfig;
+        inherit hostName hardwareConfigurationFile channel flakePath defaultUserName gpuSupport theme hostParams firewallCfg extraModules extraPackageNames enableDocker flatpakConfig;
         hm =
           if channel == "26.05"
           then home-manager-26-05
@@ -104,7 +105,7 @@
               ++ extraHomeModules;
 
             extraSpecialArgs = {
-              inherit pkgs hostParams userName sshCfg gitCfg envVars;
+              inherit pkgs hostParams userName sshCfg gitCfg envVars theme;
             };
           };
     };

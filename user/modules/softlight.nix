@@ -4,7 +4,7 @@
   hostParams,
   ...
 }: let
-  # Dayfox palette, shared by the terminal, browser and desktop surfaces.
+  # Dayfox palette for browser and desktop surfaces.
   # Inspiration: https://github.com/mohsilas/softlight_rice
   p = {
     bg = "f6f2ee";
@@ -53,7 +53,10 @@ in {
     {
       "wallpapers/".source = lib.mkForce wallpaper;
       ".config/ghostty/config".text = lib.mkForce ''
-        theme = Dayfox
+        # Keep the Softlight background, with the previous Gruvbox Light Hard
+        # foreground and ANSI palette for terminal text.
+        theme = Gruvbox Light Hard
+        background = #f6f2ee
         font-family = JetBrainsMono Nerd Font
         font-size = 12
         background-opacity = 1

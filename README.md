@@ -69,6 +69,7 @@ Defines system parameters:
   channel = "25.11" | "unstable";
   flakePath = self.outPath;
   gpuSupport = "nvidia" | "amd" | "intel" | null;
+  theme = "softlight"; # optional; defaults to "softlight", or use "gruvbox"
 
   hostParams = {
     wm.type = "hypr";

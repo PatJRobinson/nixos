@@ -6,10 +6,11 @@ Dayfox, a bright desktop with a shadow background, and a light launcher.
 The individual upstream configuration files were unavailable during adaptation;
 spacing, rounding and the original SVG wallpaper are approximations.
 
-Select the theme near the top of `user/home.nix`:
+Select the theme in the local flake's `mkHostCfg` call. It defaults to
+`softlight`:
 
 ```nix
-theme = "softlight"; # "gruvbox" (old) or "softlight" (new)
+theme = "gruvbox"; # optional override; defaults to "softlight"
 ```
 
 From the local `config` directory, activate with:
@@ -31,6 +32,6 @@ The existing display layout, bindings, window rules, startup commands,
 Waybar modules and actions, shell functions, application choices and services
 are retained. The wallpaper still uses the existing random-wallpaper script.
 
-To restore the previous appearance, set `theme = "gruvbox";` in `user/home.nix`,
-rerun the activation command and log out and back in. The existing `darkMode`
+To restore the previous appearance, set `theme = "gruvbox";` in the local
+flake's `mkHostCfg` call, rerun the activation command and log out and back in. The existing `darkMode`
 toggle controls Gruvbox's light/dark variant; Softlight always uses light mode.

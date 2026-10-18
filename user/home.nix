@@ -6,11 +6,11 @@
   sshCfg ? {},
   gitCfg ? {},
   envVars ? {},
+  theme ? "softlight",
   ...
 }: let
   wm = hostParams.wm;
 
-  theme = "softlight"; # "gruvbox" (old) or "softlight" (new)
   softlight = theme == "softlight";
 
   neovimLocal = false;
