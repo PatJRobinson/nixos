@@ -1,0 +1,17 @@
+(defwindow date [screen x y today_day today_month today_year today_label]
+  :monitor screen
+  :geometry (geometry :x x :y y :width "320px" :height "1px" :anchor "top center")
+  :stacking "overlay"
+  :exclusive false
+  :focusable "ondemand"
+  :namespace "eww-calendar"
+  (box :class "calendar-card" :orientation "vertical" :space-evenly false :spacing 12
+    (box :class "calendar-header" :space-evenly false
+      (label :class "calendar-title" :text "Calendar" :halign "start" :hexpand true)
+      (button :class "calendar-close" :tooltip "Close calendar (Alt+A)"
+              :onclick "calendar-toggle --close" "×"))
+    (label :class "calendar-today" :text today_label :halign "start")
+    (calendar :class "calendar-grid"
+              :day today_day :month today_month :year today_year
+              :show-heading true :show-day-names true :show-week-numbers true)
+    (label :class "calendar-hint" :text "Alt+A to close" :halign "end")))

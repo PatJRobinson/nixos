@@ -123,7 +123,7 @@
     "format": "{:%I:%M %p}",
     "format-alt": "{:%m-%d-%Y}",
     "tooltip": false,
-    "on-click": "eww open date --toggle",
+    "on-click": "calendar-toggle --pointer",
     "on-click-right": "mode"
   },
 
