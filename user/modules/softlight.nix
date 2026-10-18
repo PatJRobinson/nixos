@@ -155,14 +155,14 @@ in {
       ".config/hypr/hyprland.conf".text = lib.mkAfter ''
         # Softlight appearance; existing monitors, layouts, rules and bindings above.
         general {
-            gaps_in = 8
-            gaps_out = 18
+            gaps_in = 0
+            gaps_out = 0
             border_size = 1
             col.active_border = rgb(${p.border})
             col.inactive_border = rgb(${p.surface})
         }
         decoration {
-            rounding = 14
+            rounding = 0
             shadow {
                 enabled = true
                 range = 28

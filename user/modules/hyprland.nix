@@ -91,8 +91,8 @@ in {
     # https://wiki.hyprland.org/Configuring/Variables/#general
     general {
 
-        gaps_in = 5
-        gaps_out = 20
+        gaps_in = 0
+        gaps_out = 0
 
         border_size = 2
 
@@ -111,7 +111,7 @@ in {
 
     # https://wiki.hyprland.org/Configuring/Variables/#decoration
     decoration {
-        rounding = 5
+        rounding = 0
         rounding_power = 2
 
         # Change transparency of focused and unfocused windows
