@@ -8,11 +8,16 @@ Run `zsh` for the original Powerlevel10k setup, including its existing history
 and fzf history search. Use `exit` to return to Bash.
 
 Starship recreates the transparent Powerlevel10k layout, Nerd Font icons,
-green/red prompt character, Git indicators, right-side context and clock.
+green/red prompt character and Git indicators.
 Directory shortening and Git formatting approximate Powerlevel10k.
-ble.sh supplies highlighting, history suggestions and completion menus.
+The compiled bash-autosuggestions builtin supplies inline history suggestions.
 Use Right at the end of the line to accept a suggestion, Tab for completion,
-and Ctrl-R for fzf history search.
+Ctrl-R for fzf history search, and Up/Down to search history by prefix.
+Path completion uses fzf without a `**` suffix: for example, `cd gen` followed
+by Tab searches for matching directories such as `config-generator`.
+A single match completes automatically; multiple matches open the picker.
+This uses Bash's normal Readline editor. The former ble.sh syntax highlighting,
+completion menus, transient prompt and right-side prompt are no longer active.
 
 The existing fzf, direnv, lsd and Yazi Home Manager modules also integrate with
 Bash. Custom functions live in functions.sh and are shared with Zsh.

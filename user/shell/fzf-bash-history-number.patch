@@ -1,0 +1,21 @@
+--- a/shell/key-bindings.bash
++++ b/shell/key-bindings.bash
+@@ -92,13 +92,16 @@
+ 
+ if command -v perl > /dev/null; then
+   __fzf_history__() {
+-    local output script deletefile
++    local output script deletefile last_hist
++    # Only export the history number; the command may exceed Linux's env limit.
++    [[ $(HISTTIMEFORMAT='' builtin history 1) =~ [[:digit:]]+ ]]
++    last_hist=$BASH_REMATCH
+     deletefile=$(mktemp)
+     script='BEGIN { getc; $/ = "\n\t"; $HISTCOUNT = $ENV{last_hist} + 1 } s/^[ *]//; s/\n/\n\t/gm; print $HISTCOUNT - $. . "\t$_" if !$seen{$_}++'
+     output=$(
+       set +o pipefail
+       builtin fc -lnr -2147483648 |
+-        last_hist=$(HISTTIMEFORMAT='' builtin history 1) command perl -n -l0 -e "$script" |
++        last_hist=$last_hist command perl -n -l0 -e "$script" |
+         FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '"$'\t'"↳ ' --highlight-line --bind 'shift-delete:execute-silent(cat {+f1} >> \"$deletefile\")+exclude-multi' --multi ${FZF_CTRL_R_OPTS-} --read0") \
+         FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd) --query "$READLINE_LINE"
+     )

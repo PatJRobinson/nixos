@@ -1,16 +1,18 @@
-{lib, pkgs, ...}: {
+{lib, pkgs, ...}: let
+  bashAutosuggestions = pkgs.callPackage ./bash-autosuggestions.nix {};
+in {
+  # Patch both the installed bindings and those embedded in `fzf --bash`.
+  programs.fzf.package = pkgs.fzf.overrideAttrs (old: {
+    patches = (old.patches or []) ++ [../shell/fzf-bash-history-number.patch];
+  });
+
   # Interactive Bash setup; retain the original Zsh configuration as a fallback.
   programs.bash = {
     enable = true;
     enableCompletion = true;
     historySize = 10000;
     historyFileSize = 10000;
-    historyControl = ["ignoredups" "ignorespace"];
-    bashrcExtra = ''
-      if [[ $- == *i* && $TERM != dumb && -t 0 && -t 1 ]]; then
-        source ${pkgs.blesh}/share/blesh/ble.sh --attach=none
-      fi
-    '';
+    historyControl = ["erasedups" "ignorespace"];
     initExtra = lib.mkMerge [
       ''
         source ${../shell/functions.sh}
@@ -28,26 +30,25 @@
           history -n
         }
         PROMPT_COMMAND+=(_bash_trial_history_sync)
-        if [[ -n ''${GHOSTTY_RESOURCES_DIR:-} ]]; then
-          source "$GHOSTTY_RESOURCES_DIR/shell-integration/bash/ghostty.bash"
-        fi
+        # Fuzzy path completion on Tab without requiring the ** suffix.
+        FZF_COMPLETION_TRIGGER=""
+        FZF_COMPLETION_OPTS="''${FZF_COMPLETION_OPTS:+$FZF_COMPLETION_OPTS }--select-1"
       ''
       (lib.mkOrder 2000 ''
-        if [[ -n ''${BLE_VERSION:-} ]]; then
-          ble-attach
+        if [[ $- == *i* && $TERM != dumb && -t 0 && -t 1 ]]; then
+          BASH_AUTOSUGGEST_STRATEGY=history
+          BASH_AUTOSUGGEST_USE_ASYNC=auto
+          BASH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
+          if enable -f ${bashAutosuggestions}/lib/bash-autosuggestions.so bash_autosuggestions; then
+            builtin bash_autosuggestions enable
+          fi
         fi
+        # Cycle through history entries matching the text before the cursor.
+        bind '"\e[A": history-search-backward'
+        bind '"\e[B": history-search-forward'
       '')
     ];
   };
-
-  xdg.configFile."blesh/init.sh".text = ''
-    bleopt complete_auto_complete=1
-    bleopt complete_auto_history=1
-    ble-face -s auto_complete fg=242
-    bleopt prompt_ps1_transient=always
-    bleopt prompt_ps1_final='$(starship module character)'
-    bleopt prompt_rps1_final=
-  '';
 
   programs.starship = {
     enable = true;
