@@ -9,7 +9,9 @@
   ...
 }: let
   wm = hostParams.wm;
-  softlight = (wm.theme or "gruvbox") == "softlight";
+
+  theme = "softlight"; # "gruvbox" (old) or "softlight" (new)
+  softlight = theme == "softlight";
 
   neovimLocal = false;
 

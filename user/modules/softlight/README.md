@@ -6,17 +6,18 @@ Dayfox, a bright desktop with a shadow background, and a light launcher.
 The individual upstream configuration files were unavailable during adaptation;
 spacing, rounding and the original SVG wallpaper are approximations.
 
-Select it in the local driver's `hostParams.wm`:
+Select the theme near the top of `user/home.nix`:
 
 ```nix
-theme = "softlight";
+theme = "softlight"; # "gruvbox" (old) or "softlight" (new)
 ```
 
 From the local `config` directory, activate with:
 
 ```sh
-nix flake update config-builder
-home-manager switch --flake '.#paddy@pj-laptop'
+home-manager switch \
+  --flake 'path:.#paddy@pj-laptop' \
+  --override-input config-builder 'path:../config-generator'
 ```
 
 Log out of Hyprland and back in to refresh session environment variables,
@@ -30,5 +31,6 @@ The existing display layout, bindings, window rules, startup commands,
 Waybar modules and actions, shell functions, application choices and services
 are retained. The wallpaper still uses the existing random-wallpaper script.
 
-To restore the previous appearance, remove `theme = "softlight";` from the
-driver, rerun the two commands and log out and back in.
+To restore the previous appearance, set `theme = "gruvbox";` in `user/home.nix`,
+rerun the activation command and log out and back in. The existing `darkMode`
+toggle controls Gruvbox's light/dark variant; Softlight always uses light mode.
