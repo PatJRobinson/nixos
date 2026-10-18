@@ -2,6 +2,7 @@
   lib,
   pkgs,
   hostParams,
+  config,
   ...
 }: let
   # Dayfox palette for browser and desktop surfaces.
@@ -46,6 +47,7 @@ in {
     };
     gtk3.extraConfig.gtk-application-prefer-dark-theme = false;
     gtk4.extraConfig.gtk-application-prefer-dark-theme = false;
+    gtk4.theme = config.gtk.theme;
   };
   dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-light";
 
