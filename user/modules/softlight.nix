@@ -158,16 +158,13 @@ in {
             gaps_in = 0
             gaps_out = 0
             border_size = 1
-            col.active_border = rgb(${p.border})
+            col.active_border = rgb(${p.fg})
             col.inactive_border = rgb(${p.surface})
         }
         decoration {
             rounding = 0
             shadow {
-                enabled = true
-                range = 28
-                render_power = 3
-                color = rgba(352c2426)
+                enabled = false
             }
         }
       '';
