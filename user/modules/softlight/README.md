@@ -34,6 +34,12 @@ are retained. Hyprpaper receives its selected wallpaper through a generated
 startup config; the random-wallpaper script remains available for manual
 changes. See [wallpaper startup](../hyprpaper/README.md).
 
+The `Softlight-Purple` cursor theme tints Rosé Pine's vector cursor artwork to
+the foreground purple with a cream outline. Home Manager installs both
+Hyprcursor and Xcursor formats, including GTK cursor settings, at size 24.
+Hyprland hides the pointer after five seconds without movement and immediately
+on keypress; keyboard focus changes do not warp it. Move the mouse to reveal it.
+
 To restore the previous appearance, set `theme = "gruvbox";` in the local
 flake's `mkHostCfg` call, rerun the activation command and log out and back in. The existing `darkMode`
 toggle controls Gruvbox's light/dark variant; Softlight always uses light mode.

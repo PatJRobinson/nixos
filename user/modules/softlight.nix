@@ -25,6 +25,11 @@
     mkdir -p "$out"
     rsvg-convert -w 3840 -h 2160 ${./softlight/wallpaper.svg} -o "$out/softlight.png"
   '';
+  cursorTheme = import ./softlight/cursor.nix {
+    inherit pkgs;
+    foreground = p.fg;
+    outline = p.bg;
+  };
   waybarIcons = pkgs.runCommand "softlight-waybar-icons" {
     nativeBuildInputs = [pkgs.imagemagick pkgs.gtk3 pkgs.perl];
     propagatedBuildInputs = [pkgs.gruvbox-plus-icons];
@@ -75,6 +80,14 @@ in {
     NVIM_COLOURSCHEME = "dayfox";
   };
   home.packages = [pkgs.nerd-fonts.jetbrains-mono waybarIcons];
+  home.pointerCursor = {
+    enable = true;
+    package = cursorTheme;
+    name = "Softlight-Purple";
+    size = 24;
+    gtk.enable = true;
+    hyprcursor.enable = true;
+  };
   # Lazy resets runtimepath/packpath, hiding Home Manager's plugin directory.
   # It retains stdpath("data")/site: expose the theme there so both the existing
   # NVIM_COLOURSCHEME hook and Telescope's colorscheme picker can find it.
@@ -153,6 +166,8 @@ in {
           (builtins.readFile ../waybar/config)
       ));
       ".config/hypr/hyprland.conf".text = lib.mkAfter ''
+        env = HYPRCURSOR_THEME,Softlight-Purple
+        env = XCURSOR_THEME,Softlight-Purple
         # Softlight appearance; existing monitors, layouts, rules and bindings above.
         general {
             gaps_in = 0

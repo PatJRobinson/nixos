@@ -63,6 +63,14 @@ in {
     env = XCURSOR_SIZE,24
     env = HYPRCURSOR_SIZE,24
 
+    cursor {
+        inactive_timeout = 5
+        hide_on_key_press = true
+        no_warps = true
+        warp_on_change_workspace = 0
+        warp_on_toggle_special = 0
+    }
+
 
     ###################
     ### PERMISSIONS ###
