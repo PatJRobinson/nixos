@@ -14,6 +14,7 @@
       fg = "#3d2b5a";
       muted = "#837a72";
       surface = "#e4dcd4";
+      selected = "#e7d2be";
       border = "#d3c7bb";
     }
     else if darkMode
@@ -22,6 +23,7 @@
       fg = "#ebdbb2";
       muted = "#928374";
       surface = "#3c3836";
+      selected = "#504945";
       border = "#504945";
     }
     else {
@@ -29,6 +31,7 @@
       fg = "#3c3836";
       muted = "#7c6f64";
       surface = "#ebdbb2";
+      selected = "#d5c4a1";
       border = "#d5c4a1";
     };
   toggle = pkgs.writeShellApplication {
@@ -44,7 +47,7 @@ in {
   home.packages = [pkgs.eww toggle];
   xdg.configFile."eww-calendar/eww.yuck".source = ./calendar/eww.yuck;
   xdg.configFile."eww-calendar/eww.scss".text =
-    builtins.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "$${name}: ${value};") palette)
+    builtins.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "$" + name + ": ${value};") palette)
     + "\n"
     + builtins.readFile ./calendar/eww.scss;
 

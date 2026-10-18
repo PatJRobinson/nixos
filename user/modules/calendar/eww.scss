@@ -39,5 +39,5 @@ window { background: transparent; }
 .calendar-grid.button:hover { background: $surface; }
 .calendar-grid.highlight { color: $muted; }
 .calendar-grid:indeterminate { color: $muted; }
-.calendar-grid:selected { background: $fg; color: $bg; }
+.calendar-grid:selected { background: $selected; color: $fg; }
 
