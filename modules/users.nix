@@ -3,8 +3,7 @@
   pkgs,
   ...
 }: {
-  # default shell set at the system level, package needs to be
-  # available
+  # Keep Zsh available as an alternative with its existing Home Manager config.
   programs.zsh.enable = true;
 
   users.groups.library = {};
@@ -13,7 +12,7 @@
     isNormalUser = true;
     description = "Main user";
     extraGroups = ["networkmanager" "wheel" "docker" "video" "library"];
-    shell = pkgs.zsh;
+    shell = pkgs.bashInteractive;
   };
 
   users.users.kavita.extraGroups = ["library"];
