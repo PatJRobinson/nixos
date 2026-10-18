@@ -1,8 +1,9 @@
 [Desktop Entry]
 Type=Application
 Name=Brave (Google)
-Exec=brave-google %U
-Icon=brave-browser
+Exec=brave-google --class=brave-google %U
+Icon=brave-google
 Categories=Network;WebBrowser;
 Terminal=false
 StartupNotify=true
+StartupWMClass=brave-google

@@ -25,12 +25,56 @@
     mkdir -p "$out"
     rsvg-convert -w 3840 -h 2160 ${./softlight/wallpaper.svg} -o "$out/softlight.png"
   '';
+  waybarIcons = pkgs.runCommand "softlight-waybar-icons" {
+    nativeBuildInputs = [pkgs.imagemagick pkgs.gtk3 pkgs.perl];
+    propagatedBuildInputs = [pkgs.gruvbox-plus-icons];
+  } ''
+    mkdir -p "$out/share/icons/Softlight-Monochrome"
+    cp ${pkgs.gruvbox-plus-icons}/share/icons/Gruvbox-Plus-Dark/index.theme "$out/share/icons/Softlight-Monochrome/"
+    # Keep the theme's relative alias symlinks; dereferencing them recursively
+    # expands the 5,127 source SVGs into more than 90,000 copies.
+    cp -r ${pkgs.gruvbox-plus-icons}/share/icons/Gruvbox-Plus-Dark/apps "$out/share/icons/Softlight-Monochrome/apps"
+    chmod -R u+w "$out/share/icons/Softlight-Monochrome"
+
+    # Reuse the original theme for everything outside application icons.
+    sed -i 's/^Inherits=.*/Inherits=Gruvbox-Plus-Dark,hicolor/' "$out/share/icons/Softlight-Monochrome/index.theme"
+
+    # Preserve icon alpha while replacing each raster icon's color with Softlight's foreground.
+    raster_icons="$out/share/icons/Softlight-Monochrome"
+    raster_total=$(find "$raster_icons" -type f \( -iname '*.png' -o -iname '*.webp' -o -iname '*.xpm' \) | wc -l)
+    echo "Recoloring $raster_total raster app icons"
+    raster_count=0
+    find "$raster_icons" -type f \( -iname '*.png' -o -iname '*.webp' -o -iname '*.xpm' \) -print0 |
+      while IFS= read -r -d $'\0' icon; do
+        magick "$icon" -channel RGB -fill '#3d2b5a' -colorize 100 "$icon"
+        raster_count=$((raster_count + 1))
+        if (( raster_count % 50 == 0 || raster_count == raster_total )); then
+          echo "Recolored $raster_count/$raster_total raster app icons"
+        fi
+      done
+
+    # Keep SVGs scalable while replacing their explicit fill and stroke colors.
+    svg_total=$(find "$out/share/icons/Softlight-Monochrome" -type f -iname '*.svg' | wc -l)
+    echo "Recoloring $svg_total scalable app icons"
+    find "$out/share/icons/Softlight-Monochrome" -type f -iname '*.svg' -print0 |
+      xargs -0 -r -n 256 perl -0pi -e 's/\b(fill|stroke|stop-color|color)="(?!none\b|currentColor\b|url\()[^"]+"/$1="#3d2b5a"/gi; s/\b(fill|stroke|stop-color|color)\s*:\s*(?!none\b|currentColor\b|url\()[^;}]+/$1:#3d2b5a/gi'
+    echo "Recolored $svg_total/$svg_total scalable app icons"
+
+    # A transparent G keeps its shape when tinted, unlike the icon pack's tile.
+    for size in 16 scalable; do
+      sed 's/#4285f4/#${p.fg}/g' ${./application-icons/brave-google.svg} \
+        > "$out/share/icons/Softlight-Monochrome/apps/$size/brave-google.svg"
+    done
+
+    sed -i 's/^Name=.*/Name=Softlight Monochrome/' "$out/share/icons/Softlight-Monochrome/index.theme"
+    gtk-update-icon-cache -f "$out/share/icons/Softlight-Monochrome"
+  '';
 in {
   home.sessionVariables = {
     NVIM_DARK_MODE = lib.mkForce "0";
     NVIM_COLOURSCHEME = "dayfox";
   };
-  home.packages = [pkgs.nerd-fonts.jetbrains-mono];
+  home.packages = [pkgs.nerd-fonts.jetbrains-mono waybarIcons];
   # Lazy resets runtimepath/packpath, hiding Home Manager's plugin directory.
   # It retains stdpath("data")/site: expose the theme there so both the existing
   # NVIM_COLOURSCHEME hook and Telescope's colorscheme picker can find it.
@@ -99,8 +143,15 @@ in {
     }
     // lib.optionalAttrs (hostParams.wm.type == "hypr") {
       ".config/rofi".source = lib.mkForce ./softlight/rofi;
+      ".local/share/icons/hicolor/scalable/apps/brave-google.svg".source = lib.mkForce "${waybarIcons}/share/icons/Softlight-Monochrome/apps/scalable/brave-google.svg";
       # Keep every Waybar module, click action and script in the original config.
       ".config/waybar/style.css".source = lib.mkForce ./softlight/waybar.css;
+      ".config/waybar/config".source = lib.mkForce (pkgs.writeText "waybar-softlight-config" (
+        builtins.replaceStrings
+          ["\"icon-theme\": \"Gruvbox-Plus-Dark\""]
+          ["\"icon-theme\": \"Softlight-Monochrome\""]
+          (builtins.readFile ../waybar/config)
+      ));
       ".config/hypr/hyprland.conf".text = lib.mkAfter ''
         # Softlight appearance; existing monitors, layouts, rules and bindings above.
         general {

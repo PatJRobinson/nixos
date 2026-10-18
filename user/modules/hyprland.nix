@@ -276,7 +276,8 @@ in {
     bind = $mainMod, bracketleft, layoutmsg, swapprev
     bind = $mainMod, bracketright, layoutmsg, swapnext
 
-    # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
+    bind = $mainMod, B, exec, pkill -SIGUSR1 waybar
+
     bind = $mainMod, d, exec, rofi -show drun
     bind = $mainMod, w, exec, rofi -show window
     bind = $mainMod SHIFT, L, exec, hyprlock

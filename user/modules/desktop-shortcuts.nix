@@ -10,5 +10,10 @@
     value.source = srcDir + "/${name}";
   };
 in {
-  home.file = lib.listToAttrs (map mkEntry desktopFiles);
+  home.file =
+    lib.listToAttrs (map mkEntry desktopFiles)
+    // {
+      ".local/share/icons/hicolor/scalable/apps/brave-google.svg".source =
+        ./application-icons/brave-google.svg;
+    };
 }
