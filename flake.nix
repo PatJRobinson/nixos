@@ -9,6 +9,8 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    flyline.url = "github:HalFrgrd/flyline";
+    flyline.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nix-flatpak.url = "github:gmodena/nix-flatpak/";
 
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
@@ -20,6 +22,7 @@
     home-manager-26-05,
     nixpkgs-unstable,
     home-manager-unstable,
+    flyline,
     nix-flatpak,
     determinate,
   }: let
@@ -106,6 +109,7 @@
 
             extraSpecialArgs = {
               inherit pkgs hostParams userName sshCfg gitCfg envVars theme;
+              flylinePackage = flyline.packages.${system}.flyline;
             };
           };
     };

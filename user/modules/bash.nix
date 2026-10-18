@@ -1,6 +1,4 @@
-{lib, pkgs, ...}: let
-  bashAutosuggestions = pkgs.callPackage ./bash-autosuggestions.nix {};
-in {
+{lib, pkgs, flylinePackage, ...}: {
   # Patch both the installed bindings and those embedded in `fzf --bash`.
   programs.fzf.package = pkgs.fzf.overrideAttrs (old: {
     patches = (old.patches or []) ++ [../shell/fzf-bash-history-number.patch];
@@ -25,22 +23,30 @@ in {
           history -c
           history -r
         }
-        _bash_trial_history_sync() {
+        _bash_history_sync() {
           history -a
           history -n
         }
-        PROMPT_COMMAND+=(_bash_trial_history_sync)
-        # Fuzzy path completion on Tab without requiring the ** suffix.
-        FZF_COMPLETION_TRIGGER=""
+        PROMPT_COMMAND+=(_bash_history_sync)
+        # Flyline provides native fuzzy Tab completion; ** explicitly invokes fzf.
+        FZF_COMPLETION_TRIGGER="**"
         FZF_COMPLETION_OPTS="''${FZF_COMPLETION_OPTS:+$FZF_COMPLETION_OPTS }--select-1"
       ''
       (lib.mkOrder 2000 ''
         if [[ $- == *i* && $TERM != dumb && -t 0 && -t 1 ]]; then
-          BASH_AUTOSUGGEST_STRATEGY=history
-          BASH_AUTOSUGGEST_USE_ASYNC=auto
-          BASH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
-          if enable -f ${bashAutosuggestions}/lib/bash-autosuggestions.so bash_autosuggestions; then
-            builtin bash_autosuggestions enable
+          if enable -f ${flylinePackage}/lib/libflyline.so flyline; then
+            flyline mouse --mode disabled
+            # Use the terminal's normal cursor instead of Flyline's fading animation.
+            flyline set-cursor --backend terminal
+            flyline suggestions --auto-suggest false --auto-suggest-inline true
+            # Preserve the fzf shortcuts across the editor replacement.
+            _flyline_fzf_cd() {
+              local cmd
+              cmd=$(__fzf_cd__) && READLINE_LINE="$cmd" READLINE_POINT=''${#cmd}
+            }
+            flyline key bind Ctrl+r 'always=runBashCommand(__fzf_history__)'
+            flyline key bind Ctrl+t 'always=runBashCommand(fzf-file-widget)'
+            flyline key bind Alt+c 'always=runBashCommand(_flyline_fzf_cd)+submitOrNewline'
           fi
         fi
         # Cycle through history entries matching the text before the cursor.

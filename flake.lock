@@ -111,6 +111,26 @@
         "url": "https://flakehub.com/f/hercules-ci/flake-parts/0.1"
       }
     },
+    "flyline": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792335778,
+        "narHash": "sha256-JtJTTgdeppwBDipsli1o7/g0UsF4ruN7aoK1C299XWU=",
+        "owner": "HalFrgrd",
+        "repo": "flyline",
+        "rev": "219fc72abc805882bfaef6d6899d182486aacdf3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "HalFrgrd",
+        "repo": "flyline",
+        "type": "github"
+      }
+    },
     "git-hooks-nix": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -306,6 +326,7 @@
     "root": {
       "inputs": {
         "determinate": "determinate",
+        "flyline": "flyline",
         "home-manager-26-05": "home-manager-26-05",
         "home-manager-unstable": "home-manager-unstable",
         "nix-flatpak": "nix-flatpak",

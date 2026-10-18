@@ -301,7 +301,7 @@ in {
     ++ pkgs.lib.optional softlight ./modules/softlight.nix
     ++ pkgs.lib.optionals (wm.type == "hypr") [
       (import ./modules/notifications.nix {inherit theme darkMode;})
-      ./modules/bash-trial.nix
+      ./modules/bash.nix
       (import ./modules/calendar.nix {inherit theme darkMode;})
       ./modules/battery-warning.nix
       ./modules/hyprpaper.nix

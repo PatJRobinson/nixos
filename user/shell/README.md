@@ -10,14 +10,14 @@ and fzf history search. Use `exit` to return to Bash.
 Starship recreates the transparent Powerlevel10k layout, Nerd Font icons,
 green/red prompt character and Git indicators.
 Directory shortening and Git formatting approximate Powerlevel10k.
-The compiled bash-autosuggestions builtin supplies inline history suggestions.
+Flyline supplies highlighting, inline history suggestions and native fuzzy Tab
+completion. Mouse capture is disabled, and the cursor uses the terminal's normal
+rendering instead of Flyline's fading animation.
 Use Right at the end of the line to accept a suggestion, Tab for completion,
 Ctrl-R for fzf history search, and Up/Down to search history by prefix.
-Path completion uses fzf without a `**` suffix: for example, `cd gen` followed
-by Tab searches for matching directories such as `config-generator`.
-A single match completes automatically; multiple matches open the picker.
-This uses Bash's normal Readline editor. The former ble.sh syntax highlighting,
-completion menus, transient prompt and right-side prompt are no longer active.
+For example, `cd gen` followed by Tab searches for matching directories such
+as `config-generator`. Ctrl-R, Ctrl-T and Alt-C retain their fzf actions.
+In Flyline, `**` explicitly requests fzf completion instead of the native menu.
 
 The existing fzf, direnv, lsd and Yazi Home Manager modules also integrate with
 Bash. Custom functions live in functions.sh and are shared with Zsh.
