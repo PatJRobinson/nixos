@@ -418,6 +418,7 @@ in {
     ]
     ++ pkgs.lib.optional softlight ./modules/softlight.nix
     ++ pkgs.lib.optionals (wm.type == "hypr") [
+      (import ./modules/notifications.nix {inherit theme darkMode;})
       ./modules/battery-warning.nix
       (import ./modules/hyprland.nix {displayParams = wm.displayParams;})
       (import ./modules/visualisation.nix)
