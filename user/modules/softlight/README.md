@@ -30,7 +30,9 @@ that already implements `NVIM_COLOURSCHEME`.
 
 The existing display layout, bindings, window rules, startup commands,
 Waybar modules and actions, shell functions, application choices and services
-are retained. The wallpaper still uses the existing random-wallpaper script.
+are retained. Hyprpaper receives its selected wallpaper through a generated
+startup config; the random-wallpaper script remains available for manual
+changes. See [wallpaper startup](../hyprpaper/README.md).
 
 To restore the previous appearance, set `theme = "gruvbox";` in the local
 flake's `mkHostCfg` call, rerun the activation command and log out and back in. The existing `darkMode`

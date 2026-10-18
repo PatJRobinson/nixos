@@ -186,19 +186,6 @@ in {
       };
   };
 
-  # systemd.user.services.set-random-wallpaper = {
-  #   Unit = {
-  #     Description = "Set random wallpaper (after hyprpaper)";
-  #     After = ["hyprpaper.service"];
-  #     Wants = ["hyprpaper.service"];
-  #   };
-  #
-  #   Service = {
-  #     Type = "oneshot";
-  #     ExecStart = "${pkgs.bash}/bin/bash -lc 'systemctl --user start hyprpaper.service; systemctl --user is-active --quiet hyprpaper.service; %h/.local/bin/set-random-wallpaper.sh'";
-  #   };
-  # };
-
   systemd.user.services.pipewire = {
     Unit = {Description = "PipeWire Multimedia Service";};
     Service = {
@@ -420,6 +407,7 @@ in {
     ++ pkgs.lib.optionals (wm.type == "hypr") [
       (import ./modules/notifications.nix {inherit theme darkMode;})
       ./modules/battery-warning.nix
+      ./modules/hyprpaper.nix
       (import ./modules/hyprland.nix {displayParams = wm.displayParams;})
       (import ./modules/visualisation.nix)
     ];
@@ -427,7 +415,6 @@ in {
   services =
     if (wm.type == "hypr")
     then {
-      hyprpaper.enable = true;
       hyprsunset.enable = true;
     }
     else {};

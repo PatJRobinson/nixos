@@ -52,16 +52,7 @@ in {
     ### AUTOSTART ###
     #################
 
-    # exec-once = sh -lc 'systemctl --user start hyprpaper.service; eglinfo >/dev/null 2>&1 || true'
-    exec-once = hyprpaper
-    exec-once = sh -lc 'for i in $(seq 1 50); do hyprctl hyprpaper listactive >/dev/null 2>&1 && break; sleep 0.1; done; /home/paddy/.local/bin/set-random-wallpaper.sh'
-
-    # exec-once = /home/paddy/.local/bin/set-random-wallpaper.sh
     exec-once = waybar
-
-
-    # make sure wayland properly loads, then restart these services
-    #exec-once = systemctl --user start waybar.service hyprpaper.service
 
     #############################
     ### ENVIRONMENT VARIABLES ###
@@ -377,9 +368,6 @@ in {
 
   '';
 
-  home.file.".config/hypr/hyprpaper.conf".text = ''
-    # empty config so hyprpaper doesn’t crash
-  '';
   home.file.".config/hypr/hyprlock.conf".source = ./hypr/hyprlock.conf;
   home.file.".config/hypr/hyprsunset.conf".source = ./hypr/hyprsunset.conf;
 }

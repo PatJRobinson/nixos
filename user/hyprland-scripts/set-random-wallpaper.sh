@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-WALLPAPER_DIR="$HOME/wallpapers"
+WALLPAPER_DIR="$(readlink -f "$HOME/wallpapers")"
 
 mapfile -d '' WALLPAPERS < <(find -L "$WALLPAPER_DIR" -type f -print0)
 
@@ -12,7 +12,7 @@ if (( WALLPAPER_COUNT == 0 )); then
   exit 1
 fi
 
-CURRENT_WALL="$(hyprctl hyprpaper listloaded 2>/dev/null | head -n 1 || true)"
+CURRENT_WALL="$(hyprctl hyprpaper listactive 2>/dev/null | sed -n '1s/^[^:]*: //p' || true)"
 
 if (( WALLPAPER_COUNT == 1 )); then
   WALLPAPER="${WALLPAPERS[0]}"
