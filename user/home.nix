@@ -296,7 +296,7 @@ in {
 
   imports =
     [
-      ./modules/desktop-shortcuts.nix
+      ./modules/firefox.nix
     ]
     ++ pkgs.lib.optional softlight ./modules/softlight.nix
     ++ pkgs.lib.optionals (wm.type == "hypr") [

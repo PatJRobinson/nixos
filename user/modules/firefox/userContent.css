@@ -1,0 +1,7 @@
+/* Only browser-owned pages: do not recolour the websites being visited. */
+@-moz-document url("about:blank"), url("about:newtab"), url("about:home") {
+  :root, body {
+    background: @background@ !important;
+    color: @foreground@ !important;
+  }
+}

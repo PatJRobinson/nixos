@@ -1,0 +1,3 @@
+! Custom uBlock Origin filters managed by Home Manager.
+! Add one rule per line here and restart Firefox after rebuilding.
+! YouTube interface cleanup is handled by Unhook, not duplicate filters here.

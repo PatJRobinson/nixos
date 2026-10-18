@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <title>Start</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "JetBrainsMono Nerd Font", monospace;
+      color: @foreground@;
+      background: @background@;
+      font-size: 14px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; }
+    main { width: min(36rem, 100%); padding: 3rem 2rem; }
+    h1 { margin: 0 0 2rem; font-size: 1.25rem; font-weight: 500; }
+    form { display: flex; border-bottom: 1px solid @border@; }
+    input, button { font: inherit; color: inherit; background: transparent; border: 0; }
+    input { min-width: 0; flex: 1; padding: 0.75rem 0; }
+    input::placeholder { color: @muted@; }
+    button { padding: 0.75rem 0.5rem; cursor: pointer; color: @blue@; }
+    nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem 1.5rem; margin: 2rem 0 3rem; }
+    a { color: inherit; padding: 0.5rem 0; text-decoration: none; }
+    a:hover { color: @blue@; }
+    :focus-visible { outline: 1px solid @blue@; outline-offset: 4px; }
+    input:focus-visible { outline: 0; }
+    form:focus-within { border-color: @blue@; }
+    footer { color: @muted@; font-size: 0.75rem; line-height: 2; }
+    kbd { font: inherit; color: @foreground@; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    @media (max-width: 360px) { nav { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>start</h1>
+    <form action="https://duckduckgo.com/" method="get" role="search">
+      <label class="sr-only" for="query">Search DuckDuckGo</label>
+      <input id="query" name="q" type="search" placeholder="search the web" autocomplete="off">
+      <button type="submit" aria-label="Search">↵</button>
+    </form>
+    <nav aria-label="Shortcuts">
+      @shortcuts@
+    </nav>
+    <footer><kbd>o</kbd> open &nbsp; <kbd>O</kbd> new tab &nbsp; <kbd>f</kbd> follow &nbsp; <kbd>J</kbd>/<kbd>K</kbd> switch tabs</footer>
+  </main>
+</body>
+</html>

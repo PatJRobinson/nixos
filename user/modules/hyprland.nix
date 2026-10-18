@@ -285,8 +285,7 @@ in {
     bind = $moonlightMod SHIFT, t, exec, $terminal
     bind = $mainMod SHIFT, f, exec, firefox
     bind = $mainMod SHIFT, c, exec, ungoogled-chromium-wayland
-    #bind = $mainMod SHIFT, b, exec, brave-google
-    bind = $mainMod SHIFT, b, exec, brave-wayland
+    bind = $mainMod SHIFT, b, exec, firefox -P personal
     bind = $mainMod SHIFT, o, exec, obsidian-wayland
     bind = $mainMod SHIFT, s, exec, steam
     bind = $moonlightMod SHIFT, s, exec, steam

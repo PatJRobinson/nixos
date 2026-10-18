@@ -73,8 +73,8 @@
 
     # A transparent G keeps its shape when tinted, unlike the icon pack's tile.
     for size in 16 scalable; do
-      sed 's/#4285f4/#${p.fg}/g' ${./application-icons/brave-google.svg} \
-        > "$out/share/icons/Softlight-Monochrome/apps/$size/brave-google.svg"
+      sed 's/#4285f4/#${p.fg}/g' ${./application-icons/firefox-google.svg} \
+        > "$out/share/icons/Softlight-Monochrome/apps/$size/firefox-google.svg"
     done
 
     sed -i 's/^Name=.*/Name=Softlight Monochrome/' "$out/share/icons/Softlight-Monochrome/index.theme"
@@ -162,7 +162,7 @@ in {
     }
     // lib.optionalAttrs (hostParams.wm.type == "hypr") {
       ".config/rofi".source = lib.mkForce ./softlight/rofi;
-      ".local/share/icons/hicolor/scalable/apps/brave-google.svg".source = lib.mkForce "${waybarIcons}/share/icons/Softlight-Monochrome/apps/scalable/brave-google.svg";
+      ".local/share/icons/hicolor/scalable/apps/firefox-google.svg".source = lib.mkForce "${waybarIcons}/share/icons/Softlight-Monochrome/apps/scalable/firefox-google.svg";
       # Keep every Waybar module, click action and script in the original config.
       ".config/waybar/style.css".source = lib.mkForce ./softlight/waybar.css;
       ".config/waybar/config".source = lib.mkForce (pkgs.writeText "waybar-softlight-config" (

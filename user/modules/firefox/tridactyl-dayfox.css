@@ -1,0 +1,36 @@
+:root {
+  --tridactyl-bg: @background@;
+  --tridactyl-fg: @foreground@;
+  --tridactyl-font-family: "JetBrainsMono Nerd Font", monospace;
+  --tridactyl-font-family-sans: "JetBrainsMono Nerd Font", monospace;
+  --tridactyl-font-size: 14px;
+  --tridactyl-small-font-size: 12px;
+  --tridactyl-cmdl-font-family: var(--tridactyl-font-family);
+  --tridactyl-cmdl-font-size: 12px;
+  --tridactyl-cmdl-line-height: 1.5;
+  --tridactyl-cmplt-font-family: var(--tridactyl-font-family);
+  --tridactyl-cmplt-font-size: 12px;
+  --tridactyl-cmplt-border-top: 1px solid @border@;
+  --tridactyl-header-first-bg: @surface@;
+  --tridactyl-header-second-bg: @surface@;
+  --tridactyl-header-third-bg: @surface@;
+  --tridactyl-header-border-bottom: 1px solid @border@;
+  --tridactyl-of-bg: @surface@;
+  --tridactyl-of-fg: @foreground@;
+  --tridactyl-url-fg: @blue@;
+  --tridactyl-hintspan-bg: @foreground@;
+  --tridactyl-hintspan-fg: @background@;
+  --tridactyl-hintspan-pressed-fg: @border@;
+  --tridactyl-hint-active-bg: @surface@;
+  --tridactyl-hint-active-fg: @foreground@;
+  --tridactyl-hint-active-outline: 1px solid @blue@;
+}
+
+#command-line-holder { border-top: 1px solid @border@; }
+.TridactylHint { border-radius: 0 !important; padding: 1px 3px !important; }
+#tridactyl-mode-indicator {
+  border-radius: 0 !important;
+  font-size: 12px !important;
+  background: @surface@ !important;
+  color: @foreground@ !important;
+}

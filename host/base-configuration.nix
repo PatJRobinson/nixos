@@ -20,7 +20,6 @@
     ../modules/steam.nix
     ../modules/hyprland.nix
     ../modules/users.nix
-    ../modules/browsers.nix # move to hm
     ../modules/fonts.nix
     ../modules/docker.nix
     ../modules/notifications.nix # move to hm

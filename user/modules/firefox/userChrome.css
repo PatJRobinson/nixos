@@ -1,0 +1,221 @@
+/* Qute-inspired Dayfox: slim tabs above the page, current URL below it.
+ * Ctrl+L or hovering the bottom bar reveals Firefox's full toolbar. */
+:root {
+  --dayfox-bg: @background@;
+  --dayfox-surface: @surface@;
+  --dayfox-fg: @foreground@;
+  --dayfox-muted: @muted@;
+  --dayfox-border: @border@;
+  --dayfox-blue: @blue@;
+  --dayfox-ui-font: "JetBrainsMono Nerd Font", monospace;
+  --dayfox-tab-height: 18px;
+  --dayfox-bar-height: var(--dayfox-tab-height);
+  --tab-min-height: var(--dayfox-tab-height) !important;
+  --tab-block-margin: 0px !important;
+  --toolbar-bgcolor: var(--dayfox-bg) !important;
+  --toolbar-color: var(--dayfox-fg) !important;
+  --lwt-accent-color: var(--dayfox-surface) !important;
+  --lwt-text-color: var(--dayfox-fg) !important;
+  --lwt-tab-text: var(--dayfox-fg) !important;
+  --toolbar-field-background-color: var(--dayfox-bg) !important;
+  --toolbar-field-focus-background-color: var(--dayfox-bg) !important;
+  --toolbar-field-color: var(--dayfox-fg) !important;
+  --toolbar-field-focus-color: var(--dayfox-fg) !important;
+  --toolbar-field-focus-border-color: var(--dayfox-blue) !important;
+  font-family: var(--dayfox-ui-font) !important;
+  font-size: 12px !important;
+}
+
+#navigator-toolbox {
+  border: 0 !important;
+  background: var(--dayfox-surface) !important;
+  overflow: visible !important;
+}
+
+#TabsToolbar,
+#tabbrowser-tabs {
+  min-height: var(--dayfox-tab-height) !important;
+  padding: 0 !important;
+  color: var(--dayfox-muted) !important;
+}
+
+.tabbrowser-tab {
+  min-height: var(--dayfox-tab-height) !important;
+  max-height: var(--dayfox-tab-height) !important;
+  padding: 0 !important;
+}
+.tab-content {
+  height: var(--dayfox-tab-height) !important;
+  padding: 0 6px !important;
+}
+.tab-label-container { min-height: 0 !important; }
+.tab-label {
+  font-family: var(--dayfox-ui-font) !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+}
+.tab-icon-image,
+.tab-icon-overlay,
+.tab-throbber,
+.tab-icon-pending {
+  width: 12px !important;
+  height: 12px !important;
+}
+.tab-background {
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.tab-background[selected] {
+  background: var(--dayfox-bg) !important;
+  border-bottom: 2px solid var(--dayfox-blue) !important;
+}
+.tabbrowser-tab[selected] { color: var(--dayfox-fg) !important; }
+.tab-close-button,
+#tabs-newtab-button,
+#new-tab-button,
+#alltabs-button,
+.titlebar-buttonbox-container,
+.titlebar-spacer,
+#sidebar-main,
+#sidebar-launcher-splitter { display: none !important; }
+
+/* Fixed positioning lets us move just the navigation row out of the toolbox.
+ * Reserve its space so it cannot cover page content or Tridactyl's command line. */
+:root:not([inFullscreen]):not([inDOMFullscreen]) #browser {
+  margin-bottom: var(--dayfox-bar-height) !important;
+}
+:root:not([customizing]) #nav-bar {
+  position: fixed !important;
+  bottom: 0 !important;
+  inset-inline: 0 !important;
+  width: 100% !important;
+  height: var(--dayfox-bar-height) !important;
+  min-height: var(--dayfox-bar-height) !important;
+  padding: 0 !important;
+  border-top: 1px solid var(--dayfox-border) !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  z-index: 10 !important;
+}
+
+#nav-bar-customization-target {
+  min-height: 0 !important;
+  height: 100% !important;
+  align-items: center !important;
+}
+#nav-bar toolbarbutton {
+  min-height: 0 !important;
+  height: 16px !important;
+  padding-block: 0 !important;
+  margin-block: 0 !important;
+  border-radius: 0 !important;
+}
+#nav-bar :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+#nav-bar .toolbarbutton-icon { width: 14px !important; height: 14px !important; }
+#urlbar-container {
+  min-height: 0 !important;
+  height: 100% !important;
+  padding-block: 0 !important;
+  margin-block: 0 !important;
+}
+#urlbar {
+  --urlbar-height: 16px !important;
+  --urlbar-toolbar-height: var(--dayfox-bar-height) !important;
+  --urlbar-container-height: var(--dayfox-bar-height) !important;
+  --urlbar-min-height: 16px !important;
+  min-height: 0 !important;
+  height: 16px !important;
+  padding: 0 !important;
+  margin-block: 0 !important;
+  font-family: var(--dayfox-ui-font) !important;
+  font-size: 12px !important;
+}
+#urlbar-background,
+#urlbar-background::before,
+#urlbar-background::after {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+.urlbar-input-container {
+  min-height: 0 !important;
+  height: 16px !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+#urlbar-input {
+  font-family: var(--dayfox-ui-font) !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  padding-block: 0 !important;
+  margin-block: 0 !important;
+}
+/* Preserve Firefox's site identity, certificate and tracking-protection
+ * indicators, but remove their pill backgrounds and excess vertical padding. */
+#identity-box,
+#identity-icon-box,
+#identity-permission-box,
+#tracking-protection-icon-container,
+.urlbar-page-action {
+  min-height: 0 !important;
+  height: 16px !important;
+  padding-block: 0 !important;
+  margin-block: 0 !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+}
+
+/* Keep identity/security visible; reveal navigation, permissions, extension and
+ * menu controls on hover or keyboard focus. No need to unhide CSS to use Sync. */
+:root:not([customizing]) #nav-bar:not(:hover):not(:focus-within):not(:has([open="true"]))
+  :is(#back-button, #forward-button, #stop-reload-button, #home-button,
+      #downloads-button, #fxa-toolbar-menu-button, #unified-extensions-button,
+      #PanelUI-button, #nav-bar-overflow-button, #sidebar-button,
+      #star-button-box, #page-action-buttons, .webextension-browser-action,
+      toolbarpaletteitem, toolbarspring) {
+  visibility: collapse !important;
+}
+
+/* Autocomplete must grow upwards from the bottom URL bar. */
+#urlbar[breakout][breakout-extend] {
+  top: auto !important;
+  bottom: 0 !important;
+  margin: 0 !important;
+}
+#urlbar .urlbarView {
+  position: absolute !important;
+  bottom: 100% !important;
+  inset-inline: 0 !important;
+  width: auto !important;
+  margin: 0 !important;
+  background: var(--dayfox-bg) !important;
+  border: 1px solid var(--dayfox-border) !important;
+  border-radius: 0 !important;
+}
+
+/* Link destinations sit above the URL row. */
+#statuspanel {
+  bottom: var(--dayfox-bar-height) !important;
+  font-family: inherit !important;
+}
+#statuspanel-label {
+  font-family: var(--dayfox-ui-font) !important;
+  background: var(--dayfox-surface) !important;
+  color: var(--dayfox-fg) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Browser and video fullscreen should have no reserved strip or URL row. */
+:root:is([inFullscreen], [inDOMFullscreen]) #nav-bar { display: none !important; }
+:root[inDOMFullscreen] #TabsToolbar { visibility: collapse !important; }
+
+/* Firefox's Customize Toolbar screen remains usable. */
+:root[customizing] #nav-bar { position: static !important; }

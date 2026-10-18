@@ -1,0 +1,48 @@
+" Home Manager owns this file. Change the source in user/modules/firefox/.
+" Native messaging loads this automatically; :source reloads after a rebuild.
+" Keep Tridactyl itself updated through Firefox, not its native self-updater.
+set nativeinstallcmd true
+set smoothscroll false
+set tabsort default
+set tabclosepinned false
+set searchengine duckduckgo
+set searchurls.nix https://search.nixos.org/packages?query=%s
+set searchurls.nw https://wiki.nixos.org/w/index.php?search=%s
+set searchurls.yt https://www.youtube.com/results?search_query=%s
+set editorcmd ghostty -e nvim
+set newtab @startpage-url@
+colourscheme dayfox
+
+" Labels only: do not recolour or outline the underlying page elements.
+set hintstyles.fg none
+set hintstyles.bg none
+set hintstyles.outline none
+set hintstyles.overlay none
+set hintstyles.overlayoutline none
+
+" Qute-style opening, tabs, history, bookmarks and undo.
+bind o fillcmdline open
+bind O fillcmdline tabopen
+bind go current_url open
+bind gO current_url tabopen
+bind J tabnext
+bind K tabprev
+bind d tabclose
+bind D undo
+bind u undo
+bind b fillcmdline bmarks
+bind B fillcmdline bmarks -t
+bind m bmark
+bind ,h fillcmdline open
+bind ,b fillcmdline bmarks
+bind ,t fillcmdline tab
+bind ,r source
+bind ,s tabopen about:preferences#sync
+bind ,T tabopen about:firefoxview#syncedtabs
+bind ,a tabopen about:addons
+bind ,p tabopen about:profiles
+bind ,? help
+
+" Tridactyl normally uses f/F, hjkl, gg/G, H/L, /, n/N and yy already.
+" Escape exits input mode. Shift+Escape toggles pass-through for site shortcuts.
+" Ctrl+, is Tridactyl's global escape hatch from Firefox's restricted pages.
