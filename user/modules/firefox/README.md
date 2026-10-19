@@ -58,6 +58,11 @@ Existing profile directories are not overwritten; Home Manager
 owns the profile registry, so add any existing profile you want to retain to
 `programs.firefox.profiles` before activation if it reports a file conflict.
 
+Additional profiles `uwe-student`, `uwe-staff` and `calyo` have the rofi launchers
+**Firefox (UWE Student)**, **Firefox (UWE Staff)** and **Firefox (Calyo)**.
+Each uses its own `~/.mozilla/firefox/nix-<profile>` directory and restores its
+own session, with the same Dayfox styling, extensions and Sync defaults.
+
 Firefox downloads the signed Tridactyl, uBlock Origin and Unhook extensions
 from Mozilla on first launch, so that step requires internet access. They are
 installed by policy and update through Firefox independently of Nix rebuilds.

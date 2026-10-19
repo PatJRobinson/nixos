@@ -117,6 +117,9 @@ in {
       personal = profile "personal" 0;
       work = profile "work" 1;
       google = profile "google" 2;
+      uwe-student = profile "uwe-student" 3;
+      uwe-staff = profile "uwe-staff" 4;
+      calyo = profile "calyo" 5;
     };
     # Install signed AMO extensions and let Firefox update them independently of
     # rebuilds. This is deliberate for timely YouTube blocking fixes.
@@ -201,6 +204,30 @@ in {
     genericName = "Web Browser";
     exec = "firefox -P google %U";
     icon = "firefox-google";
+    terminal = false;
+    categories = ["Network" "WebBrowser"];
+  };
+  xdg.desktopEntries.firefox-uwe-student = {
+    name = "Firefox (UWE Student)";
+    genericName = "Web Browser";
+    exec = "firefox -P uwe-student %U";
+    icon = "firefox";
+    terminal = false;
+    categories = ["Network" "WebBrowser"];
+  };
+  xdg.desktopEntries.firefox-uwe-staff = {
+    name = "Firefox (UWE Staff)";
+    genericName = "Web Browser";
+    exec = "firefox -P uwe-staff %U";
+    icon = "firefox";
+    terminal = false;
+    categories = ["Network" "WebBrowser"];
+  };
+  xdg.desktopEntries.firefox-calyo = {
+    name = "Firefox (Calyo)";
+    genericName = "Web Browser";
+    exec = "firefox -P calyo %U";
+    icon = "firefox";
     terminal = false;
     categories = ["Network" "WebBrowser"];
   };
