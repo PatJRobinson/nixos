@@ -110,6 +110,7 @@
             extraSpecialArgs = {
               inherit pkgs hostParams userName sshCfg gitCfg envVars theme;
               flylinePackage = flyline.packages.${system}.flyline;
+              codexPackage = nixpkgs-unstable.legacyPackages.${system}.codex;
             };
           };
     };

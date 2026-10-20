@@ -7,6 +7,7 @@
   gitCfg ? {},
   envVars ? {},
   theme ? "softlight",
+  codexPackage,
   ...
 }: let
   wm = hostParams.wm;
@@ -108,6 +109,7 @@ in {
         texlive.combined.scheme-full
         lazygit
       ]
+      ++ [codexPackage]
       ++ pkgs.lib.optional neovimLocal neovim;
 
     # OpenSSH rejects a config symlink into the group-writable Determinate Nix
