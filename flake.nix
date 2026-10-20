@@ -9,8 +9,8 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    flyline.url = "github:HalFrgrd/flyline";
-    flyline.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    # Keep Flyline and its own locked nixpkgs independent of routine channel updates.
+    flyline.url = "github:HalFrgrd/flyline/219fc72abc805882bfaef6d6899d182486aacdf3";
     nix-flatpak.url = "github:gmodena/nix-flatpak/";
 
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
