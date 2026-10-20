@@ -1,4 +1,9 @@
-{lib, pkgs, flylinePackage, ...}: {
+{
+  lib,
+  pkgs,
+  flylinePackage,
+  ...
+}: {
   # Patch both the installed bindings and those embedded in `fzf --bash`.
   programs.fzf.package = pkgs.fzf.overrideAttrs (old: {
     patches = (old.patches or []) ++ [../shell/fzf-bash-history-number.patch];
@@ -101,14 +106,33 @@
         modified = "!\${count}";
         staged = "+\${count}";
       };
-      status = {disabled = false; style = "160"; format = "[$symbol$status]($style) ";};
-      cmd_duration = {min_time = 3000; style = "101"; format = "[$duration]($style) ";};
-      jobs = {style = "37"; format = "[$symbol$number]($style) ";};
+      status = {
+        disabled = false;
+        style = "160";
+        format = "[$symbol$status]($style) ";
+      };
+      cmd_duration = {
+        min_time = 3000;
+        style = "101";
+        format = "[$duration]($style) ";
+      };
+      jobs = {
+        style = "37";
+        format = "[$symbol$number]($style) ";
+      };
       direnv.disabled = false;
       python.format = "[$symbol$virtualenv]($style) ";
       kubernetes.disabled = false;
-      nix_shell = {format = "[$symbol$state]($style) "; style = "74";};
-      time = {disabled = false; time_format = "%T"; style = "66"; format = "[$time]($style)";};
+      nix_shell = {
+        format = "[$symbol$state]($style) ";
+        style = "74";
+      };
+      time = {
+        disabled = false;
+        time_format = "%T";
+        style = "66";
+        format = "[$time]($style)";
+      };
     };
   };
 }
