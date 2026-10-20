@@ -167,6 +167,9 @@ in {
   };
   home.packages = [pkgs.nerd-fonts.jetbrains-mono];
   home.file.".local/share/icons/hicolor/scalable/apps/firefox-google.svg".source = ./application-icons/firefox-google.svg;
+  home.file.".local/share/icons/hicolor/scalable/apps/firefox-uwe-student.svg".source = ./application-icons/firefox-uwe-student.svg;
+  home.file.".local/share/icons/hicolor/scalable/apps/firefox-uwe-staff.svg".source = ./application-icons/firefox-uwe-staff.svg;
+  home.file.".local/share/icons/hicolor/scalable/apps/firefox-calyo.svg".source = ./application-icons/firefox-calyo.svg;
 
   # A normal HTTP document supports Tridactyl's content script and hinting;
   # Firefox's about:blank and arbitrary extension pages do not.
@@ -210,24 +213,27 @@ in {
   xdg.desktopEntries.firefox-uwe-student = {
     name = "Firefox (UWE Student)";
     genericName = "Web Browser";
-    exec = "firefox -P uwe-student %U";
-    icon = "firefox";
+    exec = "${pkgs.coreutils}/bin/env MOZ_APP_REMOTINGNAME=firefox-uwe-student firefox -P uwe-student %U";
+    icon = "firefox-uwe-student";
+    settings.StartupWMClass = "firefox-uwe-student";
     terminal = false;
     categories = ["Network" "WebBrowser"];
   };
   xdg.desktopEntries.firefox-uwe-staff = {
     name = "Firefox (UWE Staff)";
     genericName = "Web Browser";
-    exec = "firefox -P uwe-staff %U";
-    icon = "firefox";
+    exec = "${pkgs.coreutils}/bin/env MOZ_APP_REMOTINGNAME=firefox-uwe-staff firefox -P uwe-staff %U";
+    icon = "firefox-uwe-staff";
+    settings.StartupWMClass = "firefox-uwe-staff";
     terminal = false;
     categories = ["Network" "WebBrowser"];
   };
   xdg.desktopEntries.firefox-calyo = {
     name = "Firefox (Calyo)";
     genericName = "Web Browser";
-    exec = "firefox -P calyo %U";
-    icon = "firefox";
+    exec = "${pkgs.coreutils}/bin/env MOZ_APP_REMOTINGNAME=firefox-calyo firefox -P calyo %U";
+    icon = "firefox-calyo";
+    settings.StartupWMClass = "firefox-calyo";
     terminal = false;
     categories = ["Network" "WebBrowser"];
   };

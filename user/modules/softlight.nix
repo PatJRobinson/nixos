@@ -71,10 +71,13 @@
       xargs -0 -r -n 256 perl -0pi -e 's/\b(fill|stroke|stop-color|color)="(?!none\b|currentColor\b|url\()[^"]+"/$1="#3d2b5a"/gi; s/\b(fill|stroke|stop-color|color)\s*:\s*(?!none\b|currentColor\b|url\()[^;}]+/$1:#3d2b5a/gi'
     echo "Recolored $svg_total/$svg_total scalable app icons"
 
-    # A transparent G keeps its shape when tinted, unlike the icon pack's tile.
+    # Transparent profile symbols remain distinct at Waybar's small icon sizes.
     for size in 16 scalable; do
-      sed 's/#4285f4/#${p.fg}/g' ${./application-icons/firefox-google.svg} \
-        > "$out/share/icons/Softlight-Monochrome/apps/$size/firefox-google.svg"
+      for profile in google uwe-student uwe-staff calyo; do
+        sed -e 's/#4285f4/#${p.fg}/g' -e 's/#3d2b5a/#${p.fg}/g' \
+          ${./application-icons}/firefox-$profile.svg \
+          > "$out/share/icons/Softlight-Monochrome/apps/$size/firefox-$profile.svg"
+      done
     done
 
     sed -i 's/^Name=.*/Name=Softlight Monochrome/' "$out/share/icons/Softlight-Monochrome/index.theme"

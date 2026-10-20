@@ -62,6 +62,11 @@ Additional profiles `uwe-student`, `uwe-staff` and `calyo` have the rofi launche
 **Firefox (UWE Student)**, **Firefox (UWE Staff)** and **Firefox (Calyo)**.
 Each uses its own `~/.mozilla/firefox/nix-<profile>` directory and restores its
 own session, with the same Dayfox styling, extensions and Sync defaults.
+Their original monochrome SVG icons are a graduation cap, briefcase and geometric
+C respectively. The launchers set `MOZ_APP_REMOTINGNAME` to their desktop entry
+names so Waybar can associate each running profile with its icon. After changing
+these launchers, fully quit the affected profiles and reopen them from rofi;
+launching with plain `firefox -P <profile>` does not set the custom identity.
 
 Firefox downloads the signed Tridactyl, uBlock Origin and Unhook extensions
 from Mozilla on first launch, so that step requires internet access. They are
