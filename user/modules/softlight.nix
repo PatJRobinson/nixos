@@ -120,6 +120,17 @@ in {
   home.file =
     {
       "wallpapers/".source = lib.mkForce wallpaper;
+      # Keep Termusic's existing controls and native terminal text colors,
+      # but explicitly share the desktop/terminal background.
+      ".config/termusic/tui.toml" = {
+        force = true;
+        source = (pkgs.formats.toml {}).generate "termusic-tui.toml" (
+          lib.recursiveUpdate
+          (builtins.fromTOML (builtins.readFile ./softlight/termusic-tui.toml))
+          {theme.primary.background = "#${p.bg}";}
+        );
+      };
+
       ".config/ghostty/config".text = lib.mkForce ''
         # Keep the Softlight background, with the previous Gruvbox Light Hard
         # foreground and ANSI palette for terminal text.
