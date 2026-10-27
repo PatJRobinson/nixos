@@ -298,6 +298,7 @@ in {
 
   imports =
     [
+      ./modules/brave.nix
       ./modules/firefox.nix
     ]
     ++ pkgs.lib.optional softlight ./modules/softlight.nix

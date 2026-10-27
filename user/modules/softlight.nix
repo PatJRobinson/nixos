@@ -79,6 +79,10 @@
           > "$out/share/icons/Softlight-Monochrome/apps/$size/firefox-$profile.svg"
       done
     done
+    # scalable aliases 16: install once, with a writable mode rather than the
+    # Nix store source's read-only mode.
+    install -m 644 ${./application-icons/brave-linkedin.svg} \
+      "$out/share/icons/Softlight-Monochrome/apps/16/brave-linkedin.svg"
 
     sed -i 's/^Name=.*/Name=Softlight Monochrome/' "$out/share/icons/Softlight-Monochrome/index.theme"
     gtk-update-icon-cache -f "$out/share/icons/Softlight-Monochrome"

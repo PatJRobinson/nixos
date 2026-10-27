@@ -217,6 +217,7 @@
     "on-click-middle": "close",
     "ignore-list": ["foot", "vesktop"],
     "app_ids-mapping": {
+      "brave-linkedin": "brave-linkedin",
       "firefoxdeveloperedition": "firefox-developer-edition"
     },
     "markup": true,
