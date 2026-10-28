@@ -29,7 +29,7 @@ appears in Telescope. The Neovim source is pinned to the user's revision
 that already implements `NVIM_COLOURSCHEME`.
 
 The existing display layout, bindings, window rules, startup commands,
-Waybar modules and actions, shell functions, application choices and services
+other Waybar modules and actions, shell functions, application choices and services
 are retained. Hyprpaper receives its selected wallpaper through a generated
 startup config; the random-wallpaper script remains available for manual
 changes. See [wallpaper startup](../hyprpaper/README.md).
@@ -44,6 +44,15 @@ Waybar's `Softlight-Monochrome` icon theme uses Gruvbox Plus's transparent small
 SVG artwork at every size. Larger size aliases resolve to the same artwork so
 display scaling cannot select opaque tiles whose logos disappear when tinted.
 Icons absent from this set fall back to Gruvbox Plus or hicolor.
+
+Waybar groups these app icons beside their workspace number using its native
+workspace taskbar (Waybar 0.15 or later). Thin beige dividers separate groups,
+and the active workspace has a soft background. Clicking an icon focuses its
+window, middle-clicking closes it, and hovering shows its title. The existing
+`foot` and `vesktop` exclusions are retained. Workspace groups follow the
+existing left-hand modules, and the clock occupies the centre section on its
+own with fixed centring enabled. Gruvbox keeps the original separate taskbar
+layout.
 
 To restore the previous appearance, set `theme = "gruvbox";` in the local
 flake's `mkHostCfg` call, rerun the activation command and log out and back in. The existing `darkMode`

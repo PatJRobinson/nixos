@@ -30,6 +30,32 @@
     foreground = p.fg;
     outline = p.bg;
   };
+  waybarConfig = let
+    base = builtins.fromJSON (builtins.readFile ../waybar/config);
+    taskbar = base."wlr/taskbar";
+  in
+    builtins.removeAttrs base ["wlr/taskbar"]
+    // {
+      modules-left = base.modules-left ++ ["hyprland/workspaces"];
+      modules-center = ["clock"];
+      fixed-center = true;
+      "hyprland/workspaces" =
+        builtins.removeAttrs base."hyprland/workspaces" ["sort-by-number"]
+        // {
+          # {windows} is required to enable Waybar's native image taskbar.
+          format = "{icon} {windows}";
+          sort-by = "number";
+          format-window-separator = "";
+          workspace-taskbar = {
+            enable = true;
+            format = taskbar.format;
+            icon-size = taskbar.icon-size;
+            icon-theme = "Softlight-Monochrome";
+            ignore-list = taskbar.ignore-list;
+            on-click-window = "case {button} in 1) hyprctl dispatch focuswindow address:{address} ;; 2) hyprctl dispatch closewindow address:{address} ;; esac";
+          };
+        };
+    };
   waybarIcons = pkgs.runCommand "softlight-waybar-icons" {
     nativeBuildInputs = [pkgs.imagemagick pkgs.gtk3 pkgs.perl];
     propagatedBuildInputs = [pkgs.gruvbox-plus-icons];
@@ -181,14 +207,9 @@ in {
     // lib.optionalAttrs (hostParams.wm.type == "hypr") {
       ".config/rofi".source = lib.mkForce ./softlight/rofi;
       ".local/share/icons/hicolor/scalable/apps/firefox-google.svg".source = lib.mkForce "${waybarIcons}/share/icons/Softlight-Monochrome/apps/scalable/firefox-google.svg";
-      # Keep every Waybar module, click action and script in the original config.
+      # Group app icons by workspace; retain the other modules and their actions.
       ".config/waybar/style.css".source = lib.mkForce ./softlight/waybar.css;
-      ".config/waybar/config".source = lib.mkForce (pkgs.writeText "waybar-softlight-config" (
-        builtins.replaceStrings
-          ["\"icon-theme\": \"Gruvbox-Plus-Dark\""]
-          ["\"icon-theme\": \"Softlight-Monochrome\""]
-          (builtins.readFile ../waybar/config)
-      ));
+      ".config/waybar/config".source = lib.mkForce (pkgs.writeText "waybar-softlight-config" (builtins.toJSON waybarConfig));
       ".config/hypr/hyprland.conf".text = lib.mkAfter ''
         env = HYPRCURSOR_THEME,Softlight-Purple
         env = XCURSOR_THEME,Softlight-Purple

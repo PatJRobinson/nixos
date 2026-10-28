@@ -38,22 +38,34 @@ window#waybar {
 #clock { font-weight: bold; }
 #cpu, #memory, #custom-cava, #power-profiles-daemon { color: @muted; }
 #workspaces { margin: 3px; }
-#workspaces button {
-  color: @muted;
+#workspaces > button {
+  color: @fg;
   background: transparent;
   min-width: 20px;
-  padding: 2px 5px;
-  margin: 2px;
+  padding: 0 5px;
+  margin: 2px 0;
+  border-left: 1px solid @border;
+}
+/* Dividers sit outside the active group's rounded background. */
+#workspaces > button:first-child { border-left-color: transparent; }
+#workspaces > button > box {
+  padding: 2px 4px;
   border-radius: 7px;
 }
-#workspaces button.active { background: @selected; color: @fg; }
-#workspaces button:hover, #taskbar button:hover { background: @surface; }
-#taskbar button { padding: 3px; margin: 3px 1px; border-radius: 6px; }
-#taskbar button.active { background: @selected; }
+#workspaces .workspace-label { color: @muted; }
+#workspaces > button:hover > box { background: @surface; }
+#workspaces > button.active > box { background: @selected; }
+#workspaces > button.active .workspace-label { color: @fg; }
+#workspaces .taskbar-window {
+  padding: 3px;
+  margin: 0 1px;
+  border-radius: 4px;
+}
+#workspaces .taskbar-window:hover { background: @surface; }
 #battery.charging, #battery.plugged, #idle_inhibitor.activated { color: @green; }
 #battery.warning, #cpu.warning, #memory.warning,
 #power-profiles-daemon.performance { color: @amber; }
 #battery.critical, #cpu.critical, #memory.critical, #network.disconnected,
-#wireplumber.muted, #workspaces button.urgent, #taskbar button.urgent { color: @red; }
+#wireplumber.muted, #workspaces button.urgent .workspace-label { color: @red; }
 tooltip { background: @bg; color: @fg; border: 1px solid @border; border-radius: 8px; }
 tooltip label { color: @fg; padding: 5px; }
