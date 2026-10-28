@@ -99,6 +99,14 @@ Defines user config:
 machine-specific modules without making the public generator depend on them.
 Put both the imported module and its host-specific option values in this list.
 
+### Codex work account
+
+Home Manager installs `codex` and `codex-work` using the same Codex package.
+`codex-work` sets `CODEX_HOME` to `~/.codex-work`, keeping work credentials,
+settings, and history separate from the default `~/.codex` directory.
+After applying the Home Manager config, run `codex-work login` and sign in
+with your work account, then use `codex-work` as you would `codex`.
+
 ---
 
 ## Structure

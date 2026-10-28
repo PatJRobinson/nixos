@@ -16,6 +16,12 @@
 
   neovimLocal = false;
 
+  codexWork = pkgs.writeShellScriptBin "codex-work" ''
+    export CODEX_HOME="$HOME/.codex-work"
+    ${pkgs.coreutils}/bin/mkdir -p -m 700 "$CODEX_HOME"
+    exec ${codexPackage}/bin/codex "$@"
+  '';
+
   darkMode = false;
   ghosttyTheme =
     if darkMode
@@ -109,7 +115,7 @@ in {
         texlive.combined.scheme-full
         lazygit
       ]
-      ++ [codexPackage]
+      ++ [codexPackage codexWork]
       ++ pkgs.lib.optional neovimLocal neovim;
 
     # OpenSSH rejects a config symlink into the group-writable Determinate Nix
