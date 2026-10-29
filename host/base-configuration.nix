@@ -27,6 +27,7 @@
     ../modules/firejail.nix
     ../modules/filesystem.nix
     ../modules/power.nix
+    ../modules/backlight.nix
     ../modules/flatpak.nix
     ../modules/services/kavita.nix
   ];

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 max_brightness=$(cat "/sys/class/backlight/intel_backlight/max_brightness")
 curr=$(cat "/sys/class/backlight/intel_backlight/brightness")
 
