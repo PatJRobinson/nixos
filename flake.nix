@@ -93,6 +93,7 @@
         gitCfg ? {enable = false;},
         sshCfg ? {enable = false;},
         envVars ? {},
+        enableFlyline ? true,
         extraHomeModules ? [],
       }:
         with hostCfg; let
@@ -108,7 +109,7 @@
               ++ extraHomeModules;
 
             extraSpecialArgs = {
-              inherit pkgs hostParams userName sshCfg gitCfg envVars theme;
+              inherit pkgs hostParams userName sshCfg gitCfg envVars theme enableFlyline;
               flylinePackage = flyline.packages.${system}.flyline;
               codexPackage = nixpkgs-unstable.legacyPackages.${system}.codex;
             };

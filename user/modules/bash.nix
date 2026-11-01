@@ -2,6 +2,7 @@
   lib,
   pkgs,
   flylinePackage,
+  enableFlyline ? true,
   ...
 }: {
   # Patch both the installed bindings and those embedded in `fzf --bash`.
@@ -36,30 +37,48 @@
         # Flyline provides native fuzzy Tab completion; ** explicitly invokes fzf.
         FZF_COMPLETION_TRIGGER="**"
         FZF_COMPLETION_OPTS="''${FZF_COMPLETION_OPTS:+$FZF_COMPLETION_OPTS }--select-1"
+        # Only local sessions establish the preference. Remote shells must
+        # inherit it from the original terminal through SSH's SendEnv.
+        if [[ -n ''${NVIM:-} || -n ''${NVIM_LISTEN_ADDRESS:-} ||
+              ''${FLYLINE_DISABLE:-0} == 1 ]]; then
+          export FLYLINE_ENABLE=0
+        elif [[ -z ''${SSH_CONNECTION:-} && -z ''${SSH_TTY:-} ]]; then
+          export FLYLINE_ENABLE="''${FLYLINE_ENABLE:-1}"
+        fi
+        ${lib.optionalString (!enableFlyline) "export FLYLINE_ENABLE=0"}
       ''
       (lib.mkOrder 2000 ''
-        if [[ $- == *i* && $TERM != dumb && -t 0 && -t 1 ]]; then
-          if enable -f ${flylinePackage}/lib/libflyline.so flyline; then
-            flyline mouse --mode disabled
-            # Use the terminal's normal cursor instead of Flyline's fading animation.
-            flyline set-cursor --backend terminal
-            flyline suggestions --auto-suggest false --auto-suggest-inline true
-            # Preserve the fzf shortcuts across the editor replacement.
-            _flyline_fzf_cd() {
-              local cmd
-              cmd=$(__fzf_cd__) && READLINE_LINE="$cmd" READLINE_POINT=''${#cmd}
-            }
-            flyline key bind Ctrl+r 'always=runBashCommand(__fzf_history__)'
-            flyline key bind Ctrl+t 'always=runBashCommand(fzf-file-widget)'
-            flyline key bind Alt+c 'always=runBashCommand(_flyline_fzf_cd)+submitOrNewline'
+        ${lib.optionalString enableFlyline ''
+          # Unknown SSH clients and Neovim terminals fall back to Readline.
+          # FLYLINE_DISABLE=1 overrides the inherited preference.
+          if [[ $- == *i* && $TERM != dumb && -t 0 && -t 1 &&
+                ''${FLYLINE_ENABLE:-0} == 1 &&
+                -z ''${NVIM:-} && -z ''${NVIM_LISTEN_ADDRESS:-} &&
+                ''${FLYLINE_DISABLE:-0} != 1 ]]; then
+            if enable -f ${flylinePackage}/lib/libflyline.so flyline; then
+              flyline mouse --mode disabled
+              # Use the terminal's normal cursor instead of Flyline's fading animation.
+              flyline set-cursor --backend terminal
+              flyline suggestions --auto-suggest false --auto-suggest-inline true
+              # Preserve the fzf shortcuts across the editor replacement.
+              _flyline_fzf_cd() {
+                local cmd
+                cmd=$(__fzf_cd__) && READLINE_LINE="$cmd" READLINE_POINT=''${#cmd}
+              }
+              flyline key bind Ctrl+r 'always=runBashCommand(__fzf_history__)'
+              flyline key bind Ctrl+t 'always=runBashCommand(fzf-file-widget)'
+              flyline key bind Alt+c 'always=runBashCommand(_flyline_fzf_cd)+submitOrNewline'
+            fi
           fi
-        fi
+        ''}
         # Cycle through history entries matching the text before the cursor.
         bind '"\e[A": history-search-backward'
         bind '"\e[B": history-search-forward'
       '')
     ];
   };
+
+  programs.ssh.settings."*".SendEnv = ["FLYLINE_ENABLE" "FLYLINE_DISABLE"];
 
   programs.starship = {
     enable = true;

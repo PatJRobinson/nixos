@@ -73,6 +73,7 @@
 
     homeConfigurations."${userName}@${hostName}" = config-builder.lib.mkHome {
       inherit hostCfg userName sshCfg gitCfg envVars;
+      enableFlyline = true; # default; set false for normal Bash editing
       extraHomeModules = [
         # knowledge-hosting.homeManagerModules.default
         # ({...}: {services.knowledgeHosting.enable = true;})

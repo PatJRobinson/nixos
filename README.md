@@ -91,6 +91,7 @@ Defines user config:
   gitCfg = { ... };   # programs.git
   sshCfg = { ... };   # programs.ssh
   envVars = { ... };  # sessionVariables
+  enableFlyline = true; # optional; advertise/use Flyline in local terminals
   extraHomeModules = [ ... ]; # optional machine-selected Home Manager modules
 }
 ```
@@ -98,6 +99,11 @@ Defines user config:
 `extraHomeModules` lets a local flake conditionally add private or
 machine-specific modules without making the public generator depend on them.
 Put both the imported module and its host-specific option values in this list.
+
+`enableFlyline` defaults to `true`. Configured SSH clients forward the originating
+shell's `FLYLINE_ENABLE` preference; SSH sessions without it use normal Bash
+editing. Both the client Home Manager and server NixOS configurations must be
+applied. See [the shell documentation](user/shell/README.md) for temporary overrides.
 
 ### Codex work account
 
