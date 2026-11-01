@@ -205,8 +205,9 @@ in {
   xdg.desktopEntries.firefox-google = {
     name = "Firefox (Google)";
     genericName = "Web Browser";
-    exec = "firefox -P google %U";
+    exec = "${pkgs.coreutils}/bin/env MOZ_APP_REMOTINGNAME=firefox-google firefox -P google %U";
     icon = "firefox-google";
+    settings.StartupWMClass = "firefox-google";
     terminal = false;
     categories = ["Network" "WebBrowser"];
   };
