@@ -114,6 +114,11 @@ in {
         tectonic
         texlive.combined.scheme-full
         lazygit
+
+        zip
+        unzip
+
+        tmux
       ]
       ++ [codexPackage codexWork]
       ++ pkgs.lib.optional neovimLocal neovim;
