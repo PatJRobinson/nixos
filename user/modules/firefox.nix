@@ -56,13 +56,13 @@
       "browser.urlbar.trimURLs" = false;
       "browser.urlbar.showSearchTerms.enabled" = false;
       "browser.startup.page" =
-        if name == "google" || name == "personal"
+        if builtins.elem name ["google" "personal" "uwe-student" "uwe-staff"]
         then 1
         else 3;
       "browser.startup.homepage" =
         if name == "google"
         then "https://www.youtube.com/"
-        else if name == "personal"
+        else if builtins.elem name ["personal" "uwe-student" "uwe-staff"]
         then startPageUrl
         else "about:home";
       "browser.aboutwelcome.enabled" = false;

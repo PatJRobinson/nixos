@@ -60,8 +60,9 @@ owns the profile registry, so add any existing profile you want to retain to
 
 Additional profiles `uwe-student`, `uwe-staff` and `calyo` have the rofi launchers
 **Firefox (UWE Student)**, **Firefox (UWE Staff)** and **Firefox (Calyo)**.
-Each uses its own `~/.mozilla/firefox/nix-<profile>` directory and restores its
-own session, with the same Dayfox styling, extensions and Sync defaults.
+Each uses its own `~/.mozilla/firefox/nix-<profile>` directory, with the same
+Dayfox styling, extensions and Sync defaults. Student and staff open the Dayfox
+start page on startup, like personal; Calyo restores its own session.
 Their original monochrome SVG icons are a graduation cap, briefcase and geometric
 C respectively. The launchers set `MOZ_APP_REMOTINGNAME` to their desktop entry
 names so Waybar can associate each running profile with its icon. After changing
@@ -74,6 +75,11 @@ installed by policy and update through Firefox independently of Nix rebuilds.
 The native Tridactyl connector is installed by Nix; do not run `:nativeinstall`.
 
 After the extensions finish installing:
+
+On a profile's first launch, Tridactyl installs after Firefox's startup event,
+so its startup hook has not yet loaded the shared config. Run `:source` on a
+normal webpage or fully quit that profile and reopen it. This loads both the
+Dayfox theme and custom new-tab URL; subsequent launches load them automatically.
 
 1. Open a normal website and run `:native` to check the connector, then `:source`
    to load bindings immediately if this is the first installation.
