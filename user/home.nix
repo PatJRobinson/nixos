@@ -32,14 +32,8 @@
     owner = "PatJRobinson";
     repo = "kickstart.nvim";
     # This revision includes the existing NVIM_COLOURSCHEME hook.
-    rev =
-      if softlight
-      then "fce8695d9683da015d585cca3b3bdadf6e311e83"
-      else "/refs/heads/master";
-    sha256 =
-      if softlight
-      then "sha256-9az8xC+BqG6Qjo3jkNWQ0Z5kpjOdWuGIUKtktf6k7jY="
-      else "sha256-Ql1VQzLpqulJSMWSJAbEflPeOXmO6z28M5sv9GdMN6Y=";
+    rev = "c6b78b7a763f6f856f9bff34a492ad842029ef08";
+    sha256 = "sha256-Ql1VQzLpqulJSMWSJAbEflPeOXmO6z28M5sv9GdMN6Y=";
   };
 
   zoteroRepo = pkgs.fetchFromGitHub {
